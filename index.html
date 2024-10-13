@@ -11,16 +11,16 @@
     <div class="container">
 		<div class="row logobox">
 			<div class="col-md-3 flexbox">
-		        <img src="images/BKA.png">
+		        <img draggable="false" src="images/BKA.png">
 			</div>
 			<div class="col-md-3 flexbox">
-	            <img src="images/NL.png">
+	            <img draggable="false" src="images/NL.png">
 	        </div>
 	        <div class="col-md-3 flexbox">
-	        	<img src="images/FBI.png">
+	        	<img draggable="false" src="images/FBI.png">
 	        </div>
 	        			<div class="col-md-3 flexbox">
-	        	<img src="images/NCA.png">
+	        	<img draggable="false" src="images/NCA.png">
 	        </div>
 	    </div>
 	    <div class="row logobox">
@@ -48,33 +48,93 @@
 
 		<div class="row logobox">
             <div class="col-md-3 flexbox">
-                <img src="images/USSS.png">
+                <img draggable="false" src="images/USSS.png">
             </div>
             <div class="col-md-3 flexbox">
-                <img src="images/RCMP.png">
+                <img draggable="false" src="images/RCMP.png">
             </div>
             <div class="col-md-3 flexbox">
-                <img src="images/Eurojust.png">
+                <img draggable="false" src="images/Eurojust.png">
             </div>
             <div class="col-md-3 flexbox">
-                <img src="images/CH.png">
+                <img draggable="false" src="images/CH.png">
             </div>
 		</div>
 		<div class="row logobox top-buffer">
 			<div class="col-md-3 flexbox">
-            	<img src="images/europol.png">
+            	<img draggable="false" src="images/europol.png">
             </div>
             <div class="col-md-3 flexbox">
-            	<img src="images/IT.png">
+            	<img draggable="false" src="images/IT.png">
             </div>
             <div class="col-md-3 flexbox">
-                <img src="images/BG.png">
+                <img draggable="false" src="images/BG.png">
             </div>
             <div class="col-md-3 flexbox">
-                <img src="images/Polisen.png">
+                <img draggable="false" src="images/Polisen.png">
             </div>
         </div>
     </div>
-<!-- Fork me on Github: https://github.com/Linuzifer/domain_seizure -->
+
 </body>
 </html>
+<script>
+	document.addEventListener('DOMContentLoaded', (event) => {
+			 let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
+			 let userInput = [];
+ 
+			 document.addEventListener('keydown', function(e) {
+				 const key = e.key.toLowerCase();
+				 userInput.push(key);
+				 if (userInput.length > keys.length) {
+					 userInput.shift();
+				 }
+				 if (userInput.join('') === keys.join('')) {
+					 window.location.href = 'https://spinoza.wtf';
+				 }
+			 });
+		 });
+ 
+		 window.onload = function () {
+			document.addEventListener("contextmenu", function (e) {
+				e.preventDefault();
+			}, false);
+			document.addEventListener("keydown", function (e) {
+ 
+				if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+					disabledEvent(e);
+				}
+ 
+				if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+					disabledEvent(e);
+				}
+ 
+				if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+					disabledEvent(e);
+				}
+ 
+				if (e.ctrlKey && e.keyCode == 85) {
+					disabledEvent(e);
+				}
+ 
+				if (event.keyCode == 123) {
+					disabledEvent(e);
+				}
+			}, false);
+			function disabledEvent(e) {
+				if (e.stopPropagation) {
+					e.stopPropagation();
+				} else if (window.event) {
+					window.event.cancelBubble = true;
+				}
+				e.preventDefault();
+				return false;
+			}
+		}
+ 
+ </script>
+ <style>
+	body {
+  overflow: hidden; /* Hide scrollbars */
+}
+ </style>
