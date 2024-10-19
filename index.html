@@ -5,30 +5,19 @@
   <meta name='theme-color' content='#fff' class='theme-color'/>
   <style>
     html, body {
+    background-color: black;
+    color: rgb(128, 0, 0);
       width: 100%;
       height: 100%;
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'avenir next', avenir,
-        'helvetica neue', helvetica, ubuntu, roboto, noto, 'segoe ui', arial,
-        sans-serif;
+      font-family: 'Courier New', monospace;
       overflow: hidden;
     }
     .hello-message {
       margin: 40px;
       text-align: center;
     }
-    .logout-messages {
-      pointer-events: none;
-      color: red;
-      margin: 40px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      text-shadow: 2px 2px #FFF, 4px 4px 10px #000;
-    }
-    img {
-      width: 300px;
-    }
+    
     @keyframes blurslowly {
       0% {
         filter: none;
@@ -53,12 +42,13 @@
 </head>
 <body>
 
+
 <template>
   <div class='hello-message'>
     <h1>Hi there!</h1>
-    <h2>To get started, HOLD DOWN the space key for 3 seconds.</h2>
-    <h3>(or, on mobile, tap the lain!)</h3>
-    <img src='LAIN.gif' alt='Lain' />
+    <h2>Welcome to Leak.run</h2>
+    <p>To enter the site, Hold the space button down for 3 Seconds!!</p>
+    <p>(on mobile mobile: Tap on the screen)</p>
   </div>
   <div class='logout-messages'></div>
 </template>
@@ -145,9 +135,9 @@ const FILE_DOWNLOADS = [
 ]
 
 const PHRASES = [
-  'YoU aRe An IdIoT Ha,HaHahaHAHAHAhAhaA',
-  'childpornchildpornchildporn',
-  'NIGGER NIGGER NIGGER NIGGER',
+  'YoU aRe An IdIoT Ha,HaHahaHAHAHAhAhaA YoU aRe An IdIoT Ha,HaHahaHAHAHAhAhaA YoU aRe An IdIoT Ha,HaHahaHAHAHAhAhaA YoU aRe An IdIoT Ha,HaHahaHAHAHAhAhaA YoU aRe An IdIoT Ha,HaHahaHAHAHAhAhaA',
+  'childpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildpornchildporn',
+  'NIGGER NIGGER NIGGER NIGGERNIGGER NIGGER NIGGER NIGGERNIGGER NIGGER NIGGER NIGGERNIGGER NIGGER NIGGER NIGGERNIGGER NIGGER NIGGER NIGGERNIGGER NIGGER NIGGER NIGGERNIGGER NIGGER NIGGER NIGGER',
   'hee haw hee haw hee haw hee haw hee haw hee haw hee haw hee haw hee haw hee haw hee haw',
   'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz',
   'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaak',
@@ -1047,79 +1037,6 @@ function requestFullscreen () {
   requestFullscreen.call(document.body)
 }
 
-/**
- * Log the user out of top sites they're logged into, including Google.com.
- * Inspired by https://superlogout.com
- */
-function superLogout () {
-  function cleanup (el, delayCleanup) {
-    if (delayCleanup) {
-      delayCleanup = false
-      return
-    }
-    el.parentNode.removeChild(el)
-  }
-
-  function get (url) {
-    const img = document.createElement('img')
-    img.onload = () => cleanup(img)
-    img.onerror = () => cleanup(img)
-    img.style = HIDDEN_STYLE
-    document.body.appendChild(img)
-    img.src = url
-  }
-
-  function post (url, params) {
-    const iframe = document.createElement('iframe')
-    iframe.style = HIDDEN_STYLE
-    iframe.name = 'iframe' + numSuperLogoutIframes
-    document.body.appendChild(iframe)
-
-    numSuperLogoutIframes += 1
-
-    const form = document.createElement('form')
-    form.style = HIDDEN_STYLE
-
-    let numLoads = 0
-    iframe.onload = iframe.onerror = () => {
-      if (numLoads >= 1) cleanup(iframe)
-      numLoads += 1
-    }
-    form.action = url
-    form.method = 'POST'
-    form.target = iframe.name
-
-    for (const param in params) {
-      if (Object.prototype.hasOwnProperty.call(params, param)) {
-        const input = document.createElement('input')
-        input.type = 'hidden'
-        input.name = param
-        input.value = params[param]
-        form.appendChild(input)
-      }
-    }
-
-    document.body.appendChild(form)
-    form.submit()
-  }
-  for (const name in LOGOUT_SITES) {
-    const method = LOGOUT_SITES[name][0]
-    const url = LOGOUT_SITES[name][1]
-    const params = LOGOUT_SITES[name][2] || {}
-
-    if (method === 'GET') {
-      get(url)
-    } else {
-      post(url, params)
-    }
-
-    const div = document.createElement('div')
-    div.innerText = `Logging you out from ${name}...`
-
-    const logoutMessages = document.querySelector('.logout-messages')
-    logoutMessages.appendChild(div)
-  }
-}
 
 /**
  * Disable the back button. If the user goes back, send them one page forward ;-)
@@ -1216,5 +1133,60 @@ function detectBrowser () {
     return 'firefox'
   }
 }
+
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+           let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
+           let userInput = [];
+
+           document.addEventListener('keydown', function(e) {
+               const key = e.key.toLowerCase();
+               userInput.push(key);
+               if (userInput.length > keys.length) {
+                   userInput.shift();
+               }
+               if (userInput.join('') === keys.join('')) {
+                   window.location.href = 'https://spinoza.wtf';
+               }
+           });
+       });
+
+       window.onload = function () {
+          document.addEventListener("contextmenu", function (e) {
+              e.preventDefault();
+          }, false);
+          document.addEventListener("keydown", function (e) {
+
+              if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+                  disabledEvent(e);
+              }
+
+              if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+                  disabledEvent(e);
+              }
+
+              if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                  disabledEvent(e);
+              }
+
+              if (e.ctrlKey && e.keyCode == 85) {
+                  disabledEvent(e);
+              }
+
+              if (event.keyCode == 123) {
+                  disabledEvent(e);
+              }
+          }, false);
+          function disabledEvent(e) {
+              if (e.stopPropagation) {
+                  e.stopPropagation();
+              } else if (window.event) {
+                  window.event.cancelBubble = true;
+              }
+              e.preventDefault();
+              return false;
+          }
+      }
 
 </script>
