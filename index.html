@@ -201,10 +201,8 @@ i {
   const volumeControl = document.getElementById('volume');
 
   document.addEventListener('click', () => {
-      if (audio.paused) {
+    if (audio.paused) {
           audio.play();
-      } else {
-          audio.pause();
       }
   });
 
