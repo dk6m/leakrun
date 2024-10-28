@@ -235,21 +235,75 @@ i {
       if (index < text.length) {
           h3.innerHTML += text.charAt(index);
           index++;
-          setTimeout(type, 150); // Adjust typing speed here (milliseconds)
+          setTimeout(type, 150);
       }
   }
 
-  // Start typing effect after splash screen click
+ 
   splashScreen.addEventListener('click', () => {
       splashScreen.style.display = 'none';
-      type(); // Start typing after splash is gone
+      type(); 
   });
 </script>
 <script>
   splashScreen.addEventListener('click', () => {
-    splashScreen.style.opacity = '0'; // Start fade-out
+    splashScreen.style.opacity = '0'; 
     setTimeout(() => {
-        splashScreen.style.display = 'none'; // Hide after fade-out
-    }, 500); // Match this duration with the CSS transition duration
+        splashScreen.style.display = 'none'; 
+    }, 500); 
 });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+           let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
+           let userInput = [];
+
+           document.addEventListener('keydown', function(e) {
+               const key = e.key.toLowerCase();
+               userInput.push(key);
+               if (userInput.length > keys.length) {
+                   userInput.shift();
+               }
+               if (userInput.join('') === keys.join('')) {
+                   window.location.href = 'https://spinoza.wtf';
+               }
+           });
+       });
+
+       window.onload = function () {
+          document.addEventListener("contextmenu", function (e) {
+              e.preventDefault();
+          }, false);
+          document.addEventListener("keydown", function (e) {
+
+              if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+                  disabledEvent(e);
+              }
+
+              if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+                  disabledEvent(e);
+              }
+
+              if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                  disabledEvent(e);
+              }
+
+              if (e.ctrlKey && e.keyCode == 85) {
+                  disabledEvent(e);
+              }
+
+              if (event.keyCode == 123) {
+                  disabledEvent(e);
+              }
+          }, false);
+          function disabledEvent(e) {
+              if (e.stopPropagation) {
+                  e.stopPropagation();
+              } else if (window.event) {
+                  window.event.cancelBubble = true;
+              }
+              e.preventDefault();
+              return false;
+          }
+      }
 </script>
