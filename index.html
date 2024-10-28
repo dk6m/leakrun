@@ -5,303 +5,227 @@
     <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
     <script src="https://kit.fontawesome.com/fd5e3372b9.js" crossorigin="anonymous"></script>
     <title>leak</title>
-</head>
+    <style>
+        body {
+            font-family: 'JetBrains Mono';
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('bg.png');
+            overflow: hidden;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
 
-<body>
-    <div id="splash-screen">Click to Enter</div>
-<body><div class="rain-container">
+        img {
+            align-items: center;
+            border-radius: 200px;
+        }
 
-    <div id="background">
-		<div id="blur">
-            <img draggable="false" src="pfp.png" alt="pfp" width="100" height="130">
-            <h3></h3>
-            <a href="https://github.com/8oi"><i  class="fa-brands fa-github" style='font-size:36px'></i></a>
-            <a href="https://discord.com/users/246383236744347648"><i  class="fa-brands fa-discord" style='font-size:36px'></i></a>
-            <a href="https://leak.run/"><i class="fa-solid fa-globe" style='font-size:36px'></i></a>
-            <a href="https://t.me/leakwtf"><i class="fa-brands fa-telegram" style='font-size:36px'></i></a>
-        </div>
-    </div>
-</div>
-</div>
-</body>
-</html>
-<style>
-    body {
-        font-family: 'JetBrains Mono';
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('bg.png');
-        overflow: hidden;
-        height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-    
-    img {
-        align-items: center;
-        border-radius: 200px;
+        a:link {
+            color: rgb(255, 255, 255);
+            background-color: transparent;
+            text-decoration: none;
+        }
 
-    }
-    a:link {
-  color: rgb(255, 255, 255);
-  background-color: transparent;
-  text-decoration: none;
-}
-</style>
-<style>
+        #background {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            text-align: center;
+        }
 
-#background {
-	display: block;
-	width: 100vw;
-	height: 100vh;
-	margin: 0;
-	padding: 0;
-	background-size: cover;
-	background-position: center;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-    text-align:center;
-}
-
-#blur {
-	position: relative;
-	z-index: 2;
-	backdrop-filter: blur(5px);
-	color: #fff;
-	font-size: 30px;
-	padding: 50px;
-	border-radius: 10px;
-	box-shadow: 0 5px 50px rgba(0,0,0,0.5);
-	div {
-		font-size: 15px;
-	}
-}
-
-  </style>
-<style>
-i {
-    color: #ffffff;
-    text-shadow: 0 0 6px #ffffff;
-  }
-
-  h3 {
-    text-shadow: 0 0 6px #ffffff;
-  }
-  </style>
-  <style>
-  </style>
-<style>
-    
-.rain-container {
-  position: fixed; 
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; 
-  z-index: 0; 
-}
-
-.content {
-  position: relative; 
-  z-index: 1;
-  color: white; 
-  padding: 20px; 
-}
-
-
-.raindrop {
-  position: absolute;
-  width: 2px; 
-  height: 30px; 
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 50% 50% 0 0; 
-  transform: rotate(0deg);
-  animation: fall linear infinite;
-  opacity: 0.7;
-}
-
-@keyframes fall {
-  0% {
-    transform: translateY(-100vh);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateY(100vh);
-    opacity: 0;
-  }
-}
-
-</style>
-<style>
-            #mute-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            cursor: pointer;
+        #blur {
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            color: #fff;
+            font-size: 30px;
+            padding: 50px;
             border-radius: 10px;
+            box-shadow: 0 5px 50px rgba(0, 0, 0, 0.5);
         }
-</style>
-<style>
-     #splash-screen {
-      position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    z-index: 10;
-    cursor: pointer; 
-    transition: opacity 0.5s ease, backdrop-filter 0.9s ease; /* Smooth transition */
-    backdrop-filter: blur(10px); 
-    opacity: 1; /* Slightly more opaque */
+
+        .rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
-</style>
-<script>
-     const rainContainer = document.querySelector('.rain-container');
-        const splashScreen = document.getElementById('splash-screen');
 
-
-        splashScreen.addEventListener('click', () => {
-            splashScreen.style.display = 'none';
-        });
-
-        const numberOfDrops = 50;
-
-        for (let i = 0; i < numberOfDrops; i++) {
-            const raindrop = document.createElement('div');
-            raindrop.classList.add('raindrop');
-            raindrop.style.left = `${Math.random() * 100}vw`;
-
-            const size = Math.random() * 0.5 + 0.5; 
-            raindrop.style.transform = `scale(${size})`; 
-            raindrop.style.animationDuration = `${Math.random() * 2 + 1}s`;
-            raindrop.style.animationDelay = `-${Math.random() * 2}s`;
-
-            rainContainer.appendChild(raindrop);
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50% 50% 0 0;
+            animation: fall linear infinite;
+            opacity: 0.7;
         }
-</script>
-<audio id="background-audio" src="audio.mp3" preload="auto"></audio>
 
-<div id="volume-control">
-  <label for="volume">Volume: </label>
-  <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
-</div>
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
 
-<script>
-  const audio = document.getElementById('background-audio');
-  const volumeControl = document.getElementById('volume');
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            z-index: 10;
+            cursor: pointer;
+            transition: opacity 0.5s ease, backdrop-filter 0.9s ease;
+            backdrop-filter: blur(10px);
+            opacity: 1;
+        }
 
-  document.addEventListener('click', () => {
-    if (audio.paused) {
-          audio.play();
-      }
-  });
-
-  volumeControl.addEventListener('input', (event) => {
-      audio.volume = event.target.value;
-  });
-</script>
-<style>
-#volume-control {
-  color: white;
+        #volume-control {
+            color: white;
             position: absolute;
             bottom: 20px;
             right: 20px;
             padding: 10px;
             border-radius: 8px;
-            backdrop-filter: blur(10x);
-            background: rgba(172, 172, 172, 0.027); 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            background: rgba(172, 172, 172, 0.027);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
-</style>
-<script>
-  const text = "leak"; // Text to type out
-  const h3 = document.querySelector('h3');
-  let index = 0;
 
-  function type() {
-      if (index < text.length) {
-          h3.innerHTML += text.charAt(index);
-          index++;
-          setTimeout(type, 150);
-      }
-  }
+        i {
+            color: #ffffff;
+            text-shadow: 0 0 6px #ffffff;
+        }
 
- 
-  splashScreen.addEventListener('click', () => {
-      splashScreen.style.display = 'none';
-      type(); 
-  });
-</script>
-<script>
-  splashScreen.addEventListener('click', () => {
-    splashScreen.style.opacity = '0'; 
-    setTimeout(() => {
-        splashScreen.style.display = 'none'; 
-    }, 500); 
-});
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-           let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
-           let userInput = [];
+        h3 {
+            text-shadow: 0 0 6px #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div id="splash-screen">Click to Enter</div>
+    <div class="rain-container"></div>
+    <div id="background">
+        <div id="blur">
+            <img draggable="false" src="pfp.png" alt="pfp" width="100" height="130">
+            <h3></h3>
+            <a href="https://github.com/8oi"><i class="fa-brands fa-github" style='font-size:36px'></i></a>
+            <a href="https://discord.com/users/246383236744347648"><i class="fa-brands fa-discord" style='font-size:36px'></i></a>
+            <a href="https://leak.run/"><i class="fa-solid fa-globe" style='font-size:36px'></i></a>
+            <a href="https://t.me/leakwtf"><i class="fa-brands fa-telegram" style='font-size:36px'></i></a>
+        </div>
+    </div>
+    <audio id="background-audio" src="audio.mp3" preload="auto"></audio>
+    <div id="volume-control">
+        <label for="volume">Volume: </label>
+        <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+    </div>
+    <script>
+        const rainContainer = document.querySelector('.rain-container');
+        const splashScreen = document.getElementById('splash-screen');
 
-           document.addEventListener('keydown', function(e) {
-               const key = e.key.toLowerCase();
-               userInput.push(key);
-               if (userInput.length > keys.length) {
-                   userInput.shift();
-               }
-               if (userInput.join('') === keys.join('')) {
-                   window.location.href = 'https://spinoza.wtf';
-               }
-           });
-       });
+        splashScreen.addEventListener('click', () => {
+            splashScreen.style.opacity = '0'; 
+            setTimeout(() => {
+                splashScreen.style.display = 'none'; 
+                type(); 
+            }, 500);
+        });
 
-       window.onload = function () {
-          document.addEventListener("contextmenu", function (e) {
-              e.preventDefault();
-          }, false);
-          document.addEventListener("keydown", function (e) {
+        const numberOfDrops = 50;
+        for (let i = 0; i < numberOfDrops; i++) {
+            const raindrop = document.createElement('div');
+            raindrop.classList.add('raindrop');
+            raindrop.style.left = `${Math.random() * 100}vw`;
+            const size = Math.random() * 0.5 + 0.5; 
+            raindrop.style.transform = `scale(${size})`; 
+            raindrop.style.animationDuration = `${Math.random() * 2 + 1}s`;
+            raindrop.style.animationDelay = `-${Math.random() * 2}s`;
+            rainContainer.appendChild(raindrop);
+        }
 
-              if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-                  disabledEvent(e);
-              }
+        const audio = document.getElementById('background-audio');
+        const volumeControl = document.getElementById('volume');
 
-              if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-                  disabledEvent(e);
-              }
+        document.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+            }
+        });
 
-              if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-                  disabledEvent(e);
-              }
+        volumeControl.addEventListener('input', (event) => {
+            audio.volume = event.target.value;
+        });
 
-              if (e.ctrlKey && e.keyCode == 85) {
-                  disabledEvent(e);
-              }
+        const text = "leak"; 
+        const h3 = document.querySelector('h3');
+        let index = 0;
 
-              if (event.keyCode == 123) {
-                  disabledEvent(e);
-              }
-          }, false);
-          function disabledEvent(e) {
-              if (e.stopPropagation) {
-                  e.stopPropagation();
-              } else if (window.event) {
-                  window.event.cancelBubble = true;
-              }
-              e.preventDefault();
-              return false;
-          }
-      }
-</script>
+        function type() {
+            if (index < text.length) {
+                h3.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(type, 150);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
+            let userInput = [];
+
+            document.addEventListener('keydown', function(e) {
+                const key = e.key.toLowerCase();
+                userInput.push(key);
+                if (userInput.length > keys.length) {
+                    userInput.shift();
+                }
+                if (userInput.join('') === keys.join('')) {
+                    window.location.href = 'https://spinoza.wtf';
+                }
+            });
+        });
+
+        window.onload = function () {
+            document.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+            }, false);
+            document.addEventListener("keydown", function (e) {
+                if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) {
+                    disabledEvent(e);
+                }
+                if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                    disabledEvent(e);
+                }
+                if (e.ctrlKey && e.keyCode == 85) {
+                    disabledEvent(e);
+                }
+                if (e.keyCode == 123) {
+                    disabledEvent(e);
+                }
+            }, false);
+            function disabledEvent(e) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
