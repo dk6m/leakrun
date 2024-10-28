@@ -29,7 +29,7 @@
     body {
         font-family: 'JetBrains Mono';
         background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('bg.png');
-        overflow: hidden; 
+        overflow: hidden;
         height: 100%;
         background-position: center;
         background-repeat: no-repeat;
@@ -147,19 +147,22 @@ i {
 </style>
 <style>
      #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            z-index: 10;
-            cursor: pointer; 
+      position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    z-index: 10;
+    cursor: pointer; 
+    transition: opacity 0.5s ease, backdrop-filter 0.9s ease; /* Smooth transition */
+    backdrop-filter: blur(10px); 
+    opacity: 1; /* Slightly more opaque */
         }
 </style>
 <script>
@@ -241,4 +244,12 @@ i {
       splashScreen.style.display = 'none';
       type(); // Start typing after splash is gone
   });
+</script>
+<script>
+  splashScreen.addEventListener('click', () => {
+    splashScreen.style.opacity = '0'; // Start fade-out
+    setTimeout(() => {
+        splashScreen.style.display = 'none'; // Hide after fade-out
+    }, 500); // Match this duration with the CSS transition duration
+});
 </script>
