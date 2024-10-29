@@ -118,6 +118,24 @@
         h3 {
             text-shadow: 0 0 6px #ffffff;
         }
+
+        #description {
+            font-size: 20px;
+        }
+
+        #welcome-message {
+            font-size: 20px;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .blink {
+            animation: blink 2s infinite;
+        }
     </style>
 </head>
 <body>
@@ -127,6 +145,8 @@
         <div id="blur">
             <img draggable="false" src="pfp.png" alt="pfp" width="100" height="130">
             <h3></h3>
+            <p id="welcome-message"></p>
+            <p id="description"></p>
             <a href="https://github.com/8oi"><i class="fa-brands fa-github" style='font-size:36px'></i></a>
             <a href="https://discord.com/users/246383236744347648"><i class="fa-brands fa-discord" style='font-size:36px'></i></a>
             <a href="https://leak.run/"><i class="fa-solid fa-globe" style='font-size:36px'></i></a>
@@ -176,7 +196,11 @@
         });
 
         const text = "leak"; 
+        const welcomeMessage = "Welcome to my page!";
+        const descriptionText = "You can contact me via these links."; 
         const h3 = document.querySelector('h3');
+        const welcome = document.getElementById('welcome-message');
+        const description = document.getElementById('description');
         let index = 0;
 
         function type() {
@@ -184,7 +208,38 @@
                 h3.innerHTML += text.charAt(index);
                 index++;
                 setTimeout(type, 150);
+            } else {
+                typeWelcomeMessage(); 
             }
+        }
+
+        function typeWelcomeMessage() {
+            let welcomeIndex = 0;
+            function typeNext() {
+                if (welcomeIndex < welcomeMessage.length) {
+                    welcome.innerHTML += welcomeMessage.charAt(welcomeIndex);
+                    welcomeIndex++;
+                    setTimeout(typeNext, 100); 
+                } else {
+                    typeDescription(); 
+                }
+            }
+            typeNext();
+        }
+
+        function typeDescription() {
+            let descIndex = 0;
+            function typeNext() {
+                if (descIndex < descriptionText.length) {
+                    description.innerHTML += descriptionText.charAt(descIndex);
+                    descIndex++;
+                    setTimeout(typeNext, 100); 
+                } else {
+                    welcome.classList.add('blink'); 
+                    description.classList.add('blink'); 
+                }
+            }
+            typeNext();
         }
 
         document.addEventListener('DOMContentLoaded', (event) => {
