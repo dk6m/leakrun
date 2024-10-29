@@ -119,7 +119,7 @@
 </head>
 <body>
     <div class="container">
-        <img draggable="false" class="pfp" src="https://cdn.discordapp.com/avatars/{userId}/{avatarId}.png?size=1024">
+        <img draggable="false" class="pfp" src="pfp.png">
         <h1 id="typewriter-h1"></h1>
         <p id="typewriter-p"></p>
         <hr>
@@ -135,25 +135,7 @@
             <i class="fa-brands fa-discord" style="color: #ffffff;" aria-hidden="true"></i> discord
         </a>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const pfpElement = document.querySelector('.pfp');
-            const userId = '246383236744347648'; 
-            const avatarId = 'a_679da167944e2567bef7b44bc2e0d276'; 
-            
-            function updateProfilePicture() {
-                const url = `https://cdn.discordapp.com/avatars/${userId}/${avatarId}.png?size=1024&timestamp=${Date.now()}`;
-                pfpElement.src = url;
-            }
-    
 
-            setInterval(updateProfilePicture, 600000);
-            
-
-            updateProfilePicture();
-        });
-    </script>
-    
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const h1Text = 'leak';
