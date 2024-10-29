@@ -84,9 +84,17 @@
         h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
-            overflow: hidden; 
-            white-space: nowrap; 
-            animation: blink 0.7s step-end infinite; 
+            opacity: 0; /* Start hidden */
+            animation: fadeInText 1s forwards, blink 0.7s step-end infinite; 
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0; /* Start hidden */
+            }
+            to {
+                opacity: 1; /* Fade in */
+            }
         }
 
         @keyframes blink {
