@@ -15,6 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column; 
             height: 100vh;
             opacity: 0; 
             animation: fadeIn 1s forwards;
@@ -74,7 +75,7 @@
             background-color: #33363a;
             border-color: #cfcfcf;
             transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(53, 53, 53, 0.473), 0 0 30px rgba(59, 59, 59, 0.5); /* Glowing effect */
+            box-shadow: 0 0 20px rgba(53, 53, 53, 0.473), 0 0 30px rgba(59, 59, 59, 0.5); 
         }
 
         .container {
@@ -84,16 +85,16 @@
         h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
-            opacity: 0; /* Start hidden */
+            opacity: 0; 
             animation: fadeInText 1s forwards, blink 0.7s step-end infinite; 
         }
 
         @keyframes fadeInText {
             from {
-                opacity: 0; /* Start hidden */
+                opacity: 0; 
             }
             to {
-                opacity: 1; /* Fade in */
+                opacity: 1; 
             }
         }
 
@@ -123,25 +124,84 @@
         .pfp:hover {
             box-shadow: 0 0 40px rgb(70, 70, 70); 
         }
+
+        body.light {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+
+        body.light hr {
+            background-color: #000;
+        }
+
+        body.light .button {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #ccc;
+        }
+
+        body.light .button:hover {
+            background-color: #eaeaea;
+            border-color: #888;
+        }
+
+        body.light a {
+            color: #000; 
+        }
+
+        body.light .fa {
+            color: #000; 
+        }
+
+        #toggle-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5em;
+            color: white;
+            transition: color 0.5s;
+        }
+
+        body.light #toggle-button {
+            color: black;
+        }
+
+        .about-section {
+            opacity: 0; 
+            animation: fadeIn 1s forwards; 
+            margin-top: 40px; 
+        }
+
+        .about-section hr {
+            animation: slideIn 3s forwards;
+        }
     </style>
 </head>
 <body>
+    <button id="toggle-button" title="Toggle dark/light mode">
+        <i class="fa-solid fa-sun"></i>
+    </button>
     <div class="container">
         <img draggable="false" class="pfp" src="pfp.png">
         <h1 id="typewriter-h1"></h1>
         <p id="typewriter-p"></p>
         <hr>
         <a href="https://github.com/8oi" class="button" id="github-link">
-            <i class="fa-brands fa-github" style="color: #ffffff;" aria-hidden="true"></i> github
+            <i class="fa-brands fa-github" aria-hidden="true"></i> github
         </a>
         <br><br>
         <a href="https://t.me/leakwtf" class="button" id="telegram-link">
-            <i class="fa-brands fa-telegram" style="color: #ffffff;" aria-hidden="true"></i> telegram
+            <i class="fa-brands fa-telegram" aria-hidden="true"></i> telegram
         </a>
         <br><br>
-        <a href="https://discord.gg/86eqZtXVDH" class="button" id="discord-link">
-            <i class="fa-brands fa-discord" style="color: #ffffff;" aria-hidden="true"></i> discord
+        <a href="https://discord.com/users/246383236744347648" class="button" id="discord-link">
+            <i class="fa-brands fa-discord" aria-hidden="true"></i> discord
         </a>
+        
+
     </div>
 
     <script>
@@ -206,6 +266,14 @@
                         link.classList.add('visible');
                     });
                 }, 3000); 
+
+                const toggleButton = document.getElementById('toggle-button');
+                toggleButton.addEventListener('click', () => {
+                    document.body.classList.toggle('light');
+                    toggleButton.innerHTML = document.body.classList.contains('light') 
+                        ? '<i class="fa-solid fa-moon"></i>' 
+                        : '<i class="fa-solid fa-sun"></i>';
+                });
             }
         });
     </script>
