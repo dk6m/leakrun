@@ -1,248 +1,172 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
-    <script src="https://kit.fontawesome.com/fd5e3372b9.js" crossorigin="anonymous"></script>
-    <title>leak</title>
+    <title>leak.run</title>
+    <script src="https://kit.fontawesome.com/412ef74ac5.js" crossorigin="anonymous"></script>
     <style>
         body {
-            font-family: 'JetBrains Mono';
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('bg.png');
-            overflow: hidden;
-            height: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        img {
-            align-items: center;
-            border-radius: 200px;
-        }
-
-        a:link {
-            color: rgb(255, 255, 255);
-            background-color: transparent;
-            text-decoration: none;
-        }
-
-        #background {
+            margin: 0;
+            padding: 0;
+            background-color: #060708;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100vw;
             height: 100vh;
-            position: relative;
+            opacity: 0; 
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1; 
+            }
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            height: 2px;
+            background-color: #fff;
+            width: 0; 
+            animation: slideIn 3s forwards; 
+        }
+
+        @keyframes slideIn {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%; 
+            }
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+            opacity: 0; 
+            transform: translateY(10px); 
+            transition: opacity 0.5s ease-in, transform 0.5s ease-in; 
+        }
+
+        a.visible {
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        .button {
+            line-height: 3;
+            color: #fff;
+            background-color: #10121429;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 1em;
+            border: 1px solid #ffffff0f;
+            border-radius: 100px;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #33363a;
+            border-color: #cfcfcf;
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.5); 
+        }
+
+       
+        ::selection {
+            background-color: rgba(255, 255, 255, 0.486); 
+            color: black;
+        }
+
+    
+        ::-moz-selection {
+            background-color: rgba(255, 255, 255, 0.486); 
+            color: black; 
+        }
+
+        .container {
             text-align: center;
         }
 
-        #blur {
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(5px);
-            color: #fff;
-            font-size: 30px;
-            padding: 50px;
-            border-radius: 10px;
-            box-shadow: 0 5px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .rain-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .raindrop {
-            position: absolute;
-            width: 2px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50% 50% 0 0;
-            animation: fall linear infinite;
-            opacity: 0.7;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-100vh);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
-
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            z-index: 10;
-            cursor: pointer;
-            transition: opacity 0.5s ease, backdrop-filter 0.9s ease;
-            backdrop-filter: blur(10px);
-            opacity: 1;
-        }
-
-        #volume-control {
-            color: white;
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px;
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            background: rgba(172, 172, 172, 0.027);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        }
-
-        i {
-            color: #ffffff;
-            text-shadow: 0 0 6px #ffffff;
-        }
-
-        h3 {
-            text-shadow: 0 0 6px #ffffff;
-        }
-
-        #description {
-            font-size: 20px;
-        }
-
-        #welcome-message {
-            font-size: 20px;
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            overflow: hidden; 
+            white-space: nowrap; 
+            animation: blink 0.7s step-end infinite; 
         }
 
         @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0; }
-            100% { opacity: 1; }
+            50% {
+                border-color: transparent;
+            }
         }
 
-        .blink {
-            animation: blink 2s infinite;
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            overflow: hidden; 
+            white-space: nowrap; 
+            animation: blink 0.7s step-end infinite;
+        }
+
+        .pfp {
+            width: 300px;
+            height: 300px;
+            border: 1px solid #ffffff54;
+            border-radius: 9999999px;
+            box-shadow: 0 0 20px rgba(58, 58, 58, 0.7); 
+            transition: box-shadow 0.5s ease-in-out; 
+        }
+
+        .pfp:hover {
+            box-shadow: 0 0 40px rgb(70, 70, 70); 
         }
     </style>
 </head>
 <body>
-    <div id="splash-screen">Click to Enter</div>
-    <div class="rain-container"></div>
-    <div id="background">
-        <div id="blur">
-            <img draggable="false" src="pfp.png" alt="pfp" width="100" height="130">
-            <h3></h3>
-            <p id="welcome-message"></p>
-            <p id="description"></p>
-            <a href="https://github.com/8oi"><i class="fa-brands fa-github" style='font-size:36px'></i></a>
-            <a href="https://discord.com/users/246383236744347648"><i class="fa-brands fa-discord" style='font-size:36px'></i></a>
-            <a href="https://leak.run/"><i class="fa-solid fa-globe" style='font-size:36px'></i></a>
-            <a href="https://t.me/leakwtf"><i class="fa-brands fa-telegram" style='font-size:36px'></i></a>
-        </div>
+    <div class="container">
+        <img draggable="false" class="pfp" src="pfp.png">
+        <h1 id="typewriter-h1"></h1>
+        <p id="typewriter-p"></p>
+        <hr>
+        <a href="https://github.com/8oi" class="button" id="github-link">
+            <i class="fa-brands fa-github" style="color: #ffffff;" aria-hidden="true"></i> github
+        </a>
+        <br><br>
+        <a href="https://t.me/leakwtf" class="button" id="telegram-link">
+            <i class="fa-brands fa-telegram" style="color: #ffffff;" aria-hidden="true"></i> telegram
+        </a>
+        <br><br>
+        <a href="https://discord.gg/86eqZtXVDH" class="button" id="discord-link">
+            <i class="fa-brands fa-discord" style="color: #ffffff;" aria-hidden="true"></i> discord
+        </a>
     </div>
-    <audio id="background-audio" src="audio.mp3" preload="auto"></audio>
-    <div id="volume-control">
-        <label for="volume">Volume: </label>
-        <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
-    </div>
+
     <script>
-        const rainContainer = document.querySelector('.rain-container');
-        const splashScreen = document.getElementById('splash-screen');
-
-        splashScreen.addEventListener('click', () => {
-            splashScreen.style.opacity = '0'; 
-            setTimeout(() => {
-                splashScreen.style.display = 'none'; 
-                type(); 
-            }, 500);
-        });
-
-        const numberOfDrops = 50;
-        for (let i = 0; i < numberOfDrops; i++) {
-            const raindrop = document.createElement('div');
-            raindrop.classList.add('raindrop');
-            raindrop.style.left = `${Math.random() * 100}vw`;
-            const size = Math.random() * 0.5 + 0.5; 
-            raindrop.style.transform = `scale(${size})`; 
-            raindrop.style.animationDuration = `${Math.random() * 2 + 1}s`;
-            raindrop.style.animationDelay = `-${Math.random() * 2}s`;
-            rainContainer.appendChild(raindrop);
-        }
-
-        const audio = document.getElementById('background-audio');
-        const volumeControl = document.getElementById('volume');
-
-        document.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-            }
-        });
-
-        volumeControl.addEventListener('input', (event) => {
-            audio.volume = event.target.value;
-        });
-
-        const text = "leak"; 
-        const welcomeMessage = "Welcome to my page!";
-        const descriptionText = "You can contact me via these links."; 
-        const h3 = document.querySelector('h3');
-        const welcome = document.getElementById('welcome-message');
-        const description = document.getElementById('description');
-        let index = 0;
-
-        function type() {
-            if (index < text.length) {
-                h3.innerHTML += text.charAt(index);
-                index++;
-                setTimeout(type, 150);
-            } else {
-                typeWelcomeMessage(); 
-            }
-        }
-
-        function typeWelcomeMessage() {
-            let welcomeIndex = 0;
-            function typeNext() {
-                if (welcomeIndex < welcomeMessage.length) {
-                    welcome.innerHTML += welcomeMessage.charAt(welcomeIndex);
-                    welcomeIndex++;
-                    setTimeout(typeNext, 100); 
-                } else {
-                    typeDescription(); 
-                }
-            }
-            typeNext();
-        }
-
-        function typeDescription() {
-            let descIndex = 0;
-            function typeNext() {
-                if (descIndex < descriptionText.length) {
-                    description.innerHTML += descriptionText.charAt(descIndex);
-                    descIndex++;
-                    setTimeout(typeNext, 100); 
-                } else {
-                    welcome.classList.add('blink'); 
-                    description.classList.add('blink'); 
-                }
-            }
-            typeNext();
-        }
-
         document.addEventListener('DOMContentLoaded', (event) => {
+            const h1Text = 'leak';
+            const pText = 'Fullstack Developer';
+            typeWriterEffect(document.getElementById('typewriter-h1'), h1Text, 140);
+            typeWriterEffect(document.getElementById('typewriter-p'), pText, 50);
+
+            function typeWriterEffect(element, text, speed) {
+                let i = 0;
+                function type() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    }
+                }
+                type();
+            }
+
             let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
             let userInput = [];
 
@@ -256,31 +180,38 @@
                     window.location.href = 'https://spinoza.wtf';
                 }
             });
-        });
 
-        window.onload = function () {
-            document.addEventListener("contextmenu", function (e) {
-                e.preventDefault();
-            }, false);
-            document.addEventListener("keydown", function (e) {
-                if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) {
-                    disabledEvent(e);
+            window.onload = function () {
+                document.addEventListener("contextmenu", function (e) {
+                    e.preventDefault();
+                }, false);
+                document.addEventListener("keydown", function (e) {
+                    if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) {
+                        disabledEvent(e);
+                    }
+                    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                        disabledEvent(e);
+                    }
+                    if (e.ctrlKey && e.keyCode == 85) {
+                        disabledEvent(e);
+                    }
+                    if (e.keyCode == 123) {
+                        disabledEvent(e);
+                    }
+                }, false);
+                function disabledEvent(e) {
+                    e.preventDefault();
+                    return false;
                 }
-                if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-                    disabledEvent(e);
-                }
-                if (e.ctrlKey && e.keyCode == 85) {
-                    disabledEvent(e);
-                }
-                if (e.keyCode == 123) {
-                    disabledEvent(e);
-                }
-            }, false);
-            function disabledEvent(e) {
-                e.preventDefault();
-                return false;
+
+                const links = document.querySelectorAll('a');
+                setTimeout(() => {
+                    links.forEach(link => {
+                        link.classList.add('visible');
+                    });
+                }, 3000); 
             }
-        }
+        });
     </script>
 </body>
 </html>
