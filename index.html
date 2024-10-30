@@ -17,6 +17,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
             opacity: 0; 
             animation: fadeIn 1s forwards;
         }
@@ -125,7 +126,46 @@
             box-shadow: 0 0 40px rgb(70, 70, 70); 
         }
 
-        
+        .status-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            gap: 20px; 
+        }
+
+        .info-box {
+            display: flex; 
+            align-items: center; 
+            background-color: rgba(6, 7, 8, 0.8); 
+            border: 2px solid rgba(90, 90, 90, 0.658); 
+            padding: 10px;
+            border-radius: 5px;
+            width: 300px; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.5s, border 0.5s; 
+        }
+
+        .track-image {
+            width: 100px; 
+            height: 100px; 
+            border-radius: 10px;
+        }
+
+        .track-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            color: #fff; 
+            text-align: left; 
+            margin-left: 10px; 
+        }
+
+        .track-time {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-top: 5px;
+        }
+
         body.light {
             background-color: #f0f0f0;
             color: #000;
@@ -146,13 +186,32 @@
             border-color: #888;
         }
 
-       
         body.light a {
             color: #000; 
         }
 
         body.light .fa {
             color: #000;
+        }
+
+        body.light .info-box {
+            background-color: rgba(240, 240, 240, 0.8);
+            border: 2px solid rgba(200, 200, 200, 0.8);
+            color: #000; 
+        }
+
+        body.light .track-info,
+        body.light .track-time {
+            color: #000; 
+        }
+
+        .info-box {
+            color: #fff; 
+        }
+
+        .track-info,
+        .track-time {
+            color: #fff; 
         }
 
         #toggle-button {
@@ -177,7 +236,7 @@
         <i class="fa-solid fa-sun"></i>
     </button>
     <div class="container">
-        <img draggable="false" class="pfp" src="pfp.png">
+        <img draggable="false" class="pfp" src="pfp.png" alt="Profile Picture">
         <h1 id="typewriter-h1"></h1>
         <p id="typewriter-p"></p>
         <hr>
@@ -189,128 +248,172 @@
             <i class="fa-brands fa-telegram" aria-hidden="true"></i> telegram
         </a>
         <br><br>
-        <a href="https://discord.com/users/246383236744347648" class="button" id="discord-link">
+        <a href="https://discord.gg/86eqZtXVDH" class="button" id="discord-link">
             <i class="fa-brands fa-discord" aria-hidden="true"></i> discord
         </a>
     </div>
 
+    <div class="status-container" id="status-container">
+        <div class="info-box">
+            <img id="track-image" class="track-image" src="" alt="Currently Playing" style="display: none;">
+            <div class="track-info">
+                <div id="song-name">Loading...</div>
+                <div id="artist-name" class="track-time">--:--</div>
+            </div>
+        </div>
+    </div>
+
     <script>
-document.addEventListener('DOMContentLoaded', (event) => {
-    const h1Text = 'leak';
-    const pTexts = [
-        'Who am I?',
-        'Fullstack Developer',
-        'Web Developer',
-        'Feel free to contact me!'
-    ];
-    const initialText = pTexts[0];
+        async function fetchSpotifyStatus() {
+            try {
+                const apiKey = 'd4e73482ede08ea7165de1078a68c2c1'; 
+                const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=le44k&api_key=${apiKey}&format=json&nowplaying=true&limit=1`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
 
-    typeWriterEffect(document.getElementById('typewriter-h1'), h1Text, 190);
-    typeWriterEffectWithLoop(document.getElementById('typewriter-p'), initialText, 50, pTexts);
+                const data = await response.json();
+                const nowPlaying = data.recenttracks.track[0];
 
-    function typeWriterEffect(element, text, speed) {
-        let i = 0;
-        function type() {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            }
-        }
-        type();
-    }
-
-    function typeWriterEffectWithLoop(element, initialText, speed, texts) {
-        let currentTextIndex = 0;
-
-       
-        type();
-
-        function type() {
-            element.textContent = ''; 
-            typeWriterEffect(element, texts[currentTextIndex], speed);
-
-            currentTextIndex++;
-            if (currentTextIndex >= texts.length) {
-                currentTextIndex = 0; 
-            }
-
-            setTimeout(() => {
-                deleteText();
-            }, texts[currentTextIndex].length * speed + 2000); 
-        }
-
-        function deleteText() {
-            let text = element.textContent;
-            function erase() {
-                if (text.length > 0) {
-                    text = text.slice(0, -1); 
-                    element.textContent = text;
-                    setTimeout(erase, speed); 
+                if (nowPlaying && nowPlaying.date && nowPlaying.date['#text']) {
+                    const artist = nowPlaying.artist['#text'];
+                    const track = nowPlaying.name;
+                    const imageUrl = nowPlaying.image[2]['#text'];
+                    
+                    document.getElementById('song-name').innerHTML = `<strong>${track}</strong>`;
+                    document.getElementById('artist-name').innerHTML = `<strong>${artist}</strong>`;
+                    const trackImage = document.getElementById('track-image');
+                    trackImage.src = imageUrl;
+                    trackImage.style.display = 'block'; 
                 } else {
-                    type(); 
+                    document.getElementById('song-name').innerHTML = 'Not listening to anything.';
+                    document.getElementById('artist-name').innerHTML = '';
+                    const trackImage = document.getElementById('track-image');
+                    trackImage.src = ''; // Clear image if not listening
+                    trackImage.style.display = 'none'; // Hide image
+                }
+            } catch (error) {
+                document.getElementById('song-name').innerHTML = 'Error fetching data';
+                document.getElementById('artist-name').innerHTML = error.message;
+            }
+        }
+
+        fetchSpotifyStatus();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const h1Text = 'leak';
+            const pTexts = [
+                'Who am I?',
+                'Fullstack Developer',
+                'Web Developer',
+                'Feel free to contact me!'
+            ];
+            const initialText = pTexts[0];
+
+            typeWriterEffect(document.getElementById('typewriter-h1'), h1Text, 190);
+            typeWriterEffectWithLoop(document.getElementById('typewriter-p'), initialText, 50, pTexts);
+
+            function typeWriterEffect(element, text, speed) {
+                let i = 0;
+                function type() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    }
+                }
+                type();
+            }
+
+            function typeWriterEffectWithLoop(element, initialText, speed, texts) {
+                let currentTextIndex = 0;
+                type();
+
+                function type() {
+                    element.textContent = ''; 
+                    typeWriterEffect(element, texts[currentTextIndex], speed);
+
+                    currentTextIndex++;
+                    if (currentTextIndex >= texts.length) {
+                        currentTextIndex = 0; 
+                    }
+
+                    setTimeout(() => {
+                        deleteText();
+                    }, texts[currentTextIndex].length * speed + 2000); 
+                }
+
+                function deleteText() {
+                    let text = element.textContent;
+                    function erase() {
+                        if (text.length > 0) {
+                            text = text.slice(0, -1); 
+                            element.textContent = text;
+                            setTimeout(erase, speed); 
+                        } else {
+                            type(); 
+                        }
+                    }
+                    erase();
                 }
             }
-            erase();
-        }
-    }
 
-    let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
-    let userInput = [];
+            let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
+            let userInput = [];
 
-    document.addEventListener('keydown', function(e) {
-        const key = e.key.toLowerCase();
-        userInput.push(key);
-        if (userInput.length > keys.length) {
-            userInput.shift();
-        }
-        if (userInput.join('') === keys.join('')) {
-            window.location.href = 'https://spinoza.wtf';
-        }
-    });
-
-    window.onload = function () {
-        document.addEventListener("contextmenu", function (e) {
-            e.preventDefault();
-        }, false);
-        document.addEventListener("keydown", function (e) {
-            if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) {
-                disabledEvent(e);
-            }
-            if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-                disabledEvent(e);
-            }
-            if (e.ctrlKey && e.keyCode == 85) {
-                disabledEvent(e);
-            }
-            if (e.keyCode == 123) {
-                disabledEvent(e);
-            }
-        }, false);
-        function disabledEvent(e) {
-            e.preventDefault();
-            return false;
-        }
-
-        const links = document.querySelectorAll('a');
-        setTimeout(() => {
-            links.forEach(link => {
-                link.classList.add('visible');
+            document.addEventListener('keydown', function(e) {
+                const key = e.key.toLowerCase();
+                userInput.push(key);
+                if (userInput.length > keys.length) {
+                    userInput.shift();
+                }
+                if (userInput.join('') === keys.join('')) {
+                    window.location.href = 'https://spinoza.wtf';
+                }
             });
-        }, 3000); 
 
-      
-        const toggleButton = document.getElementById('toggle-button');
-        toggleButton.addEventListener('click', () => {
-            document.body.classList.toggle('light');
-            toggleButton.innerHTML = document.body.classList.contains('light') 
-                ? '<i class="fa-solid fa-moon"></i>' 
-                : '<i class="fa-solid fa-sun"></i>';
+            window.onload = function () {
+                document.addEventListener("contextmenu", function (e) {
+                    e.preventDefault();
+                }, false);
+                document.addEventListener("keydown", function (e) {
+                    if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) {
+                        disabledEvent(e);
+                    }
+                    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                        disabledEvent(e);
+                    }
+                    if (e.ctrlKey && e.keyCode == 85) {
+                        disabledEvent(e);
+                    }
+                    if (e.keyCode == 123) {
+                        disabledEvent(e);
+                    }
+                }, false);
+                function disabledEvent(e) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                const links = document.querySelectorAll('a');
+                setTimeout(() => {
+                    links.forEach(link => {
+                        link.classList.add('visible');
+                    });
+                }, 3000); 
+
+                const toggleButton = document.getElementById('toggle-button');
+                toggleButton.addEventListener('click', () => {
+                    document.body.classList.toggle('light');
+                    toggleButton.innerHTML = document.body.classList.contains('light') 
+                        ? '<i class="fa-solid fa-moon"></i>' 
+                        : '<i class="fa-solid fa-sun"></i>';
+                });
+            }
         });
-    }
-});
-
     </script>
     <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
 </body>
-</html> 
+</html>
