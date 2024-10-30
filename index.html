@@ -276,10 +276,11 @@
                 const data = await response.json();
                 const nowPlaying = data.recenttracks.track[0];
 
-                if (nowPlaying && nowPlaying.date && nowPlaying.date['#text']) {
+                if (nowPlaying) {
                     const artist = nowPlaying.artist['#text'];
                     const track = nowPlaying.name;
-                    const imageUrl = nowPlaying.image[2]['#text'];
+                    const imageUrl = nowPlaying.image[2]['#text']; 
+                    const trackTime = nowPlaying.date ? new Date(nowPlaying.date['#text']).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--';
                     
                     document.getElementById('song-name').innerHTML = `<strong>${track}</strong>`;
                     document.getElementById('artist-name').innerHTML = `<strong>${artist}</strong>`;
@@ -289,9 +290,7 @@
                 } else {
                     document.getElementById('song-name').innerHTML = 'Not listening to anything.';
                     document.getElementById('artist-name').innerHTML = '';
-                    const trackImage = document.getElementById('track-image');
-                    trackImage.src = ''; // Clear image if not listening
-                    trackImage.style.display = 'none'; // Hide image
+                    document.getElementById('track-image').style.display = 'none'; 
                 }
             } catch (error) {
                 document.getElementById('song-name').innerHTML = 'Error fetching data';
@@ -300,8 +299,8 @@
         }
 
         fetchSpotifyStatus();
-    </script>
-    <script>
+        setInterval(fetchSpotifyStatus, 1000); // Refresh every second
+
         document.addEventListener('DOMContentLoaded', (event) => {
             const h1Text = 'leak';
             const pTexts = [
