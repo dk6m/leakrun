@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free Web tutorials">
     <title>leak.run</title>
     <script src="https://kit.fontawesome.com/412ef74ac5.js" crossorigin="anonymous"></script>
     <style>
@@ -196,14 +197,16 @@
     <script>
 document.addEventListener('DOMContentLoaded', (event) => {
     const h1Text = 'leak';
-    const pText = 'Fullstack Developer';
-    typeWriterEffect(document.getElementById('typewriter-h1'), h1Text, 140);
-    typeWriterEffectWithLoop(document.getElementById('typewriter-p'), pText, 50, [
+    const pTexts = [
         'Who am I?',
         'Fullstack Developer',
         'Web Developer',
         'Feel free to contact me!'
-    ]);
+    ];
+    const initialText = pTexts[0];
+
+    typeWriterEffect(document.getElementById('typewriter-h1'), h1Text, 190);
+    typeWriterEffectWithLoop(document.getElementById('typewriter-p'), initialText, 50, pTexts);
 
     function typeWriterEffect(element, text, speed) {
         let i = 0;
@@ -220,6 +223,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function typeWriterEffectWithLoop(element, initialText, speed, texts) {
         let currentTextIndex = 0;
 
+       
+        type();
+
         function type() {
             element.textContent = ''; 
             typeWriterEffect(element, texts[currentTextIndex], speed);
@@ -230,7 +236,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
 
             setTimeout(() => {
-                
                 deleteText();
             }, texts[currentTextIndex].length * speed + 2000); 
         }
@@ -243,14 +248,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     element.textContent = text;
                     setTimeout(erase, speed); 
                 } else {
-                    
-                    type();
+                    type(); 
                 }
             }
             erase();
         }
-
-        type(); 
     }
 
     let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
@@ -297,7 +299,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             });
         }, 3000); 
 
-        // Toggle button functionality
+      
         const toggleButton = document.getElementById('toggle-button');
         toggleButton.addEventListener('click', () => {
             document.body.classList.toggle('light');
@@ -309,5 +311,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
     </script>
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
 </body>
 </html> 
