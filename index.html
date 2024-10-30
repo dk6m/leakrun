@@ -142,7 +142,6 @@
             border-radius: 5px;
             width: 300px; 
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.5s, border 0.5s; 
         }
 
         .track-image {
@@ -164,6 +163,12 @@
             font-size: 0.9em;
             color: #ccc;
             margin-top: 5px;
+        }
+
+        .listening-now {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-top: 5px; /* Add some spacing */
         }
 
         body.light {
@@ -196,22 +201,7 @@
 
         body.light .info-box {
             background-color: rgba(240, 240, 240, 0.8);
-            border: 2px solid rgba(200, 200, 200, 0.8);
-            color: #000; 
-        }
-
-        body.light .track-info,
-        body.light .track-time {
-            color: #000; 
-        }
-
-        .info-box {
-            color: #fff; 
-        }
-
-        .track-info,
-        .track-time {
-            color: #fff; 
+            border-color: rgba(150, 150, 150, 0.658);
         }
 
         #toggle-button {
@@ -259,6 +249,7 @@
             <div class="track-info">
                 <div id="song-name">Loading...</div>
                 <div id="artist-name" class="track-time">--:--</div>
+                <span id="listening-now" class="listening-now" style="display: none;">Listening now</span>
             </div>
         </div>
     </div>
@@ -279,28 +270,29 @@
                 if (nowPlaying) {
                     const artist = nowPlaying.artist['#text'];
                     const track = nowPlaying.name;
-                    const imageUrl = nowPlaying.image[2]['#text']; 
+                    const imageUrl = nowPlaying.image[2]['#text'];
                     const trackTime = nowPlaying.date ? new Date(nowPlaying.date['#text']).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--';
                     
                     document.getElementById('song-name').innerHTML = `<strong>${track}</strong>`;
                     document.getElementById('artist-name').innerHTML = `<strong>${artist}</strong>`;
-                    const trackImage = document.getElementById('track-image');
-                    trackImage.src = imageUrl;
-                    trackImage.style.display = 'block'; 
+                    document.getElementById('listening-now').style.display = 'inline'; // Show Listening now
+                    document.getElementById('track-image').src = imageUrl;
+                    document.getElementById('track-image').style.display = 'block'; // Show the image
                 } else {
-                    document.getElementById('song-name').innerHTML = 'Not listening to anything.';
+                    document.getElementById('song-name').innerHTML = 'Nothing is currently playing.';
                     document.getElementById('artist-name').innerHTML = '';
-                    document.getElementById('track-image').style.display = 'none'; 
+                    document.getElementById('listening-now').style.display = 'none'; // Hide Listening now
                 }
             } catch (error) {
                 document.getElementById('song-name').innerHTML = 'Error fetching data';
                 document.getElementById('artist-name').innerHTML = error.message;
+                document.getElementById('listening-now').style.display = 'none'; // Hide Listening now
             }
         }
 
         fetchSpotifyStatus();
-        setInterval(fetchSpotifyStatus, 1000); // Refresh every second
-
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const h1Text = 'leak';
             const pTexts = [
