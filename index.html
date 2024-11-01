@@ -1,362 +1,578 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="leak's portfolio">
-    <title>leak.run</title>
-    <script src="https://kit.fontawesome.com/412ef74ac5.js" crossorigin="anonymous"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #060708;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            opacity: 0; 
-            animation: fadeIn 1s forwards;
-        }
+<script type="text/javascript"></script>
+<title>Soon │ leak.run</title>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel="stylesheet" type="text/css">
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css?family=deathrattle+bb" rel="stylesheet');
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker|Nova+Square|Supermercado+One|VT323|Homenaje|Jolly+Lodger');
+html {
+  background: #111 url("bg.png") bottom left fixed no-repeat;
+  font-family: 'DeathRattle BB', arial;
+	margin: 20px auto;
+	color: red;
+	text-align: center;
+}
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1; 
-            }
-        }
+.blink {
+  animation: blink-animation 1s steps(2, start) infinite;
+  -webkit-animation: blink-animation 1s steps(2, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+</style>
 
-        hr {
-            margin: 20px 0;
-            border: none;
-            height: 2px;
-            background-color: #fff;
-            width: 0; 
-            animation: slideIn 3s forwards; 
-        }
+<script>
 
-        @keyframes slideIn {
-            from {
-                width: 0;
-            }
-            to {
-                width: 100%; 
-            }
-        }
-
-        a {
-            color: white;
-            text-decoration: none;
-            opacity: 0; 
-            transform: translateY(10px); 
-            transition: opacity 0.5s ease-in, transform 0.5s ease-in; 
-        }
-
-        a.visible {
-            opacity: 1; 
-            transform: translateY(0); 
-        }
-
-        .button {
-            line-height: 3;
-            color: #fff;
-            background-color: #10121429;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-size: 1em;
-            border: 1px solid #ffffff0f;
-            border-radius: 100px;
-            transition: all 0.5s ease;
-            cursor: pointer;
-        }
-
-        .button:hover {
-            background-color: #33363a;
-            border-color: #cfcfcf;
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(53, 53, 53, 0.473), 0 0 30px rgba(59, 59, 59, 0.5); 
-        }
-
-        .container {
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            opacity: 0; 
-            animation: fadeInText 1s forwards, blink 0.7s step-end infinite; 
-        }
-
-        @keyframes fadeInText {
-            from {
-                opacity: 0; 
-            }
-            to {
-                opacity: 1; 
-            }
-        }
-
-        @keyframes blink {
-            50% {
-                border-color: transparent;
-            }
-        }
-
-        p {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            overflow: hidden; 
-            white-space: nowrap; 
-            animation: blink 0.7s step-end infinite;
-        }
-
-        .pfp {
-            width: 300px;
-            height: 300px;
-            border: 1px solid #ffffff54;
-            border-radius: 9999999px;
-            box-shadow: 0 0 20px rgba(58, 58, 58, 0.7); 
-            transition: box-shadow 0.5s ease-in-out; 
-        }
-
-        .pfp:hover {
-            box-shadow: 0 0 40px rgb(70, 70, 70); 
-        }
-
-        .status-container {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-            gap: 20px; 
-        }
-
-        .info-box {
-            display: flex; 
-            align-items: center; 
-            background-color: rgba(6, 7, 8, 0.8); 
-            border: 2px solid rgba(90, 90, 90, 0.658); 
-            padding: 10px;
-            border-radius: 5px;
-            width: 300px; 
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .track-image {
-            width: 100px; 
-            height: 100px; 
-            border-radius: 10px;
-        }
-
-        .track-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            color: #fff; 
-            text-align: left; 
-            margin-left: 10px; 
-        }
-
-        .track-time {
-            font-size: 0.9em;
-            color: #ccc;
-            margin-top: 5px;
-        }
-
-        .listening-now {
-            font-size: 0.9em;
-            color: #ccc;
-            margin-top: 5px; /* Add some spacing */
-        }
-
-        body.light {
-            background-color: #f0f0f0;
-            color: #000;
-        }
-
-        body.light hr {
-            background-color: #000;
-        }
-
-        body.light .button {
-            background-color: #fff;
-            color: #000;
-            border: 1px solid #ccc;
-        }
-
-        body.light .button:hover {
-            background-color: #eaeaea;
-            border-color: #888;
-        }
-
-        body.light a {
-            color: #000; 
-        }
-
-        body.light .fa {
-            color: #000;
-        }
-
-        body.light .info-box {
-            background-color: rgba(240, 240, 240, 0.8);
-            border-color: rgba(150, 150, 150, 0.658);
-        }
-
-        #toggle-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5em;
-            color: white;
-            transition: color 0.5s;
-        }
-
-        body.light #toggle-button {
-            color: black;
-        }
-    </style>
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
 </head>
-<body>
-    <button id="toggle-button" title="Toggle dark/light mode">
-        <i class="fa-solid fa-sun"></i>
-    </button>
-    <div class="container">
-        <img draggable="false" class="pfp" src="pfp.png" alt="Profile Picture">
-        <h1 id="typewriter-h1"></h1>
-        <p id="typewriter-p"></p>
-        <hr>
-        <a href="https://github.com/8oi" class="button" id="github-link">
-            <i class="fa-brands fa-github" aria-hidden="true"></i> github
-        </a>
-        <br><br>
-        <a href="https://t.me/leakwtf" class="button" id="telegram-link">
-            <i class="fa-brands fa-telegram" aria-hidden="true"></i> telegram
-        </a>
-        <br><br>
-        <a href="https://discord.com/users/246383236744347648" class="button" id="discord-link">
-            <i class="fa-brands fa-discord" aria-hidden="true"></i> discord
-        </a>
-    </div>
-
-   
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const h1Text = 'leak';
-            const pTexts = [
-                'Who am I?',
-                'Fullstack Developer',
-                'Web Developer',
-                'Feel free to contact me!'
-            ];
-            const initialText = pTexts[0];
-
-            typeWriterEffect(document.getElementById('typewriter-h1'), h1Text, 190);
-            typeWriterEffectWithLoop(document.getElementById('typewriter-p'), initialText, 50, pTexts);
-
-            function typeWriterEffect(element, text, speed) {
-                let i = 0;
-                function type() {
-                    if (i < text.length) {
-                        element.textContent += text.charAt(i);
-                        i++;
-                        setTimeout(type, speed);
-                    }
-                }
-                type();
-            }
-
-            function typeWriterEffectWithLoop(element, initialText, speed, texts) {
-                let currentTextIndex = 0;
-                type();
-
-                function type() {
-                    element.textContent = ''; 
-                    typeWriterEffect(element, texts[currentTextIndex], speed);
-
-                    currentTextIndex++;
-                    if (currentTextIndex >= texts.length) {
-                        currentTextIndex = 0; 
-                    }
-
-                    setTimeout(() => {
-                        deleteText();
-                    }, texts[currentTextIndex].length * speed + 2000); 
-                }
-
-                function deleteText() {
-                    let text = element.textContent;
-                    function erase() {
-                        if (text.length > 0) {
-                            text = text.slice(0, -1); 
-                            element.textContent = text;
-                            setTimeout(erase, speed); 
-                        } else {
-                            type(); 
-                        }
-                    }
-                    erase();
-                }
-            }
-
-            let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
-            let userInput = [];
-
-            document.addEventListener('keydown', function(e) {
-                const key = e.key.toLowerCase();
-                userInput.push(key);
-                if (userInput.length > keys.length) {
-                    userInput.shift();
-                }
-                if (userInput.join('') === keys.join('')) {
-                    window.location.href = 'https://spinoza.wtf';
-                }
-            });
-
-            window.onload = function () {
-                document.addEventListener("contextmenu", function (e) {
-                    e.preventDefault();
-                }, false);
-                document.addEventListener("keydown", function (e) {
-                    if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) {
-                        disabledEvent(e);
-                    }
-                    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-                        disabledEvent(e);
-                    }
-                    if (e.ctrlKey && e.keyCode == 85) {
-                        disabledEvent(e);
-                    }
-                    if (e.keyCode == 123) {
-                        disabledEvent(e);
-                    }
-                }, false);
-                function disabledEvent(e) {
-                    e.preventDefault();
-                    return false;
-                }
-
-                const links = document.querySelectorAll('a');
-                setTimeout(() => {
-                    links.forEach(link => {
-                        link.classList.add('visible');
-                    });
-                }, 3000); 
-
-                const toggleButton = document.getElementById('toggle-button');
-                toggleButton.addEventListener('click', () => {
-                    document.body.classList.toggle('light');
-                    toggleButton.innerHTML = document.body.classList.contains('light') 
-                        ? '<i class="fa-solid fa-moon"></i>' 
-                        : '<i class="fa-solid fa-sun"></i>';
-                });
-            }
-        });
-    </script>
-    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
-</body>
+<br><br><br><br>
+<center>
+<header>
+	<pre>
+<div class="error">
+<img width="200" src="https://pre00.deviantart.net/630a/th/pre/i/2016/003/9/2/anime_snow_girl_render_by_younbel2000_by_younbel2000-d9mlw8l.png"></div>
+<font size="5" color="white">Very soon<span class="blink">_</span></font>
+<br>
+	</pre>
+</header>
 </html>
+<script>
+  /*
+   DHTML Snowstorm! OO-style Jascript-based Snow effect
+   ----------------------------------------------------
+   Version 1.4.20091115 (Previous rev: v1.3.20081215)
+   Code by Scott Schiller - http://schillmania.com
+   ----------------------------------------------------
+  
+   Initializes after body onload() by default (via addEventHandler() call at bottom.)
+   To customize properties, edit below or override configuration after this script
+   has run (but before body.onload), eg. snowStorm.snowStick = false;
+
+*/
+
+var snowStorm = null;
+
+function SnowStorm() {
+
+  // --- PROPERTIES ---
+
+  this.flakesMax = 150;           // Limit total amount of snow made (falling + sticking)
+  this.flakesMaxActive = 100;      // Limit amount of snow falling at once (less = lower CPU use)
+  this.animationInterval = 15;    // Theoretical "miliseconds per frame" measurement. 20 = fast + smooth, but high CPU use. 50 = more conservative, but slower
+  this.flakeBottom = null;        // Integer for Y axis snow limit, 0 or null for "full-screen" snow effect
+  this.targetElement = null;      // element which snow will be appended to (document body if null/undefined) - can be an element ID string, or a DOM node reference
+  this.followMouse = true;        // Snow will change movement with the user's mouse
+  this.snowColor = '#fff';        // Don't eat (or use?) yellow snow.
+  this.snowCharacter = '&bull;';  // &bull; = bullet, &middot; is square on some systems etc.
+  this.snowStick = true;          // Whether or not snow should "stick" at the bottom. When off, will never collect.
+  this.useMeltEffect = true;      // When recycling fallen snow (or rarely, when falling), have it "melt" and fade out if browser supports it
+  this.useTwinkleEffect = false;  // Allow snow to randomly "flicker" in and out of view while falling
+  this.usePositionFixed = false;  // true = snow not affected by window scroll. may increase CPU load, disabled by default - if enabled, used only where supported
+
+  // --- less-used bits ---
+
+  this.flakeLeftOffset = 0;       // amount to subtract from edges of container
+  this.flakeRightOffset = 0;      // amount to subtract from edges of container
+  this.flakeWidth = 8;            // max pixel width for snow element
+  this.flakeHeight = 8;           // max pixel height for snow element
+  this.vMaxX = 5;                 // Maximum X velocity range for snow
+  this.vMaxY = 4;                 // Maximum Y velocity range
+  this.zIndex = 0;                // CSS stacking order applied to each snowflake
+
+  // --- End of user section ---
+
+  // jslint global declarations
+  /*global window, document, navigator, clearInterval, setInterval */
+
+  var addEvent = (typeof(window.attachEvent)=='undefined'?function(o,evtName,evtHandler) {
+	return o.addEventListener(evtName,evtHandler,false);
+  }:function(o,evtName,evtHandler) {
+	return o.attachEvent('on'+evtName,evtHandler);
+  });
+
+  var removeEvent = (typeof(window.attachEvent)=='undefined'?function(o,evtName,evtHandler) {
+    return o.removeEventListener(evtName,evtHandler,false);
+  }:function(o,evtName,evtHandler) {
+	return o.detachEvent('on'+evtName,evtHandler);
+  });
+
+  function rnd(n,min) {
+    if (isNaN(min)) {
+	  min = 0;
+	}
+    return (Math.random()*n)+min;
+  }
+
+  function plusMinus(n) {
+    return (parseInt(rnd(2),10)==1?n*-1:n);
+  }
+
+  var s = this;
+  var storm = this;
+  this.timers = [];
+  this.flakes = [];
+  this.disabled = false;
+  this.active = false;
+
+  var isIE = navigator.userAgent.match(/msie/i);
+  var isIE6 = navigator.userAgent.match(/msie 6/i);
+  var isOldIE = (isIE && (isIE6 || navigator.userAgent.match(/msie 5/i)));
+  var isWin9X = navigator.appVersion.match(/windows 98/i);
+  var isiPhone = navigator.userAgent.match(/iphone/i);
+  var isBackCompatIE = (isIE && document.compatMode == 'BackCompat');
+  var noFixed = ((isBackCompatIE || isIE6 || isiPhone)?true:false);
+  var screenX = null;
+  var screenX2 = null;
+  var screenY = null;
+  var scrollY = null;
+  var vRndX = null;
+  var vRndY = null;
+  var windOffset = 1;
+  var windMultiplier = 2;
+  var flakeTypes = 6;
+  var fixedForEverything = false;
+  var opacitySupported = (function(){
+    try {
+	  document.createElement('div').style.opacity = '0.5';
+    } catch (e) {
+	  return false;
+    }
+    return true;
+  })();
+  var docFrag = document.createDocumentFragment();
+  if (s.flakeLeftOffset === null) {
+	s.flakeLeftOffset = 0;
+  }
+  if (s.flakeRightOffset === null) {
+	s.flakeRightOffset = 0;
+  }
+
+  this.meltFrameCount = 20;
+  this.meltFrames = [];
+  for (var i=0; i<this.meltFrameCount; i++) {
+	this.meltFrames.push(1-(i/this.meltFrameCount));
+  }
+
+  this.randomizeWind = function() {
+    vRndX = plusMinus(rnd(s.vMaxX,0.2));
+    vRndY = rnd(s.vMaxY,0.2);
+    if (this.flakes) {
+      for (var i=0; i<this.flakes.length; i++) {
+        if (this.flakes[i].active) {
+          this.flakes[i].setVelocities();
+		}
+      }
+    }
+  };
+
+  this.scrollHandler = function() {
+    // "attach" snowflakes to bottom of window if no absolute bottom value was given
+    scrollY = (s.flakeBottom?0:parseInt(window.scrollY||document.documentElement.scrollTop||document.body.scrollTop,10));
+    if (isNaN(scrollY)) {
+	  scrollY = 0; // Netscape 6 scroll fix
+	}
+    if (!fixedForEverything && !s.flakeBottom && s.flakes) {
+      for (var i=s.flakes.length; i--;) {
+        if (s.flakes[i].active === 0) {
+	      s.flakes[i].stick();
+		}
+      }
+    }
+  };
+
+  this.resizeHandler = function() {
+    if (window.innerWidth || window.innerHeight) {
+      screenX = window.innerWidth-(!isIE?16:2)-s.flakeRightOffset;
+      screenY = (s.flakeBottom?s.flakeBottom:window.innerHeight);
+    } else {
+      screenX = (document.documentElement.clientWidth||document.body.clientWidth||document.body.scrollWidth)-(!isIE?8:0)-s.flakeRightOffset;
+      screenY = s.flakeBottom?s.flakeBottom:(document.documentElement.clientHeight||document.body.clientHeight||document.body.scrollHeight);
+    }
+    screenX2 = parseInt(screenX/2,10);
+  };
+
+  this.resizeHandlerAlt = function() {
+    screenX = s.targetElement.offsetLeft+s.targetElement.offsetWidth-s.flakeRightOffset;
+    screenY = s.flakeBottom?s.flakeBottom:s.targetElement.offsetTop+s.targetElement.offsetHeight;
+    screenX2 = parseInt(screenX/2,10);
+  };
+
+  this.freeze = function() {
+    // pause animation
+    if (!s.disabled) {
+      s.disabled = 1;
+    } else {
+      return false;
+    }
+    for (var i=s.timers.length; i--;) {
+      clearInterval(s.timers[i]);
+    }
+  };
+
+  this.resume = function() {
+    if (s.disabled) {
+       s.disabled = 0;
+    } else {
+      return false;
+    }
+    s.timerInit();
+  };
+
+  this.toggleSnow = function() {
+    if (!s.flakes.length) {
+      // first run
+      s.start();
+    } else {
+      s.active = !s.active;
+      if (s.active) {
+        s.show();
+        s.resume();
+      } else {
+        s.stop();
+        s.freeze();
+      }
+    }
+  };
+
+  this.stop = function() {
+    this.freeze();
+    for (var i=this.flakes.length; i--;) {
+      this.flakes[i].o.style.display = 'none';
+    }
+    removeEvent(window,'scroll',s.scrollHandler);
+    removeEvent(window,'resize',s.resizeHandler);
+    if (!isOldIE) {
+      removeEvent(window,'blur',s.freeze);
+      removeEvent(window,'focus',s.resume);
+    }
+  };
+
+  this.show = function() {
+    for (var i=this.flakes.length; i--;) {
+      this.flakes[i].o.style.display = 'block';
+    }
+  };
+
+  this.SnowFlake = function(parent,type,x,y) {
+    var s = this;
+    var storm = parent;
+    this.type = type;
+    this.x = x||parseInt(rnd(screenX-20),10);
+    this.y = (!isNaN(y)?y:-rnd(screenY)-12);
+    this.vX = null;
+    this.vY = null;
+    this.vAmpTypes = [1,1.2,1.4,1.6,1.8]; // "amplification" for vX/vY (based on flake size/type)
+    this.vAmp = this.vAmpTypes[this.type];
+    this.melting = false;
+    this.meltFrameCount = storm.meltFrameCount;
+    this.meltFrames = storm.meltFrames;
+    this.meltFrame = 0;
+    this.twinkleFrame = 0;
+    this.active = 1;
+    this.fontSize = (10+(this.type/5)*10);
+    this.o = document.createElement('div');
+    this.o.innerHTML = storm.snowCharacter;
+    this.o.style.color = storm.snowColor;
+    this.o.style.position = (fixedForEverything?'fixed':'absolute');
+    this.o.style.width = storm.flakeWidth+'px';
+    this.o.style.height = storm.flakeHeight+'px';
+    this.o.style.fontFamily = 'arial,verdana';
+    this.o.style.overflow = 'hidden';
+    this.o.style.fontWeight = 'normal';
+    this.o.style.zIndex = storm.zIndex;
+    docFrag.appendChild(this.o);
+
+    this.refresh = function() {
+	  if (isNaN(s.x) || isNaN(s.y)) {
+		// safety check
+		return false;
+	  }
+      s.o.style.left = s.x+'px';
+      s.o.style.top = s.y+'px';
+    };
+
+    this.stick = function() {
+      if (noFixed || (storm.targetElement != document.documentElement && storm.targetElement != document.body)) {
+        s.o.style.top = (screenY+scrollY-storm.flakeHeight)+'px';
+      } else if (storm.flakeBottom) {
+	    s.o.style.top = storm.flakeBottom+'px';
+	  } else {
+        s.o.style.display = 'none';
+	    s.o.style.top = 'auto';
+        s.o.style.bottom = '0px';
+	    s.o.style.position = 'fixed';
+        s.o.style.display = 'block';
+      }
+    };
+
+    this.vCheck = function() {
+      if (s.vX>=0 && s.vX<0.2) {
+        s.vX = 0.2;
+      } else if (s.vX<0 && s.vX>-0.2) {
+        s.vX = -0.2;
+      }
+      if (s.vY>=0 && s.vY<0.2) {
+        s.vY = 0.2;
+      }
+    };
+
+    this.move = function() {
+      var vX = s.vX*windOffset;
+      s.x += vX;
+      s.y += (s.vY*s.vAmp);
+      if (s.x >= screenX || screenX-s.x < storm.flakeWidth) { // X-axis scroll check
+        s.x = 0;
+      } else if (vX < 0 && s.x-storm.flakeLeftOffset<0-storm.flakeWidth) {
+        s.x = screenX-storm.flakeWidth-1; // flakeWidth;
+      }
+      s.refresh();
+      var yDiff = screenY+scrollY-s.y;
+      if (yDiff<storm.flakeHeight) {
+        s.active = 0;
+	    if (storm.snowStick) {
+          s.stick();
+	    } else {
+	      s.recycle();
+	    }
+      } else {
+	    if (storm.useMeltEffect && s.active && s.type < 3 && !s.melting && Math.random()>0.998) {
+	      // ~1/1000 chance of melting mid-air, with each frame
+	      s.melting = true;
+	      s.melt();
+	      // only incrementally melt one frame
+	      // s.melting = false;
+	    }
+	    if (storm.useTwinkleEffect) {
+		  if (!s.twinkleFrame) {
+			if (Math.random()>0.9) {
+		      s.twinkleFrame = parseInt(Math.random()*20,10);
+		    }
+		  } else {
+			s.twinkleFrame--;
+			s.o.style.visibility = (s.twinkleFrame && s.twinkleFrame%2===0?'hidden':'visible');
+		  }
+	    }
+      }
+    };
+
+    this.animate = function() {
+     
+      s.move();
+    };
+
+    this.setVelocities = function() {
+      s.vX = vRndX+rnd(storm.vMaxX*0.12,0.1);
+      s.vY = vRndY+rnd(storm.vMaxY*0.12,0.1);
+    };
+
+	this.setOpacity = function(o,opacity) {
+	  if (!opacitySupported) {
+		return false;
+	  }
+	  o.style.opacity = opacity;
+	};
+
+    this.melt = function() {
+	  if (!storm.useMeltEffect || !s.melting) {
+		s.recycle();
+	  } else {
+		if (s.meltFrame < s.meltFrameCount) {
+		  s.meltFrame++;
+		  s.setOpacity(s.o,s.meltFrames[s.meltFrame]);
+		  s.o.style.fontSize = s.fontSize-(s.fontSize*(s.meltFrame/s.meltFrameCount))+'px';
+		  s.o.style.lineHeight = storm.flakeHeight+2+(storm.flakeHeight*0.75*(s.meltFrame/s.meltFrameCount))+'px';
+		} else {
+		  s.recycle();
+		}
+	  }
+    };
+
+    this.recycle = function() {
+      s.o.style.display = 'none';
+      s.o.style.position = (fixedForEverything?'fixed':'absolute');
+      s.o.style.bottom = 'auto';
+      s.setVelocities();
+      s.vCheck();
+	  s.meltFrame = 0;
+	  s.melting = false;
+	  s.setOpacity(s.o,1);
+	  s.o.style.padding = '0px';
+	  s.o.style.margin = '0px';
+	  s.o.style.fontSize = s.fontSize+'px';
+	  s.o.style.lineHeight = (storm.flakeHeight+2)+'px';
+	  s.o.style.textAlign = 'center';
+	  s.o.style.verticalAlign = 'baseline';
+      s.x = parseInt(rnd(screenX-storm.flakeWidth-20),10);
+      s.y = parseInt(rnd(screenY)*-1,10)-storm.flakeHeight;
+      s.refresh();
+      s.o.style.display = 'block';
+      s.active = 1;
+    };
+
+    this.recycle(); // set up x/y coords etc.
+    this.refresh();
+
+  };
+
+  this.snow = function() {
+    var active = 0;
+    var used = 0;
+    var waiting = 0;
+    var flake = null;
+    for (var i=s.flakes.length; i--;) {
+      if (s.flakes[i].active == 1) {
+        s.flakes[i].move();
+        active++;
+      } else if (s.flakes[i].active === 0) {
+        used++;
+      } else {
+        waiting++;
+      }
+      if (s.flakes[i].melting) {
+	    s.flakes[i].melt();
+	  }
+    }
+    if (active<s.flakesMaxActive) {
+      flake = s.flakes[parseInt(rnd(s.flakes.length),10)];
+      if (flake.active === 0) {
+        flake.melting = true;
+      }
+    }
+  };
+
+  this.mouseMove = function(e) {
+    if (!s.followMouse) {
+	  return true;
+	}
+    var x = parseInt(e.clientX,10);
+    if (x<screenX2) {
+      windOffset = -windMultiplier+(x/screenX2*windMultiplier);
+    } else {
+      x -= screenX2;
+      windOffset = (x/screenX2)*windMultiplier;
+    }
+  };
+
+  this.createSnow = function(limit,allowInactive) {
+    for (var i=0; i<limit; i++) {
+      s.flakes[s.flakes.length] = new s.SnowFlake(s,parseInt(rnd(flakeTypes),10));
+      if (allowInactive || i>s.flakesMaxActive) {
+	    s.flakes[s.flakes.length-1].active = -1;
+	  }
+    }
+    storm.targetElement.appendChild(docFrag);
+  };
+
+  this.timerInit = function() {
+    s.timers = (!isWin9X?[setInterval(s.snow,s.animationInterval)]:[setInterval(s.snow,s.animationInterval*3),setInterval(s.snow,s.animationInterval)]);
+  };
+
+  this.init = function() {
+    s.randomizeWind();
+    s.createSnow(s.flakesMax); 
+    addEvent(window,'resize',s.resizeHandler);
+    addEvent(window,'scroll',s.scrollHandler);
+    if (!isOldIE) {
+      addEvent(window,'blur',s.freeze);
+      addEvent(window,'focus',s.resume);
+    }
+    s.resizeHandler();
+    s.scrollHandler();
+    if (s.followMouse) {
+      addEvent(document,'mousemove',s.mouseMove);
+    }
+    s.animationInterval = Math.max(20,s.animationInterval);
+    s.timerInit();
+  };
+
+  var didInit = false;
+
+  this.start = function(bFromOnLoad) {
+	if (!didInit) {
+	  didInit = true;
+	} else if (bFromOnLoad) {
+	
+	  return true;
+	}
+    if (typeof s.targetElement == 'string') {
+	  var targetID = s.targetElement;
+      s.targetElement = document.getElementById(targetID);
+      if (!s.targetElement) {
+	    throw new Error('Snowstorm: Unable to get targetElement "'+targetID+'"');
+	  }
+    }
+	if (!s.targetElement) {
+	  s.targetElement = (!isIE?(document.documentElement?document.documentElement:document.body):document.body);
+	}
+    if (s.targetElement != document.documentElement && s.targetElement != document.body) {
+	  s.resizeHandler = s.resizeHandlerAlt; 
+	}
+    s.resizeHandler(); 
+    s.usePositionFixed = (s.usePositionFixed && !noFixed); 
+    fixedForEverything = s.usePositionFixed;
+    if (screenX && screenY && !s.disabled) {
+      s.init();
+      s.active = true;
+    }
+  };
+
+  function doStart() {
+	  s.start(true);
+  }
+
+  if (document.addEventListener) {
+    
+    document.addEventListener('DOMContentLoaded',doStart,false);
+    window.addEventListener('load',doStart,false);
+  } else {
+    addEvent(window,'load',doStart);
+  }
+
+}
+
+snowStorm = new SnowStorm();
+</script>
