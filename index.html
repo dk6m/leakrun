@@ -1,578 +1,735 @@
-<!DOCTYPE HTML>
 <html>
-<head>
-<script type="text/javascript"></script>
-<title>Soon │ leak.run</title>
-<link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel="stylesheet" type="text/css">
-<style type="text/css">
-@import url('https://fonts.googleapis.com/css?family=deathrattle+bb" rel="stylesheet');
-@import url('https://fonts.googleapis.com/css?family=Permanent+Marker|Nova+Square|Supermercado+One|VT323|Homenaje|Jolly+Lodger');
-html {
-  background: #111 url("bg.png") bottom left fixed no-repeat;
-  font-family: 'DeathRattle BB', arial;
-	margin: 20px auto;
-	color: red;
-	text-align: center;
+  <head>
+    <title>Windows 98</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+
+/* Disable image filtering */
+img { 
+    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated;                 /* Chrome */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 }
 
-.blink {
-  animation: blink-animation 1s steps(2, start) infinite;
-  -webkit-animation: blink-animation 1s steps(2, start) infinite;
+/* bugfix */
+button:not(:disabled):active { padding-top: 0px; }
+button { color: black; }
+
+/*** Menus ***/
+
+/* Menus are defined by a "ul" element with the "menu" class. Adding the
+ * "bar" class makes the menu horizontal. A "div" child with the
+ * "window" class inside of a "li" in a menu will be a popup. */
+
+ul.menu {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none; /* disable bullets */
 }
-@keyframes blink-animation {
-  to {
+
+/* popup menu window */
+ul.menu > li > div.window {
+    position: absolute;
+    display: none;
+    top: 0px; left: 100%;  /* display to the right of the parent "li" */
+}
+ul.bar > li > div.window {
+    top: 100%; left: 0px;  /* display under the parent "li" */
+}
+ul.menu > li:hover > div.window {
+    display: block;  /* display popup when parent "li" is hovered */
+}
+
+/* menu item */
+ul.menu > li {
+    position: relative;
+    color: black;
+    padding: 2px;
+    line-height: 16px;  /* make sure text occupies the same vertical space as a 16x16 icon */
+}
+ul.bar > li {
+    display: inline;  /* menu bars display horizontally */
+}
+ul.menu > li:hover {
+    background-color: #000080; color: white;  /* hovered menu item color */
+}
+
+/* menu separator */
+hr {
+    margin: 2px;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #FFFFFF;
+}
+
+/* submenu arrow */
+li.arrow::after { float: right; content: "▶"; }
+
+/* keyboard shortcut */
+ul.menu > li > span.keyshortcut { float: right; }
+
+/* menu item icon */
+ul.menu > li > img {
+    width: 16px; height: 16px;
+    vertical-align: middle;  /* seems to be off by 1 pixel? */
+    padding-right: 4px;
+}
+ul.menu > li > img:not([src]) {
     visibility: hidden;
-  }
 }
-@-webkit-keyframes blink-animation {
-  to {
-    visibility: hidden;
-  }
+
+/* Don't use flex layout on title bar */
+div.title-bar { display: block; padding: 1px; }
+div.title-bar * { display: inline; vertical-align: middle; }  /* make everything horizontal */
+div.title-bar-text { vertical-align: middle; line-height: 16px; padding: 1px; }
+div.title-bar-controls { float: right; padding: 1px; }
+div.title-bar img { padding-right: 5px; }
+
+div.deskicon {
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    color: white;
+    font-family: "Pixelated MS Sans Serif", Arial;
+    -webkit-font-smoothing: none;
+    font-size: 11px;
 }
-</style>
+div.deskicon > img {
+    padding: 4px;
+}
 
-<script>
+/* make icons vertically centered in text */
+button img {
+    vertical-align: middle;
+}
 
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
-</script>
-</head>
-<br><br><br><br>
-<center>
-<header>
-	<pre>
-<div class="error">
-<img width="200" src="https://pre00.deviantart.net/630a/th/pre/i/2016/003/9/2/anime_snow_girl_render_by_younbel2000_by_younbel2000-d9mlw8l.png"></div>
-<font size="5" color="white">Very soon<span class="blink">_</span></font>
-<br>
-	</pre>
-</header>
-</html>
-<script>
-  /*
-   DHTML Snowstorm! OO-style Jascript-based Snow effect
-   ----------------------------------------------------
-   Version 1.4.20091115 (Previous rev: v1.3.20081215)
-   Code by Scott Schiller - http://schillmania.com
-   ----------------------------------------------------
-  
-   Initializes after body onload() by default (via addEventHandler() call at bottom.)
-   To customize properties, edit below or override configuration after this script
-   has run (but before body.onload), eg. snowStorm.snowStick = false;
+button.pushed {
+    box-shadow: inset -1px -1px #FFFFFF, inset 1px 1px #0A0A0A, inset -2px -2px #DFDFDF, inset 2px 2px #808080;
+}
 
-*/
+button.taskbtn, button.taskbtn:active {
+    box-sizing: border-box;
+    height: 22px;
+    width: 100px;
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+button.taskbtn > img {
+    margin-right: 5px;
+}
+button.taskbtn.pushed {
+    font-weight: bold;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAAAAABX3VL4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAADklEQVQIHWPY+5/h/14ACm4DeZxCDIkAAAAASUVORK5CYII=");
+}
 
-var snowStorm = null;
+/*** element specific rules ***/
 
-function SnowStorm() {
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+body {
+    position: relative;
+    background-color: #008080;
+    margin: 0px;
+    padding: 0px;
+    user-select: none; -ms-user-select: none;
+    cursor: url("https://windows93.net/c/sys/cursors/default.cur"), default;  /* lol, windows 93 */
+}
 
-  // --- PROPERTIES ---
+/* Start Menu */
+#startMenu div.window {
+    width: 150px;
+}
+#startMenu > ul > li {
+    padding: 0px;
+}
+#startMenu > ul > li > img {
+    width: 32px; height: 32px;
+}
 
-  this.flakesMax = 150;           // Limit total amount of snow made (falling + sticking)
-  this.flakesMaxActive = 100;      // Limit amount of snow falling at once (less = lower CPU use)
-  this.animationInterval = 15;    // Theoretical "miliseconds per frame" measurement. 20 = fast + smooth, but high CPU use. 50 = more conservative, but slower
-  this.flakeBottom = null;        // Integer for Y axis snow limit, 0 or null for "full-screen" snow effect
-  this.targetElement = null;      // element which snow will be appended to (document body if null/undefined) - can be an element ID string, or a DOM node reference
-  this.followMouse = true;        // Snow will change movement with the user's mouse
-  this.snowColor = '#fff';        // Don't eat (or use?) yellow snow.
-  this.snowCharacter = '&bull;';  // &bull; = bullet, &middot; is square on some systems etc.
-  this.snowStick = true;          // Whether or not snow should "stick" at the bottom. When off, will never collect.
-  this.useMeltEffect = true;      // When recycling fallen snow (or rarely, when falling), have it "melt" and fade out if browser supports it
-  this.useTwinkleEffect = false;  // Allow snow to randomly "flicker" in and out of view while falling
-  this.usePositionFixed = false;  // true = snow not affected by window scroll. may increase CPU load, disabled by default - if enabled, used only where supported
+#startBtn.pushed {
+    box-shadow: inset -1px -1px #FFFFFF, inset 1px 1px #0A0A0A, inset -2px -2px #DFDFDF, inset 2px 2px #808080;
+    padding: 2px 11px 0 13px;
+}
 
-  // --- less-used bits ---
+#notificationArea {
+    float: right;
+    height: 22px;
+    margin-right: 4px;
+    padding: 4px;
+    box-sizing: border-box;
+    box-shadow: inset -1px -1px #FFFFFF, inset 1px 1px #808080;
+}
+    </style>
+    <style>
+        .popup {
+           display: none; /* Başlangıçta gizli */
+           position: fixed;
+           left: 0;
+           top: 0;
+           width: 100%;
+           height: 100%;
+           background-color: rgba(0, 0, 0, 0.5); /* Sayfanın arka planını karartır */
+       }
+       
+       .popup-content {
+           background-color: white;
+           margin: 15% auto;
+           padding: 20px;
+           border: 1px solid #888;
+           width: 300px; /* Popup genişliği */
+       }
+       
+       .close {
+           color: #aaa;
+           float: right;
+           font-size: 28px;
+           font-weight: bold;
+       }
+       
+       .close:hover,
+       .close:focus {
+           color: black;
+           text-decoration: none;
+           cursor: pointer;
+       }
+      
+       .toplevel {
+      position: fixed;
+      width: 300px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
-  this.flakeLeftOffset = 0;       // amount to subtract from edges of container
-  this.flakeRightOffset = 0;      // amount to subtract from edges of container
-  this.flakeWidth = 8;            // max pixel width for snow element
-  this.flakeHeight = 8;           // max pixel height for snow element
-  this.vMaxX = 5;                 // Maximum X velocity range for snow
-  this.vMaxY = 4;                 // Maximum Y velocity range
-  this.zIndex = 0;                // CSS stacking order applied to each snowflake
-
-  // --- End of user section ---
-
-  // jslint global declarations
-  /*global window, document, navigator, clearInterval, setInterval */
-
-  var addEvent = (typeof(window.attachEvent)=='undefined'?function(o,evtName,evtHandler) {
-	return o.addEventListener(evtName,evtHandler,false);
-  }:function(o,evtName,evtHandler) {
-	return o.attachEvent('on'+evtName,evtHandler);
-  });
-
-  var removeEvent = (typeof(window.attachEvent)=='undefined'?function(o,evtName,evtHandler) {
-    return o.removeEventListener(evtName,evtHandler,false);
-  }:function(o,evtName,evtHandler) {
-	return o.detachEvent('on'+evtName,evtHandler);
-  });
-
-  function rnd(n,min) {
-    if (isNaN(min)) {
-	  min = 0;
-	}
-    return (Math.random()*n)+min;
-  }
-
-  function plusMinus(n) {
-    return (parseInt(rnd(2),10)==1?n*-1:n);
-  }
-
-  var s = this;
-  var storm = this;
-  this.timers = [];
-  this.flakes = [];
-  this.disabled = false;
-  this.active = false;
-
-  var isIE = navigator.userAgent.match(/msie/i);
-  var isIE6 = navigator.userAgent.match(/msie 6/i);
-  var isOldIE = (isIE && (isIE6 || navigator.userAgent.match(/msie 5/i)));
-  var isWin9X = navigator.appVersion.match(/windows 98/i);
-  var isiPhone = navigator.userAgent.match(/iphone/i);
-  var isBackCompatIE = (isIE && document.compatMode == 'BackCompat');
-  var noFixed = ((isBackCompatIE || isIE6 || isiPhone)?true:false);
-  var screenX = null;
-  var screenX2 = null;
-  var screenY = null;
-  var scrollY = null;
-  var vRndX = null;
-  var vRndY = null;
-  var windOffset = 1;
-  var windMultiplier = 2;
-  var flakeTypes = 6;
-  var fixedForEverything = false;
-  var opacitySupported = (function(){
-    try {
-	  document.createElement('div').style.opacity = '0.5';
-    } catch (e) {
-	  return false;
     }
-    return true;
-  })();
-  var docFrag = document.createDocumentFragment();
-  if (s.flakeLeftOffset === null) {
-	s.flakeLeftOffset = 0;
-  }
-  if (s.flakeRightOffset === null) {
-	s.flakeRightOffset = 0;
-  }
 
-  this.meltFrameCount = 20;
-  this.meltFrames = [];
-  for (var i=0; i<this.meltFrameCount; i++) {
-	this.meltFrames.push(1-(i/this.meltFrameCount));
-  }
-
-  this.randomizeWind = function() {
-    vRndX = plusMinus(rnd(s.vMaxX,0.2));
-    vRndY = rnd(s.vMaxY,0.2);
-    if (this.flakes) {
-      for (var i=0; i<this.flakes.length; i++) {
-        if (this.flakes[i].active) {
-          this.flakes[i].setVelocities();
-		}
-      }
-    }
-  };
-
-  this.scrollHandler = function() {
-    // "attach" snowflakes to bottom of window if no absolute bottom value was given
-    scrollY = (s.flakeBottom?0:parseInt(window.scrollY||document.documentElement.scrollTop||document.body.scrollTop,10));
-    if (isNaN(scrollY)) {
-	  scrollY = 0; // Netscape 6 scroll fix
-	}
-    if (!fixedForEverything && !s.flakeBottom && s.flakes) {
-      for (var i=s.flakes.length; i--;) {
-        if (s.flakes[i].active === 0) {
-	      s.flakes[i].stick();
-		}
-      }
-    }
-  };
-
-  this.resizeHandler = function() {
-    if (window.innerWidth || window.innerHeight) {
-      screenX = window.innerWidth-(!isIE?16:2)-s.flakeRightOffset;
-      screenY = (s.flakeBottom?s.flakeBottom:window.innerHeight);
-    } else {
-      screenX = (document.documentElement.clientWidth||document.body.clientWidth||document.body.scrollWidth)-(!isIE?8:0)-s.flakeRightOffset;
-      screenY = s.flakeBottom?s.flakeBottom:(document.documentElement.clientHeight||document.body.clientHeight||document.body.scrollHeight);
-    }
-    screenX2 = parseInt(screenX/2,10);
-  };
-
-  this.resizeHandlerAlt = function() {
-    screenX = s.targetElement.offsetLeft+s.targetElement.offsetWidth-s.flakeRightOffset;
-    screenY = s.flakeBottom?s.flakeBottom:s.targetElement.offsetTop+s.targetElement.offsetHeight;
-    screenX2 = parseInt(screenX/2,10);
-  };
-
-  this.freeze = function() {
-    // pause animation
-    if (!s.disabled) {
-      s.disabled = 1;
-    } else {
-      return false;
-    }
-    for (var i=s.timers.length; i--;) {
-      clearInterval(s.timers[i]);
-    }
-  };
-
-  this.resume = function() {
-    if (s.disabled) {
-       s.disabled = 0;
-    } else {
-      return false;
-    }
-    s.timerInit();
-  };
-
-  this.toggleSnow = function() {
-    if (!s.flakes.length) {
-      // first run
-      s.start();
-    } else {
-      s.active = !s.active;
-      if (s.active) {
-        s.show();
-        s.resume();
-      } else {
-        s.stop();
-        s.freeze();
-      }
-    }
-  };
-
-  this.stop = function() {
-    this.freeze();
-    for (var i=this.flakes.length; i--;) {
-      this.flakes[i].o.style.display = 'none';
-    }
-    removeEvent(window,'scroll',s.scrollHandler);
-    removeEvent(window,'resize',s.resizeHandler);
-    if (!isOldIE) {
-      removeEvent(window,'blur',s.freeze);
-      removeEvent(window,'focus',s.resume);
-    }
-  };
-
-  this.show = function() {
-    for (var i=this.flakes.length; i--;) {
-      this.flakes[i].o.style.display = 'block';
-    }
-  };
-
-  this.SnowFlake = function(parent,type,x,y) {
-    var s = this;
-    var storm = parent;
-    this.type = type;
-    this.x = x||parseInt(rnd(screenX-20),10);
-    this.y = (!isNaN(y)?y:-rnd(screenY)-12);
-    this.vX = null;
-    this.vY = null;
-    this.vAmpTypes = [1,1.2,1.4,1.6,1.8]; // "amplification" for vX/vY (based on flake size/type)
-    this.vAmp = this.vAmpTypes[this.type];
-    this.melting = false;
-    this.meltFrameCount = storm.meltFrameCount;
-    this.meltFrames = storm.meltFrames;
-    this.meltFrame = 0;
-    this.twinkleFrame = 0;
-    this.active = 1;
-    this.fontSize = (10+(this.type/5)*10);
-    this.o = document.createElement('div');
-    this.o.innerHTML = storm.snowCharacter;
-    this.o.style.color = storm.snowColor;
-    this.o.style.position = (fixedForEverything?'fixed':'absolute');
-    this.o.style.width = storm.flakeWidth+'px';
-    this.o.style.height = storm.flakeHeight+'px';
-    this.o.style.fontFamily = 'arial,verdana';
-    this.o.style.overflow = 'hidden';
-    this.o.style.fontWeight = 'normal';
-    this.o.style.zIndex = storm.zIndex;
-    docFrag.appendChild(this.o);
-
-    this.refresh = function() {
-	  if (isNaN(s.x) || isNaN(s.y)) {
-		// safety check
-		return false;
-	  }
-      s.o.style.left = s.x+'px';
-      s.o.style.top = s.y+'px';
-    };
-
-    this.stick = function() {
-      if (noFixed || (storm.targetElement != document.documentElement && storm.targetElement != document.body)) {
-        s.o.style.top = (screenY+scrollY-storm.flakeHeight)+'px';
-      } else if (storm.flakeBottom) {
-	    s.o.style.top = storm.flakeBottom+'px';
-	  } else {
-        s.o.style.display = 'none';
-	    s.o.style.top = 'auto';
-        s.o.style.bottom = '0px';
-	    s.o.style.position = 'fixed';
-        s.o.style.display = 'block';
-      }
-    };
-
-    this.vCheck = function() {
-      if (s.vX>=0 && s.vX<0.2) {
-        s.vX = 0.2;
-      } else if (s.vX<0 && s.vX>-0.2) {
-        s.vX = -0.2;
-      }
-      if (s.vY>=0 && s.vY<0.2) {
-        s.vY = 0.2;
-      }
-    };
-
-    this.move = function() {
-      var vX = s.vX*windOffset;
-      s.x += vX;
-      s.y += (s.vY*s.vAmp);
-      if (s.x >= screenX || screenX-s.x < storm.flakeWidth) { // X-axis scroll check
-        s.x = 0;
-      } else if (vX < 0 && s.x-storm.flakeLeftOffset<0-storm.flakeWidth) {
-        s.x = screenX-storm.flakeWidth-1; // flakeWidth;
-      }
-      s.refresh();
-      var yDiff = screenY+scrollY-s.y;
-      if (yDiff<storm.flakeHeight) {
-        s.active = 0;
-	    if (storm.snowStick) {
-          s.stick();
-	    } else {
-	      s.recycle();
-	    }
-      } else {
-	    if (storm.useMeltEffect && s.active && s.type < 3 && !s.melting && Math.random()>0.998) {
-	      // ~1/1000 chance of melting mid-air, with each frame
-	      s.melting = true;
-	      s.melt();
-	      // only incrementally melt one frame
-	      // s.melting = false;
-	    }
-	    if (storm.useTwinkleEffect) {
-		  if (!s.twinkleFrame) {
-			if (Math.random()>0.9) {
-		      s.twinkleFrame = parseInt(Math.random()*20,10);
-		    }
-		  } else {
-			s.twinkleFrame--;
-			s.o.style.visibility = (s.twinkleFrame && s.twinkleFrame%2===0?'hidden':'visible');
-		  }
-	    }
-      }
-    };
-
-    this.animate = function() {
+    .deskicon img {
+      width: 48px;
+      height: 48px;
      
-      s.move();
-    };
 
-    this.setVelocities = function() {
-      s.vX = vRndX+rnd(storm.vMaxX*0.12,0.1);
-      s.vY = vRndY+rnd(storm.vMaxY*0.12,0.1);
-    };
-
-	this.setOpacity = function(o,opacity) {
-	  if (!opacitySupported) {
-		return false;
-	  }
-	  o.style.opacity = opacity;
-	};
-
-    this.melt = function() {
-	  if (!storm.useMeltEffect || !s.melting) {
-		s.recycle();
-	  } else {
-		if (s.meltFrame < s.meltFrameCount) {
-		  s.meltFrame++;
-		  s.setOpacity(s.o,s.meltFrames[s.meltFrame]);
-		  s.o.style.fontSize = s.fontSize-(s.fontSize*(s.meltFrame/s.meltFrameCount))+'px';
-		  s.o.style.lineHeight = storm.flakeHeight+2+(storm.flakeHeight*0.75*(s.meltFrame/s.meltFrameCount))+'px';
-		} else {
-		  s.recycle();
-		}
-	  }
-    };
-
-    this.recycle = function() {
-      s.o.style.display = 'none';
-      s.o.style.position = (fixedForEverything?'fixed':'absolute');
-      s.o.style.bottom = 'auto';
-      s.setVelocities();
-      s.vCheck();
-	  s.meltFrame = 0;
-	  s.melting = false;
-	  s.setOpacity(s.o,1);
-	  s.o.style.padding = '0px';
-	  s.o.style.margin = '0px';
-	  s.o.style.fontSize = s.fontSize+'px';
-	  s.o.style.lineHeight = (storm.flakeHeight+2)+'px';
-	  s.o.style.textAlign = 'center';
-	  s.o.style.verticalAlign = 'baseline';
-      s.x = parseInt(rnd(screenX-storm.flakeWidth-20),10);
-      s.y = parseInt(rnd(screenY)*-1,10)-storm.flakeHeight;
-      s.refresh();
-      s.o.style.display = 'block';
-      s.active = 1;
-    };
-
-    this.recycle(); // set up x/y coords etc.
-    this.refresh();
-
-  };
-
-  this.snow = function() {
-    var active = 0;
-    var used = 0;
-    var waiting = 0;
-    var flake = null;
-    for (var i=s.flakes.length; i--;) {
-      if (s.flakes[i].active == 1) {
-        s.flakes[i].move();
-        active++;
-      } else if (s.flakes[i].active === 0) {
-        used++;
-      } else {
-        waiting++;
-      }
-      if (s.flakes[i].melting) {
-	    s.flakes[i].melt();
-	  }
     }
-    if (active<s.flakesMaxActive) {
-      flake = s.flakes[parseInt(rnd(s.flakes.length),10)];
-      if (flake.active === 0) {
-        flake.melting = true;
-      }
+
+    .window-body {
+      display: flex;
+      align-items: center; /* Vertically center the items */
     }
-  };
 
-  this.mouseMove = function(e) {
-    if (!s.followMouse) {
-	  return true;
-	}
-    var x = parseInt(e.clientX,10);
-    if (x<screenX2) {
-      windOffset = -windMultiplier+(x/screenX2*windMultiplier);
-    } else {
-      x -= screenX2;
-      windOffset = (x/screenX2)*windMultiplier;
+    .window-body img {
+      margin-right: 8px; 
     }
-  };
+     </style>
+  </head>
 
-  this.createSnow = function(limit,allowInactive) {
-    for (var i=0; i<limit; i++) {
-      s.flakes[s.flakes.length] = new s.SnowFlake(s,parseInt(rnd(flakeTypes),10));
-      if (allowInactive || i>s.flakesMaxActive) {
-	    s.flakes[s.flakes.length-1].active = -1;
-	  }
-    }
-    storm.targetElement.appendChild(docFrag);
-  };
-
-  this.timerInit = function() {
-    s.timers = (!isWin9X?[setInterval(s.snow,s.animationInterval)]:[setInterval(s.snow,s.animationInterval*3),setInterval(s.snow,s.animationInterval)]);
-  };
-
-  this.init = function() {
-    s.randomizeWind();
-    s.createSnow(s.flakesMax); 
-    addEvent(window,'resize',s.resizeHandler);
-    addEvent(window,'scroll',s.scrollHandler);
-    if (!isOldIE) {
-      addEvent(window,'blur',s.freeze);
-      addEvent(window,'focus',s.resume);
-    }
-    s.resizeHandler();
-    s.scrollHandler();
-    if (s.followMouse) {
-      addEvent(document,'mousemove',s.mouseMove);
-    }
-    s.animationInterval = Math.max(20,s.animationInterval);
-    s.timerInit();
-  };
-
-  var didInit = false;
-
-  this.start = function(bFromOnLoad) {
-	if (!didInit) {
-	  didInit = true;
-	} else if (bFromOnLoad) {
-	
-	  return true;
-	}
-    if (typeof s.targetElement == 'string') {
-	  var targetID = s.targetElement;
-      s.targetElement = document.getElementById(targetID);
-      if (!s.targetElement) {
-	    throw new Error('Snowstorm: Unable to get targetElement "'+targetID+'"');
-	  }
-    }
-	if (!s.targetElement) {
-	  s.targetElement = (!isIE?(document.documentElement?document.documentElement:document.body):document.body);
-	}
-    if (s.targetElement != document.documentElement && s.targetElement != document.body) {
-	  s.resizeHandler = s.resizeHandlerAlt; 
-	}
-    s.resizeHandler(); 
-    s.usePositionFixed = (s.usePositionFixed && !noFixed); 
-    fixedForEverything = s.usePositionFixed;
-    if (screenX && screenY && !s.disabled) {
-      s.init();
-      s.active = true;
-    }
-  };
-
-  function doStart() {
-	  s.start(true);
-  }
-
-  if (document.addEventListener) {
+  <body>
     
-    document.addEventListener('DOMContentLoaded',doStart,false);
-    window.addEventListener('load',doStart,false);
-  } else {
-    addEvent(window,'load',doStart);
-  }
+    <!--Icons-->
 
+    <div class="deskicon" onclick="openApp(Leak)">
+      <img src="Leak.png"><br>Leak
+    </div>
+
+    
+
+    <!--Run Dialog-->
+    <div id="run" class="toplevel window" style="position:absolute; display:none; width:340px; top:50px; left:20px;">
+      <div class="title-bar">
+        <div class="title-bar-text">Run</div>
+        <div class="title-bar-controls">
+          <button aria-label="Help"></button><button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p>
+          <img src="https://win98icons.alexmeub.com/icons/png/application_hourglass-0.png" style="margin-right:10px; float:left">
+          Type the name of a program, folder, document, or Internet resource, and Windows will open it for you.
+        </p>
+        <div>
+          Open:<select style="width:270px; margin-left:10px"></select>
+        </div>
+        <div style="margin:10px; text-align:right">
+          <button>OK</button>
+          <button>Cancel</button>
+          <button>Browse</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Leak -->
+    <div id="Leak" class="toplevel window" style="position:absolute; display:none;">
+      <div class="title-bar">
+        <div class="title-bar-text">Leak</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <img src="Leak.png" alt="">
+        <br>
+        <p>Hello there, welcome to leak.run!</p>
+      </div>
+    </div>
+    
+    <!-- message -->
+    <div id="message" class="toplevel window" style="position:absolute; display:none;">
+      <div class="title-bar">
+        <img src="https://win98icons.alexmeub.com/icons/png/notepad-3.png">
+        <div class="title-bar-text">Message.txt</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button><button aria-label="Maximize"> </button><button aria-label="Close"></button>
+        </div>
+      </div>
+      <ul class="menu bar">
+        <li>
+          File
+          <div class="window" style="width:120px">
+            <ul class="menu">
+              <li><img>New<span class="keyshortcut">Ctrl+N</span></li>
+              <li><img>Open...<span class="keyshortcut">Ctrl+O</span></li>
+              <li><img>Save<span class="keyshortcut">Ctrl+S</span></li>
+              <li><img>Save As...</li>
+              <hr>
+              <li><img>Print...<span class="keyshortcut">Ctrl+P</span></li>
+              <hr>
+              <li><img>Exit</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          Help
+          <div class="window" style="width:100px">
+            <ul class="menu">
+              <li><img>Contents<span class="keyshortcut">F1</span></li>
+              <li><img>About Notepad</li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+      <div class="window-body" style="margin:0px;">
+        <br>
+        <br>
+        <textarea style="width: 100%; height:200px;" readonly> Your ghost is so pretty X_x</textarea>
+      </div>
+    </div>
+    
+
+
+    <!-- taskbar -->
+    <div id="taskbar" class="window" style="position:absolute; height:23px; width:100%; left:-2px; bottom:-2px; padding:4px; z-index:1000">
+        
+        <button id="startBtn" style="min-width:54px; box-sizing:border-box; height:22px; padding-left:4px; text-align:left; font-weight:bold">
+          <img src="https://win98icons.alexmeub.com/icons/png/windows-4.png">
+          Start
+        </button>
+        
+        <!-- Start Menu -->
+        <div id="startMenu" class="window" style="position:absolute; bottom:28px; width:202px; display:none">
+          <img style="position:absolute; bottom:3px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAABpBAMAAAAn2XUfAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAD1BMVEUAAHsAAP97fXu9vr3///++vaitAAAB7klEQVQ4y31TgZGjMAyUCAVYhAKw4wISTAFgq/+abiXDX/7vc54B1stqJbBE5Ovx7M9Rn6Nqx43qtoz+YthprHTbLwzwhocfmJT00lPWOsZtcTyUcNMW6FrTcoFSnid9U6yznrzm5dHr4cZUw7hDxcjCmaYrL83Eh7scTDkOOxMFblbGzXnaaq68LeCZBtVIqycLgaPdTE/2cqt08g3/QVxP9zar7lCAH4Hz4f40H3ObrR5sckWKA5oQAtTH5nUy42Oq7mKhgZEYqS1TuKdFVvMPwqOuQSAwHrEaoTWeH9hYLviwbKghuP9dT95jVV9ssUFmCxUOhGuCvC2eV1iy6cELT9liTc+ey4LNB7iJQC9BxhYl9BpkmjbsBLEwMs+Lt9jovLiPeUI3N0Qc4pr58OvUxKiO5dRbrncfrM2L6Bgb6TilR0pr16j22N9werSULs/vGixvnP6p4Qd2pz81lBIvnEspr47vH2L/xm7Q9e0N/1fPn3xY5IzFqX/zb/gjL6mH4nx50vbyRrBcEPiRgpeifWd9Jb6zPkFv+GH3s/OW8X6j/p9Xr8dOrpiN6YFrRJeaT+ka54Vhc/Y/eVPuzhvqPUPeAdqePlOGXl6z8cmePkcp+CcF3+CyaaI+bZheplNnjM9sp01qA0w+o/QFntuBDzkP6qsAAAAASUVORK5CYII=">
+          <ul class="menu" style="border-left:21px solid #000080">
+            <li><img src="https://win98icons.alexmeub.com/icons/png/windows_update_large-4.png">Windows Update</li>
+            <hr>
+            <li class="arrow">
+              <!-- not the correct icon" -->
+              <img src="https://win98icons.alexmeub.com/icons/png/file_program_group-0.png">
+              Programs
+              <div class="window">
+                <ul class="menu">
+                  <li class="arrow">
+                    <!-- not the correct icon -->
+                    <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-1.png">
+                    Accessories
+                    <div class="window">
+                      <ul class="menu">
+                        <li><img src="https://win98icons.alexmeub.com/icons/png/calculator-1.png">Calculator</li>
+                        <li onclick="openApp(notepad)"><img src="https://win98icons.alexmeub.com/icons/png/notepad-3.png">Notepad</li>
+                      </ul>
+                    </div>
+                  </li>
+                  <!-- not the correct icon -->
+                  <li class="arrow"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-1.png">StartUp</li>
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/ms_dos-1.png" style="height:16px">MS-DOS Prompt</li>
+                </ul>
+              </div>
+            </li>
+            <li class="arrow">
+              <img src="https://win98icons.alexmeub.com/icons/png/directory_favorites_small-2.png">
+              Favorites
+              <div class="window">
+                <ul class="menu">
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/html2-4.png">Google</li>
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/html2-4.png">Yahoo</li>
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/html2-4.png">MSN</li>
+                </ul>
+              </div>
+            </li>
+            <li class="arrow"><img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs_small-3.png">Documents
+                <div class="window">
+                    <ul class="menu">
+                      <li onclick="openApp(message)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message</li>
+                    </ul>
+                  </div>
+            </li>
+            <li class="arrow">
+              <img src="https://win98icons.alexmeub.com/icons/png/settings_gear-3.png">
+              Settings
+              <div class="window">
+                <ul class="menu">
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/directory_control_panel-1.png">Control Panel</li>
+                  <!-- not the right icon, but close -->
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/directory_business_calendar-5.png">Printers</li>
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/windows_button-1.png">Taskbar &amp; Start Menu</li>
+                  <li><img><!--img src="https://win98icons.alexmeub.com/icons/png/directory_explorer-3.png"-->Folder Options</li>
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/desktop_old-4.png">Active Desktop</li>
+                  <hr>
+                  <li><img src="https://win98icons.alexmeub.com/icons/png/windows_update_large-3.png">Windows Update</li>
+                </ul>
+              </div>
+            </li>
+            <li class="arrow"><img src="https://win98icons.alexmeub.com/icons/png/search_file_2-3.png">Find</li>
+            <li><img src="https://win98icons.alexmeub.com/icons/png/help_book_small-3.png">Help</li>
+            <li onclick="openApp(run)"><img src="https://win98icons.alexmeub.com/icons/png/application_hourglass_small-3.png">Run</li>
+            <hr>
+            <li><img src="https://win98icons.alexmeub.com/icons/png/key_win-3.png">Log Off</li>
+            <li><img src="https://win98icons.alexmeub.com/icons/png/shut_down_with_computer-0.png">Shut Down</li>
+          </ul>
+        </div>
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <p>Buraya istediğin mesajı yazabilirsin!</p>
+            </div>
+        </div>
+        <div id="taskBtnList" style="display:inline"></div>
+        
+        <span id="notificationArea">
+          <span id="clock"></span>
+        </span>
+    </div>
+    
+    <!-- window menu -->
+    <div class="window" style="position:absolute; display:none">
+      <ul class="menu">
+        <li><img>Restore</li>
+        <li><img>Move</li>
+        <li><img>Size</li>
+        <li><img>Minimize</li>
+        <li><img>Maximize</li>
+        <hr>
+        <li><img>Close</li>
+      </ul>
+    </div>
+
+  </body>
+  <script src="https://polyfill.io/v3/polyfill.js?features=Array.prototype.indexOf|always"></script>
+  <script>
+/* Old IE polyfills */
+if (!document.getElementsByClassName) {
+    document.getElementsByClassName = function(cl) {
+        var retnode = [];
+        var elem = this.getElementsByTagName('*');
+        for (var i = 0; i < elem.length; i++) {
+            if((' ' + elem[i].className + ' ').indexOf(' ' + cl + ' ') > -1) retnode.push(elem[i]);
+        }
+        return retnode;
+    };
+}
+if (!Event.prototype.stopPropagation) {
+    Event.prototype.stopPropagation=function() {
+        this.cancelBubble=true;
+    };
+}
+if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = function (callback, thisArg) {
+        thisArg = thisArg || window;
+        for (var i = 0; i < this.length; i++) {
+            callback.call(thisArg, this[i], i, this);
+        }
+    };
 }
 
-snowStorm = new SnowStorm();
+topZ = 100;
+
+function hasClass(elem, className) {
+    if (typeof(elem.className) === "string") {
+        var classes = elem.className.split(" ");
+        for (var i = 0; i < classes.length; i++)
+            if (classes[i] === className)
+                return true;
+    }
+    return false;
+}
+function deleteNode(node) {
+   node.parentNode.removeChild(node);
+}
+
+function showWindowMenu(win, widget) {
+    
+}
+
+var topLevelWindows = [];
+var windowId = 0;
+function Window(template) {
+  var win = this;
+  var elem = template.cloneNode(true);
+  elem.id = template.id + windowId++;
+  // TODO: make sure child ids are unique.
+  document.body.appendChild(elem);
+  this.elem = elem;
+
+  // find title bar
+  elem.childNodes.forEach(
+      function(n) { if (hasClass(n, "title-bar")) this.titleBar = n; },
+      this);
+  // find window icon and buttons
+  if (this.titleBar) {
+      this.titleBar.childNodes.forEach(
+          function(n) {
+              if (n.nodeName === "IMG")
+                  this.icon = n;
+              else if (n.className === "title-bar-controls")
+                  n.childNodes.forEach(
+                      function(n) {
+                          if (n.nodeName === "BUTTON")
+                              switch (n.getAttribute("aria-label")) {
+                              case "Maximize": this.maxBtn = n; break;
+                              case "Minimize": this.minBtn = n; break;
+                              case "Close": this.closeBtn = n; break;
+                              case "Help": this.helpBtn = n; break;
+                              }
+                      },
+                      this);
+          },
+          this);
+  }
+
+  // methods
+  this.open = function() {
+      elem.style.display = "";
+      // create task button
+      this.taskBtn = document.createElement("button");
+      this.taskBtn.className = "taskbtn";
+      this.taskBtn.innerText = this.titleBar.innerText;
+      this.taskBtn.onclick = function() {
+          if (win.isMinimized) {
+              win.activate();
+              win.restore();
+              return;
+          }
+          if (win.isActive && win.minBtn)
+              win.minimize();
+          else
+              win.activate();
+      };
+      taskBtnList.appendChild(this.taskBtn);
+      this.activate();
+  };
+  this.close = function() {
+      console.log("closing "+win);
+      deleteNode(win.elem);
+      deleteNode(win.taskBtn);
+      topLevelWindows.splice(topLevelWindows.indexOf(win), 1);
+  };
+  this.maximize = function() {
+      if (win.isMinimized) {
+          win.isMinimized = false;
+          elem.style.display = "";
+      }
+      win.prevLeft = elem.style.left;
+      win.prevTop = elem.style.top;
+      win.prevWidth = elem.style.width;
+      win.prevHeight = elem.style.height;
+      elem.style.top = "0px";
+      elem.style.left = "0px";
+      elem.style.width = "100%";
+      elem.style.height = "100%";
+      win.maxBtn.setAttribute("aria-label", "Restore");
+      win.isMaximized = true;
+  };
+  this.restore = function() {
+      if (win.isMinimized) {
+          win.isMinimized = false;
+          elem.style.display = "";
+          return;
+      }
+      elem.style.left = win.prevLeft;
+      elem.style.top = win.prevTop;
+      elem.style.width = win.prevWidth;
+      elem.style.height = win.prevHeight;
+      win.maxBtn.setAttribute("aria-label", "Maximize");
+      win.isMaximized = false;
+  };
+  this.minimize = function() {
+      elem.style.display = "none";
+      win.deactivate();
+      win.isMinimized = true;
+  };
+  this.activate = function() {
+      topLevelWindows.forEach(function(w) { w.deactivate(); }, this);
+      win.titleBar.className = "title-bar";
+      win.taskBtn.className = "taskbtn pushed";
+      win.elem.style.zIndex = topZ++;
+      win.isActive = true;
+  };
+  this.deactivate = function() {
+      win.titleBar.className = "title-bar inactive";
+      win.taskBtn.className = "taskbtn";
+      win.isActive = false;
+  };
+
+  this.isActive = this.isMaximized = this.isMinimized = false;
+  
+  elem.onclick = win.activate;
+
+  // caption button handlers
+  if (this.closeBtn)
+      this.closeBtn.onclick = this.close;
+  if (this.maxBtn)
+      this.maxBtn.onclick = this.titleBar.ondblclick = function() {
+          (win.isMaximized ? win.restore : win.maximize)();
+      };
+  if (this.minBtn)
+      this.minBtn.onclick = this.minimize;
+  if (this.icon)
+      this.icon.onclick = function() {};
+
+  console.log("created window");
+  console.log("window");
+  console.log(this.elem);
+  console.log("titleBar");
+  console.log(this.titleBar);
+  addSizeHandleEvents(this, this.titleBar, 0, 0);
+  topLevelWindows.push(this);
+}
+
+function openApp(winElem) {
+    new Window(winElem).open();
+}
+
+startBtn.onclick = function(event) {
+    startMenu.style.display = startMenu.style.display ? "" : "none";
+    startBtn.className = startMenu.style.display === "none" ? "" : "pushed";
+}
+
+function updateClock() {
+    var d = new Date();
+    var h = d.getHours() % 12;
+    var m = d.getMinutes();
+    var a = d.getHours() < 12 ? "AM" : "PM";
+    if (h == 0)
+        h = 12;
+    clock.innerHTML = h + ":" + (m < 10 ? "0" : "") + m + " " + a;
+    setTimeout(updateClock, 1000);
+}
+updateClock();
+
+function addSizeHandleEvents(winObj, h, resizeX, resizeY) {
+  h.onmousedown = h.ontouchstart = function(e) {
+    var win = winObj.elem;
+    if (winObj.isMaximized)
+        return;
+    e = e || window.event;
+    var startRect = win.getBoundingClientRect();
+    var startX = startRect.left;
+    var startY = startRect.top;
+    var startWidth = startRect.right - startX;
+    var startHeight = startRect.bottom - startY;
+    
+    var mouseStartX = e.clientX || e.touches[0].clientX;
+    var mouseStartY = e.clientY || e.touches[0].clientY;
+    winObj.activate();
+    document.onmousemove = document.ontouchmove = function(e) {
+      e = e || window.event;
+      var dx = (e.clientX || e.touches[0].clientX) - mouseStartX;
+      var dy = (e.clientY || e.touches[0].clientY) - mouseStartY;
+      if (resizeX < 0) {
+        win.style.left = startX + dx + "px";
+        win.style.width = startWidth - dx + "px";
+      }
+      if (resizeX > 0)
+        win.style.width = startWidth + dx + "px";
+      if (resizeY < 0) {
+        win.style.top = startY + dy + "px";
+        win.style.height = startHeight - dy + "px";
+      }
+      if (resizeY > 0)
+        win.style.height = startHeight + dy + "px";
+      if (resizeX == 0 && resizeY == 0) {
+        win.style.left = startX + dx + "px";
+        win.style.top = startY + dy + "px";
+      }
+    };
+    document.onmouseup = document.ontouchend = function(e) {
+      document.onmousemove = document.ontouchmove = null;
+      document.onmouseup = document.ontouchend = null;
+    };
+  }
+}
+function makeResizable(win) {
+  win.style.boxSizing = "border-box";
+  for (var x = -1; x <= 1; x++) {
+    for (var y = -1; y <= 1; y++) {
+      if ((x | y) == 0)
+        continue;
+      var h = document.createElement("div");
+      h.style.position = "absolute";
+      h.style.width = (x == 0) ? "100%" : "4px";
+      h.style.height = (y == 0) ? "100%" : "4px";
+      if (x != 1) h.style.left = "0px";
+      if (x != -1) h.style.right = "0px";
+      if (y != 1) h.style.top = "0px";
+      if (y != -1) h.style.bottom = "0px";
+      if (y != 0) h.style.cursor = "ns-resize";
+      if (x != 0) h.style.cursor = "ew-resize";
+      if (x*y == 1) h.style.cursor = "nwse-resize";
+      if (x*y == -1) h.style.cursor = "nesw-resize";
+      if ((x & y) != 0)
+        h.style.zIndex = 1;
+      addSizeHandleEvents(h, x, y);
+      win.appendChild(h);
+    }
+  }
+}
+
+// I would like to go full screen automatically, but browsers don't allow that.
+/*
+document.onclick = function(e) {
+    var isFullScreen = (document.fullScreenElement && document.fullScreenElement !== null)
+                    || (document.mozFullScreen || document.webkitIsFullScreen);
+    if (!isFullScreen) {
+        var docElem = document.documentElement;
+        if (docElem.requestFullscreen)
+            docElem.requestFullscreen();
+    }
+    hide(startMenu);
+}
+*/
+  </script>
+</html>
+
+<script>
+ function openPopup() {6=
+    document.getElementById("popup").style.display = "block";
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+
+// Popup'ı tıklamayla kapatma
+window.onclick = function(event) {
+    if (event.target == document.getElementById("popup")) {
+        closePopup();
+    }
+}
+
 </script>
