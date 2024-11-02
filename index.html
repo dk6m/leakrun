@@ -136,11 +136,12 @@ html, body {
 }
 body {
     position: relative;
-    background-color: #008080;
+    background-color: #000000;
     margin: 0px;
     padding: 0px;
     user-select: none; -ms-user-select: none;
-    cursor: url("https://windows93.net/c/sys/cursors/default.cur"), default;  /* lol, windows 93 */
+    cursor: url("https://windows93.net/c/sys/cursors/default.cur"), default; 
+
 }
 
 /* Start Menu */
@@ -225,6 +226,28 @@ body {
     .window-body img {
       margin-right: 8px; 
     }
+    .container {
+            display: flex;
+            justify-content: center; /* Ortala */
+            align-items: center; /* Ortala */
+            flex-direction: column; /* Dikey hizalama */
+            position: absolute; /* Sayfanın en üstünde sabitler */
+            top: 0; /* Üstten sıfır noktası */
+            left: 50%; /* Yatayda ortala */
+            transform: translateX(-50%); /* Gerçekten ortalamak için */
+            animation: sway 2s ease-in-out infinite alternate;
+        }
+        #sayori {
+            max-width: 100%; /* Görselin genişliğini ayarla */
+            height: auto;
+            transform: translateX(-50%); /* Gerçekten ortalamak için */
+
+        }
+       
+        @keyframes sway {
+            0% { transform: translateX(-5px); } /* Başlangıç sola kaydırma */
+            100% { transform: translateX(5px); } /* Sona sağa kaydırma */
+        }
      </style>
   </head>
 
@@ -235,9 +258,9 @@ body {
     <div class="deskicon" onclick="openApp(Leak)">
       <img src="Leak.png"><br>Leak
     </div>
-
-    
-
+    <div class="container">
+      <img id="sayori" draggable="false" src="huh.png" alt="Sayori">
+  </div>
     <!--Run Dialog-->
     <div id="run" class="toplevel window" style="position:absolute; display:none; width:340px; top:50px; left:20px;">
       <div class="title-bar">
@@ -851,5 +874,60 @@ window.onclick = function(event) {
         closePopup();
     }
 }
+
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+           let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
+           let userInput = [];
+
+           document.addEventListener('keydown', function(e) {
+               const key = e.key.toLowerCase();
+               userInput.push(key);
+               if (userInput.length > keys.length) {
+                   userInput.shift();
+               }
+               if (userInput.join('') === keys.join('')) {
+                   window.location.href = 'https://spinoza.wtf';
+               }
+           });
+       });
+
+       window.onload = function () {
+          document.addEventListener("contextmenu", function (e) {
+              e.preventDefault();
+          }, false);
+          document.addEventListener("keydown", function (e) {
+
+              if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+                  disabledEvent(e);
+              }
+
+              if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+                  disabledEvent(e);
+              }
+
+              if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                  disabledEvent(e);
+              }
+
+              if (e.ctrlKey && e.keyCode == 85) {
+                  disabledEvent(e);
+              }
+
+              if (event.keyCode == 123) {
+                  disabledEvent(e);
+              }
+          }, false);
+          function disabledEvent(e) {
+              if (e.stopPropagation) {
+                  e.stopPropagation();
+              } else if (window.event) {
+                  window.event.cancelBubble = true;
+              }
+              e.preventDefault();
+              return false;
+          }
+      }
 
 </script>
