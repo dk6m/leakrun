@@ -68,7 +68,7 @@ hr {
 }
 
 /* submenu arrow */
-li.arrow::after { float: right; content: "▶"; }
+li.arrow::after { float: right; content: "\25B8";  }
 
 /* keyboard shortcut */
 ul.menu > li > span.keyshortcut { float: right; }
@@ -259,9 +259,7 @@ body {
     <div class="deskicon" onclick="openApp(Leak)">
       <img src="Leak.png"><br>Leak
     </div>
-    <div class="container">
-      <img id="sayori" draggable="false" src="huh.png" alt="Sayori">
-  </div>
+ 
     <!--Run Dialog-->
     <div id="run" class="toplevel window" style="position:absolute; display:none; width:340px; top:50px; left:20px;">
       <div class="title-bar">
@@ -485,30 +483,13 @@ body {
           <ul class="menu" style="border-left:21px solid #000080">
             <li><img src="https://win98icons.alexmeub.com/icons/png/windows_update_large-4.png">Windows Update</li>
             <hr>
-            <li class="arrow">
+            <li>
               <!-- not the correct icon" -->
               <img src="https://win98icons.alexmeub.com/icons/png/file_program_group-0.png">
               Programs
-              <div class="window">
-                <ul class="menu">
-                  <li class="arrow">
-                    <!-- not the correct icon -->
-                    <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-1.png">
-                    Accessories
-                    <div class="window">
-                      <ul class="menu">
-                        <li><img src="https://win98icons.alexmeub.com/icons/png/calculator-1.png">Calculator</li>
-                        <li onclick="openApp(notepad)"><img src="https://win98icons.alexmeub.com/icons/png/notepad-3.png">Notepad</li>
-                      </ul>
-                    </div>
-                  </li>
-                  <!-- not the correct icon -->
-                  <li class="arrow"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-1.png">StartUp</li>
-                  <li><img src="https://win98icons.alexmeub.com/icons/png/ms_dos-1.png" style="height:16px">MS-DOS Prompt</li>
-                </ul>
-              </div>
+             
             </li>
-            <li class="arrow">
+            <li>
               <img src="https://win98icons.alexmeub.com/icons/png/directory_favorites_small-2.png">
               Favorites
               
@@ -517,31 +498,20 @@ body {
                 <div class="window">
                     <ul class="menu">
                      <li onclick="openApp(message)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message</li>
-                     <li onclick="openApp(message2)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (1)</li>
-                     <li onclick="openApp(message3)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (2)</li>
-                     <li onclick="openApp(message4)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (3)</li>
+                     <li onclick="openApp(message1)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (1)</li>
+                     <li onclick="openApp(message2)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (2)</li>
+                     <li onclick="openApp(message3)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (3)</li>
                     </ul>
                   </div>
             </li>
-            <li class="arrow">
+            <li>
               <img src="https://win98icons.alexmeub.com/icons/png/settings_gear-3.png">
               Settings
-              <div class="window">
-                <ul class="menu">
-                  <li><img src="https://win98icons.alexmeub.com/icons/png/directory_control_panel-1.png">Control Panel</li>
-                  <!-- not the right icon, but close -->
-                  <li><img src="https://win98icons.alexmeub.com/icons/png/directory_business_calendar-5.png">Printers</li>
-                  <li><img src="https://win98icons.alexmeub.com/icons/png/windows_button-1.png">Taskbar &amp; Start Menu</li>
-                  <li><img><!--img src="https://win98icons.alexmeub.com/icons/png/directory_explorer-3.png"-->Folder Options</li>
-                  <li><img src="https://win98icons.alexmeub.com/icons/png/desktop_old-4.png">Active Desktop</li>
-                  <hr>
-                  <li><img src="https://win98icons.alexmeub.com/icons/png/windows_update_large-3.png">Windows Update</li>
-                </ul>
-              </div>
+             
             </li>
-            <li class="arrow"><img src="https://win98icons.alexmeub.com/icons/png/search_file_2-3.png">Find</li>
+            <li><img src="https://win98icons.alexmeub.com/icons/png/search_file_2-3.png">Find</li>
             <li><img src="https://win98icons.alexmeub.com/icons/png/help_book_small-3.png">Help</li>
-            <li onclick="openApp(run)"><img src="https://win98icons.alexmeub.com/icons/png/application_hourglass_small-3.png">Run</li>
+            <li><img src="https://win98icons.alexmeub.com/icons/png/application_hourglass_small-3.png">Run</li>
             <hr>
             <li><img src="https://win98icons.alexmeub.com/icons/png/key_win-3.png">Log Off</li>
             <li><img src="https://win98icons.alexmeub.com/icons/png/shut_down_with_computer-0.png">Shut Down</li>
@@ -550,7 +520,7 @@ body {
         <div id="popup" class="popup">
             <div class="popup-content">
                 <span class="close" onclick="closePopup()">&times;</span>
-                <p>Buraya istediğin mesajı yazabilirsin!</p>
+                <p>AAaaaAaAaAaAaAAAAaaaAA</p>
             </div>
         </div>
         <div id="taskBtnList" style="display:inline"></div>
