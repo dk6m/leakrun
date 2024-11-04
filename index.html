@@ -70,8 +70,14 @@ hr {
 }
 
 /* submenu arrow */
-li.arrow::after { float: right; content: "\25B8";  }
-
+ul.menu > li.arrow::after {
+    content: url('arrow.png');
+    display: inline-block;
+    vertical-align: middle; 
+    margin-left: 60px; 
+    -webkit-user-drag: none;
+    user-drag: none;
+}
 /* keyboard shortcut */
 ul.menu > li > span.keyshortcut { float: right; }
 
@@ -496,11 +502,11 @@ body {
             <li>
               <!-- not the correct icon" -->
               <img src="https://win98icons.alexmeub.com/icons/png/file_program_group-0.png">
-              Programs
+              <u>P</u>rograms
              
             </li>
   
-            <li class="arrow"><img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs_small-3.png">Documents
+            <li class="arrow"><img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs_small-3.png"><u>D</u>ocuments
                 <div class="window">
                     <ul class="menu">
                      <li onclick="openApp(message)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message</li>
@@ -512,12 +518,12 @@ body {
             </li>
             <li>
               <img src="https://win98icons.alexmeub.com/icons/png/settings_gear-3.png">
-              Settings
+              <u>S</u>ettings
              
             </li>
-            <li><img src="https://win98icons.alexmeub.com/icons/png/search_file_2-3.png">Find</li>
-            <li><img src="https://win98icons.alexmeub.com/icons/png/help_book_small-3.png">Help</li>
-            <li><img src="https://win98icons.alexmeub.com/icons/png/application_hourglass_small-3.png">Run</li>
+            <li><img src="https://win98icons.alexmeub.com/icons/png/search_file_2-3.png"><u>F</u>ind</li>
+            <li><img src="https://win98icons.alexmeub.com/icons/png/help_book_small-3.png"><u>H</u>elp</li>
+            <li><img src="https://win98icons.alexmeub.com/icons/png/application_hourglass_small-3.png"><u>R</u>un</li>
             <hr>
             <li><img src="https://win98icons.alexmeub.com/icons/png/shut_down_with_computer-0.png">Shut Down</li>
           </ul>
