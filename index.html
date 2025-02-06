@@ -195,6 +195,7 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); 
         }
 
         .badges {
@@ -213,6 +214,12 @@
             border-radius: 1vh;
             margin-top: 2%;
             gap: 0.1rem;
+            -webkit-backdrop-filter: blur(15px) saturate(3);
+            backdrop-filter: blur(15px) saturate(3);
+            filter: drop-shadow(0 0 0.75rem rgb(61, 61, 61));
+
+ 
+
         }
 
         .badges img {
@@ -354,7 +361,7 @@
 
        
         .links-container a:hover i {
-            transform: scale(1.5); 
+            transform: scale(1.2); 
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); 
         }
 </style>
@@ -378,7 +385,7 @@
                 <div class="card">
                     <div class="banner"></div>
                     <div class="pfp">
-                        <img src="https://files.catbox.moe/i7pkr0.png">
+                        <img draggable="false" src="https://files.catbox.moe/i7pkr0.png">
                     </div>
                     <div class="username">
                         <a>cihan</a>
@@ -391,12 +398,10 @@
                             <div class="tooltip" data-text="Early Supporter">
                                 <img src="https://img.icons8.com/?size=256&id=oCHhGw76VSOh&format=png" alt="Early Supporter">
                             </div>
-                            <div class="tooltip" data-text="gxd">
-                                <img src="https://files.catbox.moe/ch5sn8.png" alt="gxd">
+                            <div class="tooltip" data-text="Owner">
+                                <img src="https://files.catbox.moe/sfafdz.png" alt="owner">
                             </div>
-                            <div class="tooltip" data-text="Ethereum">
-                                
-                            </div>
+
                         </div>
                     </div>
                     <div class="links-container">
