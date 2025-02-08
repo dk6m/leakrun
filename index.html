@@ -364,6 +364,39 @@
             transform: scale(1.2); 
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); 
         }
+
+.durum a {
+    color: #fff;  /* Yazı rengi */
+    font-size: 14px;  /* Yazı boyutu */
+    font-weight: bold;  /* Yazıyı kalın yapar */
+    text-decoration: none;  /* Alt çizgiyi kaldırır */
+    text-align: center;  /* Yazıyı ortalar */
+    display: block;  /* Blok seviyesinde öğe yaparak ortalama */
+}
+
+.durum {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border-radius: 12px;
+    margin-top: 0; 
+    padding: 0 20px;
+   
+    position: relative;
+    top: -10px; 
+}
+
+
+.durum img {
+    width: 340;
+    position: relative;
+    top: -40px; 
+right: -90px;
+}
+
+
 </style>
 </head>
 <body style="background-image: url('https://files.catbox.moe/dy3y01.png'); background-repeat: no-repeat; background-position: center; background-size: cover;">
@@ -401,17 +434,11 @@
                             <div class="tooltip" data-text="Owner">
                                 <img src="https://files.catbox.moe/sfafdz.png" alt="owner">
                             </div>
-
+                          
                         </div>
                     </div>
-                    <div class="links-container">
-                        <a href="https://discord.com/users/246383236744347648" target="_blank">
-                            <i class="fab fa-discord"></i>
-                        </a>
-                        <a href="https://github.com/cihanv" target="_blank">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
+                    <a class="durum" href="https://discord.com/users/246383236744347648"><img  width: 100px; height: 100px; src="https://lanyard.cnrad.dev/api/246383236744347648" /></a>
+                    
                
         </main>
         <script>
