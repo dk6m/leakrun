@@ -9,8 +9,8 @@
     <script src="https://unpkg.com/htmx.org@1.6.1"></script>
     <style>
         body, html {
-    overflow: hidden;
-}
+            overflow: hidden;
+        }
 
         .noise {
             position: fixed;
@@ -18,17 +18,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; 
-            opacity: 0.05; 
+            pointer-events: none;
+            opacity: 0.05;
             z-index: 0;
         }
+
         .social-link {
             transition: color 0.3s ease, text-shadow 0.3s ease;
         }
+
         .social-link:hover {
             color: #ffffff;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
         }
+
         .splash-screen {
             position: fixed;
             top: 0;
@@ -44,12 +47,15 @@
             font-size: 2rem;
             cursor: pointer;
         }
+
         .pfp {
             margin-top: 50px;
         }
+
         .cat-image {
             pointer-events: none;
         }
+
         .notification {
             position: fixed;
             top: 20px;
@@ -62,16 +68,59 @@
             transition: opacity 0.5s ease;
             z-index: 100;
         }
+
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-color: black;
+            color: white;
+        }
+
+        /* Light Mode Styles */
+        .light-mode {
+            background-color: white;
+            color: black;
+        }
+
+        /* Update social links for light mode */
+        .light-mode .social-link {
+            color: black;
+        }
+
+        .light-mode .notification {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+        }
+
+        /* Theme Toggle Button Styles */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: -50px; /* Initially off-screen to the right */
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 200;
+            transition: right 0.3s ease; /* Slide in/out effect */
+        }
+
+        /* Theme Toggle Button for when it slides in */
+        .theme-toggle.open {
+            right: 20px; /* Move the button to the right side when open */
+        }
     </style>
 </head>
-<body class="h-screen bg-black text-gray-300 font-mono">
+<body class="h-screen font-mono dark-mode" id="body">
     <div class="noise"></div>
-    <div class="load min-h-full w-full bg-black flex items-center justify-center"></div>
+    <div class="load min-h-full w-full flex items-center justify-center"></div>
     <div class="main hidden" id="content">
         <main class="rounded-lg p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div class="intial-container">
                 <h1 class="color-main text-3xl">Support <span class="dot text-green-500" id="status-dot">•</span></h1>
                 <h3 class="text-xl">@c8hn</h3>
+                <p>alara <3 </p>
                 <a href="https://www.imood.com/users/support"><img src="https://moods.imood.com/display/uname-support/fg-white/bg-black/trans-1/imood.gif" alt="The current mood of support at www.imood.com" border="0"></a>
                 <br/>
                 <div class="music-status" id="music-status">
@@ -191,17 +240,38 @@
                     setInterval(fetchPresence, 1000);  // Refresh music status every second
                 });
             });
+
+            $(".theme-toggle").on("click", function() {
+                $("body").toggleClass("dark-mode light-mode");
+                const currentMode = $("body").hasClass("dark-mode") ? "dark" : "light";
+                localStorage.setItem("theme", currentMode);
+
+                // Update the icon based on the current theme
+                if (currentMode === "light") {
+                    $(".theme-toggle i").removeClass("fa-moon").addClass("fa-sun");
+                } else {
+                    $(".theme-toggle i").removeClass("fa-sun").addClass("fa-moon");
+                }
+            });
+
+            // Load theme from localStorage
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "light") {
+                $("body").removeClass("dark-mode").addClass("light-mode");
+                $(".theme-toggle i").removeClass("fa-moon").addClass("fa-sun");
+            } else {
+                $("body").removeClass("light-mode").addClass("dark-mode");
+                $(".theme-toggle i").removeClass("fa-sun").addClass("fa-moon");
+            }
+
+            // Open the theme toggle button initially
+            $(".theme-toggle").addClass("open");
         });
-
-        function updateLocalTime() {
-            const now = new Date();
-            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            const localTime = now.toLocaleTimeString('en-GB', options);
-            document.getElementById("local-time").textContent = localTime;
-        }
-
-        setInterval(updateLocalTime, 1000); // Update time every second
-        updateLocalTime(); // Initial call
     </script>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
 </body>
 </html>
