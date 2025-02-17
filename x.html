@@ -109,6 +109,16 @@
         .theme-toggle.open {
             right: 20px; /* Move the button to the right side when open */
         }
+
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .text-block {
+            margin: 2em 0;
+        }
     </style>
 </head>
 <body class="h-screen font-mono dark-mode" id="body">
@@ -117,7 +127,7 @@
     <div class="main hidden" id="content">
         <main class="rounded-lg p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div class="intial-container">
-                <h1 class="color-main text-3xl">Support <span class="dot text-green-500" id="status-dot">•</span></h1>
+                <h1 class="color-main text-3xl">Support <span class="dot text-green-500 blink" id="status-dot">•</span></h1>
                 <h3 class="text-xl">@c8hn</h3>
                 <p>eylül <3 </p>
                 <a href="https://www.imood.com/users/support"><img src="https://moods.imood.com/display/uname-support/fg-white/bg-black/trans-1/imood.gif" alt="The current mood of support at www.imood.com" border="0"></a>
@@ -155,7 +165,7 @@
     <div class="splash-screen" id="splash-screen">
         <p>Click to enter</p>
     </div>
-    <audio id="local-song" src="https://r2.interrupted.me/F/SoshkCZX.mp3"></audio>
+    <audio id="local-song" src="music.mp3"></audio>
     <div class="notification" id="notification">Copied to clipboard!</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
