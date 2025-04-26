@@ -1,47 +1,114 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>killwith.fun</title>
-    <style>
-        body {
-            background: #000;
-            color: #fff;
-            font-family: monospace;
-            margin: 40px auto;
-            max-width: 650px;
-            line-height: 1.6;
-            padding: 0 20px;
-            font-size: 16px;
-        }
-        .blink {
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-        .text-block {
-            margin: 2em 0;
-        }
-    </style>
+    <title>Support</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="text-block">
-        <span>moved to killwith.fun<span class="blink">█</span></span>
-    </div>
 
-    <div style="margin-top: 40px; font-size: 12px; color: #444;">
-    redirecting - kwf
-    </div>
-</body>
-</html>
-<script type="text/javascript">
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="guzelpp.jpg" alt="Logo">
+            <span class="logo-text">Support</span>
+            <div class="logo-line"></div>
+        </div>
+        <div class="nav-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About me</a>
+        </div>
+        <div class="menu-btn">
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2><span class="highlight">Support</span></h2>
+                <p class="typing-text">full stack  developer</p>
+                <div class="hero-buttons">
+                    <a href="https://discord.com/users/1175160924919832707" class="btn secondary-btn">Contact</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-buttons">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="window-title">code.js</div>
+                    </div>
+                    <div class="code-content">
+                        <pre><code>const developer = {
+    name: "Support",
+    role: "Full Stack Developer",
+    skills: ["Html", "JavaScript", "Css", "C++", "C#"]
+    passion: "god"
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <div class="arrow">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="section-header">
+            <h2>About me</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="about-content">
+            <div class="about-image">
+                <div class="image-container">
+                    <img src="guzelpp.jpg" alt="Profil Fotoğrafı">
+                    <div class="image-border"></div>
+                </div>
+            </div>
+            <div class="about-text">
+                <h3>Who am I</h3>
+                <p>Im support</p>
+                <div class="about-details">
+                    <div class="detail-item">
+                        <i class="fas fa-code"></i>
+                        <span>full Stack developer</span>
+                    </div>
+                
+
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/dk6m" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     
-    window.onload = function() {
-        setTimeout(function() {
-            window.location.href = "https://killwith.fun/"; 
-        }, 5000); 
-    };
-</script>
+
+   
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Support</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html> 
