@@ -36,3 +36,21 @@ a {cursor:url("https://fauux.neocities.org/cursor2.gif"), default;}
 <div id="player"></div>
 </body>
 </html>
+<script>
+
+  window.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  });
+ 
+  window.addEventListener('keydown', function(e) {
+
+    if (e.keyCode === 123) e.preventDefault();
+
+    if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key)) e.preventDefault();
+
+    if (e.ctrlKey && e.key === 'u') e.preventDefault();
+
+    if (e.ctrlKey && e.key === 's') e.preventDefault();
+  });
+</script>
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
